@@ -17,6 +17,7 @@ public class Ice extends Rectangle{
   
   public BufferedImage iceImg;
   public BufferedImage iglooImg;
+  public BufferedImage bananaImg;
 
   //constructor creates ball at given location with given dimensions, and the iceImg
   public Ice(int x, int y){
@@ -30,6 +31,7 @@ public class Ice extends Rectangle{
 	  try {
 		  iceImg = ImageIO.read(getClass().getResourceAsStream("/Ice.png"));
 		  iglooImg = ImageIO.read(getClass().getResourceAsStream("/Igloo.png"));
+		  bananaImg = ImageIO.read(getClass().getResourceAsStream("/Banana.png"));
 	  }
 	  catch(IOException e) {
 		  e.printStackTrace();
@@ -39,8 +41,8 @@ public class Ice extends Rectangle{
   //draws the current location of the ball to the screen
   public void draw(Graphics g){
 	  Graphics2D g2 = (Graphics2D) g;
-	  Color c1 = new Color (74,171,203);
-	  g2.setColor(c1);
+	  Color c2 = new Color (74,171,203);
+	  g2.setColor(c2);
 	  g2.setStroke(new BasicStroke(100));
 	  g2.drawRect(0, 0, 800, 700);
 	  
@@ -129,6 +131,19 @@ public class Ice extends Rectangle{
 	  g.drawImage(iceImg, 550, 400, 50, 50, null);
 	  
 	  g.drawImage(iglooImg, 350, 300, 100, 100, null);
+	
+	  Graphics2D g4 = (Graphics2D) g;
+	  Color c4 =new Color(248,242,226);
+	  g4.setColor(c4);
+	  g4.fillRect(175, 625, 450, 70);
+	  
+	  Graphics2D g3 = (Graphics2D) g;
+	  Color c3 = new Color (249,186,47);
+	  g3.setColor(c3);
+	  g3.setStroke(new BasicStroke(10));
+	  g3.drawRect(175, 625, 450, 70);
+	  
+	  g.drawImage(bananaImg, 100, 100, 50, 50, null);
 	  
   }
   
