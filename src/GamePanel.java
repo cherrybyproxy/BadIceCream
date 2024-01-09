@@ -9,15 +9,14 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements Runnable, KeyListener{
 
   //dimensions of window
-  public static final int GAME_WIDTH = 600;
-  public static final int GAME_HEIGHT = 600;
+  public static final int GAME_WIDTH = 800;
+  public static final int GAME_HEIGHT = 700;
   
   // variable declaration and initialization
   public Thread gameThread;
   public Image image;
   public Graphics graphics;
   public Ice ice;
-  public Ice ice2;
  
   public boolean inst = true;
   public String instTitle, instText, instText2, instText3, instText4, instText5, instText6, instText7, instText8, instText9, instText10, instText11, instText12;
@@ -27,7 +26,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     this.setFocusable(true); //make everything in this class appear on the screen
     this.addKeyListener(this); //start listening for keyboard input
     ice = new Ice(0, 0);
-    ice2 = new Ice(0, 50);
     
     //add the MousePressed method from the MouseAdapter - by doing this we can listen for mouse input. We do this differently from the KeyListener because MouseAdapter has SEVEN mandatory methods - we only need one of them, and we don't want to make 6 empty methods
     addMouseListener(new MouseAdapter() {
@@ -54,7 +52,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   //call the draw methods in each class to update positions as things move
   public void draw(Graphics g){
     ice.draw(g);
-    ice2.draw(g);
   }
   
   // separate draw for instructions so we can have the illusion of two different "screens" and have them not interfere with each other
