@@ -17,6 +17,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public Image image;
   public Graphics graphics;
   public Ice ice;
+  public Player1 player1;
  
   public boolean inst = true;
   public String instTitle, instText, instText2, instText3, instText4, instText5, instText6, instText7, instText8, instText9, instText10, instText11, instText12;
@@ -26,6 +27,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     this.setFocusable(true); //make everything in this class appear on the screen
     this.addKeyListener(this); //start listening for keyboard input
     ice = new Ice(0, 0);
+    player1 = new Player1(400, 400);
     
     //add the MousePressed method from the MouseAdapter - by doing this we can listen for mouse input. We do this differently from the KeyListener because MouseAdapter has SEVEN mandatory methods - we only need one of them, and we don't want to make 6 empty methods
     addMouseListener(new MouseAdapter() {
@@ -52,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   //call the draw methods in each class to update positions as things move
   public void draw(Graphics g){
     ice.draw(g);
+    player1.draw(g);
   }
   
   // separate draw for instructions so we can have the illusion of two different "screens" and have them not interfere with each other
@@ -68,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
   //handles all collision detection and responds accordingly
   public void checkCollision() {
+
   }
   
 
@@ -99,10 +103,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   
   // if key is pressed
   public void keyPressed(KeyEvent e){
+	  player1.keyPressed(e);
   }
 
   //if a key is released
   public void keyReleased(KeyEvent e){
+	  player1.keyPressed(e);
   }
 
   //left empty because we don't need it; must be here because it is required to be overridded by the KeyListener interface
