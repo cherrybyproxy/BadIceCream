@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 // extends Rectangle because drawing and managing collisions is easy
-public class Player1 extends Rectangle{
+public class Player2 extends Rectangle{
 
 	// variable declaration
   public int xVelocity;
@@ -16,7 +16,7 @@ public class Player1 extends Rectangle{
   public BufferedImage icon;
 
   //constructor creates ball at given location with given dimensions, and the icon
-  public Player1(int x, int y){
+  public Player2(int x, int y){
     super(x, y, 50, 50);
     getIcon(); 
 
@@ -26,22 +26,22 @@ public class Player1 extends Rectangle{
   //updates the direction of the ball based on user input
   //if the keyboard input isn't any of the options (d, a, w, s), then nothing happens
   public void keyPressed(KeyEvent e){
-    if(e.getKeyChar() == 'd'){
+    if(e.getKeyChar() == 'l'){
       setXDirection(SPEED);
       move();
     }
 
-    if(e.getKeyChar() == 'a'){
+    if(e.getKeyChar() == 'j'){
       setXDirection(SPEED*-1);
       move();
     }
     
-    if(e.getKeyChar() == 'w'){
+    if(e.getKeyChar() == 'i'){
         setYDirection(SPEED*-1);
         move();
       }
     
-    if(e.getKeyChar() == 's'){
+    if(e.getKeyChar() == 'k'){
         setYDirection(SPEED);
         move();
       }
@@ -51,22 +51,22 @@ public class Player1 extends Rectangle{
   //called from GamePanel when any key is released (no longer being pressed down)
   //Makes the ball stop moving in that direction
   public void keyReleased(KeyEvent e){
-    if(e.getKeyChar() == 'd'){
+    if(e.getKeyChar() == 'l'){
       setXDirection(0);
       move();
     }
 
-    if(e.getKeyChar() == 'a'){
+    if(e.getKeyChar() == 'j'){
       setXDirection(0);
       move();
     }
     
-    if(e.getKeyChar() == 'w'){
+    if(e.getKeyChar() == 'i'){
         setYDirection(0);
         move();
       }
 
-      if(e.getKeyChar() == 's'){
+      if(e.getKeyChar() == 'k'){
         setYDirection(0);
         move();
       }
@@ -98,7 +98,7 @@ public class Player1 extends Rectangle{
   // this method is used to get the image from source folder
   public void getIcon() {
 	  try {
-		  icon = ImageIO.read(getClass().getResourceAsStream("/Sorbet.png"));
+		  icon = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
 	  }
 	  catch(IOException e) {
 		  e.printStackTrace();

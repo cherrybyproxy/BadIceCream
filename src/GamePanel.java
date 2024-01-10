@@ -18,9 +18,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public Graphics graphics;
   public Ice ice;
   public Player1 player1;
+  public Player2 player2;
   public Score score;
   
-  public IceC iceC;
+  /*
+  public IceC iceC1;
   public IceC iceC2;
   public IceC iceC3;
   public IceC iceC4;
@@ -40,9 +42,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public IceC iceC18;
   public IceC iceC19;
   public IceC iceC20;
+  */
   
   public Igloo igloo;
   
+  IceC[] iceC = new IceC[15];
+  
+  Banana[] banana = new Banana[16];
+  boolean[] drawBanana = new boolean[16];
+  
+  
+  /*
   public Banana banana;
   public Banana banana2;
   public Banana banana3;
@@ -77,16 +87,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public boolean drawBanana14 = true;
   public boolean drawBanana15 = true;
   public boolean drawBanana16 = true;
-
+  */
+  
   public GamePanel(){
    
     this.setFocusable(true); //make everything in this class appear on the screen
     this.addKeyListener(this); //start listening for keyboard input
     ice = new Ice(0, 0);
-    player1 = new Player1(400, 400);
+    player1 = new Player1(350, 400);
+    player2 = new Player2(400, 400);
     score = new Score(GAME_WIDTH, GAME_HEIGHT);
+    igloo = new Igloo(350, 300);
     
-    iceC = new IceC(200, 200);
+    
+    
+    /*
+    iceC1 = new IceC(200, 200);
     iceC2 = new IceC(250, 200);
     iceC3 = new IceC(300, 200);
     iceC4 = new IceC(200, 450);
@@ -96,8 +112,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     iceC8 = new IceC(200, 300);
     iceC9 = new IceC(200, 350);
     iceC10 = new IceC(200, 400);
-    
-    igloo = new Igloo(350, 300);
     
     iceC11 = new IceC(450, 200);
     iceC12 = new IceC(500, 200);
@@ -109,7 +123,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     iceC18 = new IceC(550, 300);
     iceC19 = new IceC(550, 350);
     iceC20 = new IceC(550, 400);
-    
+    */
     
     // bananas
     banana = new Banana(150, 150);
@@ -155,8 +169,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   //call the draw methods in each class to update positions as things move
   public void draw(Graphics g){
     ice.draw(g);
+
     
-    iceC.draw(g);
+    iceC1.draw(g);
     iceC2.draw(g);
     iceC3.draw(g);
     iceC4.draw(g);
@@ -230,6 +245,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
     score.draw(g);
     player1.draw(g);
+    player2.draw(g);
   }
   
 
@@ -237,22 +253,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   //this method is constantly called from run(). By doing this, movements appear fluid and natural. If we take this out the movements appear sluggish and laggy
   public void move(){
 	  player1.move();
+	  player2.move();
   }
 
   //handles all collision detection and responds accordingly
   public void checkCollision() {
 	  // ------------------------------------------------------------------------------------
-	  if(player1.intersects(iceC) && player1.x > iceC.x && player1.xVelocity < 0) {
-		  player1.x = iceC.x + 50;
+	  if(player1.intersects(iceC1) && player1.x > iceC1.x && player1.xVelocity < 0) {
+		  player1.x = iceC1.x + 50;
 	  }
-	  if(player1.intersects(iceC) && player1.x < iceC.x && player1.xVelocity > 0) {
-		  player1.x = iceC.x - 50;
+	  if(player1.intersects(iceC1) && player1.x < iceC1.x && player1.xVelocity > 0) {
+		  player1.x = iceC1.x - 50;
 	  }
-	  if(player1.intersects(iceC) && player1.y > iceC.y && player1.yVelocity < 0) {
-		  player1.y = iceC.y + 50;
+	  if(player1.intersects(iceC1) && player1.y > iceC1.y && player1.yVelocity < 0) {
+		  player1.y = iceC1.y + 50;
 	  }
-	  if(player1.intersects(iceC) && player1.y < iceC.y && player1.yVelocity > 0) {
-		  player1.y = iceC.y - 50;
+	  if(player1.intersects(iceC1) && player1.y < iceC1.y && player1.yVelocity > 0) {
+		  player1.y = iceC1.y - 50;
 	  }  
 	  // ------------------------------------------------------------------------------------
 	  if(player1.intersects(iceC2) && player1.x > iceC2.x && player1.xVelocity < 0) {
@@ -599,6 +616,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		  player1.y = 100;
 	  }
 	  
+	  if (player2.x > 650) {
+		  player2.x = 650;
+	  }
+	  
+	  if (player2.x < 100) {
+		  player2.x = 100;
+	  }
+	  
+	  if (player2.y > 550) {
+		  player2.y = 550;
+	  }
+	  
+	  if (player2.y < 100) {
+		  player2.y = 100;
+	  }
+	  
   }
   
 
@@ -631,11 +664,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   // if key is pressed
   public void keyPressed(KeyEvent e){
 	  player1.keyPressed(e);
+	  player2.keyPressed(e);
   }
 
   //if a key is released
   public void keyReleased(KeyEvent e){
 	  player1.keyReleased(e);
+	  player2.keyReleased(e);
   }
 
   //left empty because we don't need it; must be here because it is required to be overridded by the KeyListener interface
