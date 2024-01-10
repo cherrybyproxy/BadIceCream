@@ -101,33 +101,6 @@ public class Ice extends Rectangle{
 	  g.drawImage(iceImg, 550, 600, 50, 50, null);
 	  g.drawImage(iceImg, 600, 600, 50, 50, null);
 	  g.drawImage(iceImg, 650, 600, 50, 50, null);
-	  
-	  // ice C - left
-	  g.drawImage(iceImg, 200, 200, 50, 50, null);
-	  g.drawImage(iceImg, 250, 200, 50, 50, null);
-	  g.drawImage(iceImg, 300, 200, 50, 50, null);
-	  g.drawImage(iceImg, 200, 450, 50, 50, null);
-	  g.drawImage(iceImg, 250, 450, 50, 50, null);
-	  g.drawImage(iceImg, 300, 450, 50, 50, null);
-	  g.drawImage(iceImg, 200, 250, 50, 50, null);
-	  g.drawImage(iceImg, 200, 300, 50, 50, null);
-	  g.drawImage(iceImg, 200, 350, 50, 50, null);
-	  g.drawImage(iceImg, 200, 400, 50, 50, null);
-	  
-	  
-	  // ice C - right
-	  g.drawImage(iceImg, 450, 200, 50, 50, null);
-	  g.drawImage(iceImg, 500, 200, 50, 50, null);
-	  g.drawImage(iceImg, 550, 200, 50, 50, null);
-	  g.drawImage(iceImg, 450, 450, 50, 50, null);
-	  g.drawImage(iceImg, 500, 450, 50, 50, null);
-	  g.drawImage(iceImg, 550, 450, 50, 50, null);
-	  g.drawImage(iceImg, 550, 250, 50, 50, null);
-	  g.drawImage(iceImg, 550, 300, 50, 50, null);
-	  g.drawImage(iceImg, 550, 350, 50, 50, null);
-	  g.drawImage(iceImg, 550, 400, 50, 50, null);
-	  
-	  g.drawImage(iglooImg, 350, 300, 100, 100, null);
 	
 	  Graphics2D g4 = (Graphics2D) g;
 	  Color c4 =new Color(248,242,226);

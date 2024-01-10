@@ -106,7 +106,7 @@ public class Player1 extends Rectangle{
   // this method is used to get the image from source folder
   public void getIcon() {
 	  try {
-		  icon = ImageIO.read(getClass().getResourceAsStream("/Sorbet.png"));
+		  icon = ImageIO.read(getClass().getResourceAsStream("/Sorbet2.png"));
 	  }
 	  catch(IOException e) {
 		  e.printStackTrace();
