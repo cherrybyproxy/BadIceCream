@@ -17,8 +17,6 @@ public class Ice extends Rectangle{
   
   public BufferedImage iceImg;
   public BufferedImage iglooImg;
-  public BufferedImage bananaImg;
-
   //constructor creates ball at given location with given dimensions, and the iceImg
   public Ice(int x, int y){
     super(x, y, 50, 50);
@@ -31,7 +29,6 @@ public class Ice extends Rectangle{
 	  try {
 		  iceImg = ImageIO.read(getClass().getResourceAsStream("/Ice.png"));
 		  iglooImg = ImageIO.read(getClass().getResourceAsStream("/Igloo.png"));
-		  bananaImg = ImageIO.read(getClass().getResourceAsStream("/Banana.png"));
 	  }
 	  catch(IOException e) {
 		  e.printStackTrace();
@@ -142,8 +139,6 @@ public class Ice extends Rectangle{
 	  g3.setColor(c3);
 	  g3.setStroke(new BasicStroke(10));
 	  g3.drawRect(175, 625, 450, 70);
-	  
-	  g.drawImage(bananaImg, 100, 100, 50, 50, null);
 	  
   }
   

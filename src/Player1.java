@@ -18,6 +18,7 @@ public class Player1 extends Rectangle{
 
 	// variable declaration
   public int xVelocity;
+  public int yVelocity;
   public final int SPEED = 5; //movement speed of ball
   
   public BufferedImage icon;
@@ -42,6 +43,16 @@ public class Player1 extends Rectangle{
       setXDirection(SPEED*-1);
       move();
     }
+    
+    if(e.getKeyChar() == 'w'){
+        setYDirection(SPEED*-1);
+        move();
+      }
+    
+    if(e.getKeyChar() == 's'){
+        setYDirection(SPEED);
+        move();
+      }
 
   }
 
@@ -57,6 +68,16 @@ public class Player1 extends Rectangle{
       setXDirection(0);
       move();
     }
+    
+    if(e.getKeyChar() == 'w'){
+        setYDirection(0);
+        move();
+      }
+
+      if(e.getKeyChar() == 's'){
+        setYDirection(0);
+        move();
+      }
 
   }
 
@@ -70,11 +91,16 @@ public class Player1 extends Rectangle{
   public void setXDirection(int xDirection){
     xVelocity = xDirection;
   }
+  
+  public void setYDirection(int yDirection){
+	    yVelocity = yDirection;
+	  }
 
   //called frequently from both Moon class and GamePanel class
   //updates the current location of the ball
   public void move(){
-    x = x + xVelocity;
+    x += xVelocity;
+    y += yVelocity;
   }
   
   // this method is used to get the image from source folder

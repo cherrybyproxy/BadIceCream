@@ -18,9 +18,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public Graphics graphics;
   public Ice ice;
   public Player1 player1;
- 
-  public boolean inst = true;
-  public String instTitle, instText, instText2, instText3, instText4, instText5, instText6, instText7, instText8, instText9, instText10, instText11, instText12;
+  public Banana banana;
+  public Score score;
 
   public GamePanel(){
    
@@ -28,6 +27,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     this.addKeyListener(this); //start listening for keyboard input
     ice = new Ice(0, 0);
     player1 = new Player1(400, 400);
+    banana = new Banana(0, 0);
+    score = new Score(GAME_WIDTH, GAME_HEIGHT);
+    
     
     //add the MousePressed method from the MouseAdapter - by doing this we can listen for mouse input. We do this differently from the KeyListener because MouseAdapter has SEVEN mandatory methods - we only need one of them, and we don't want to make 6 empty methods
     addMouseListener(new MouseAdapter() {
@@ -54,6 +56,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   //call the draw methods in each class to update positions as things move
   public void draw(Graphics g){
     ice.draw(g);
+    banana.draw(g);
+    score.draw(g);
     player1.draw(g);
   }
   
@@ -66,12 +70,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   //call the move methods in other classes to update positions
   //this method is constantly called from run(). By doing this, movements appear fluid and natural. If we take this out the movements appear sluggish and laggy
   public void move(){
-	  
+	  player1.move();
   }
 
   //handles all collision detection and responds accordingly
   public void checkCollision() {
-
+	  if (player1.intersects(banana) && player1.x == banana.x) {
+		  Score.score += 150;
+	  }
   }
   
 
@@ -108,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
   //if a key is released
   public void keyReleased(KeyEvent e){
-	  player1.keyPressed(e);
+	  player1.keyReleased(e);
   }
 
   //left empty because we don't need it; must be here because it is required to be overridded by the KeyListener interface
