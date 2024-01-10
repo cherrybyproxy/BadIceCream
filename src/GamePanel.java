@@ -1,6 +1,9 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.swing.*;
 
 // extends JPanel to access draw methods
@@ -46,10 +49,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   
   public Igloo igloo;
   
-  IceC[] iceC = new IceC[15];
+  public IceC[] iceC = new IceC[15];
+  public ArrayList<IceC> iceC2 = new ArrayList<IceC>();
   
-  Banana[] banana = new Banana[16];
-  boolean[] drawBanana = new boolean[16];
+  public Banana[] banana = new Banana[16];
+  public boolean[] drawBanana = new boolean[16];
+  public ArrayList<Banana> banana2 = new ArrayList<Banana>();
   
   
   /*
@@ -99,7 +104,47 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     score = new Score(GAME_WIDTH, GAME_HEIGHT);
     igloo = new Igloo(350, 300);
     
+    Arrays.fill(drawBanana, true);
     
+    iceC2.add(new IceC(200, 200));
+    iceC2.add(new IceC(250, 200));
+    iceC2.add(new IceC(300, 200));
+    iceC2.add(new IceC(200, 450));
+    iceC2.add(new IceC(250, 450));
+    iceC2.add(new IceC(300, 450));
+    iceC2.add(new IceC(200, 250));
+    iceC2.add(new IceC(200, 300));
+    iceC2.add(new IceC(200, 350));
+    iceC2.add(new IceC(200, 400));
+    
+    iceC2.add(new IceC(450, 200));
+    iceC2.add(new IceC(500, 200));
+    iceC2.add(new IceC(550, 200));
+    iceC2.add(new IceC(450, 450));
+    iceC2.add(new IceC(500, 450));
+    iceC2.add(new IceC(550, 450));
+    iceC2.add(new IceC(550, 250));
+    iceC2.add(new IceC(550, 300));
+    iceC2.add(new IceC(550, 350));
+    iceC2.add(new IceC(550, 400));
+   
+    banana2.add(new Banana(150, 150));
+    banana2.add(new Banana(150, 200));
+    banana2.add(new Banana(200, 150));
+    banana2.add(new Banana(150, 450));
+    banana2.add(new Banana(150, 500));
+    banana2.add(new Banana(200, 500));
+    banana2.add(new Banana(550, 150));
+    banana2.add(new Banana(600, 200));
+    
+    banana2.add(new Banana(600, 150));
+    banana2.add(new Banana(600, 450));
+    banana2.add(new Banana(550, 500));
+    banana2.add(new Banana(600, 500));
+    banana2.add(new Banana(300, 300));
+    banana2.add(new Banana(300, 350));
+    banana2.add(new Banana(450, 300));
+    banana2.add(new Banana(450, 350));
     
     /*
     iceC1 = new IceC(200, 200);
@@ -125,6 +170,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     iceC20 = new IceC(550, 400);
     */
     
+    /*
     // bananas
     banana = new Banana(150, 150);
     banana2 = new Banana(150, 200);
@@ -142,7 +188,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     banana14 = new Banana(300, 350);
     banana15 = new Banana(450, 300);
     banana16 = new Banana(450, 350);
-    
+    */
     
     //add the MousePressed method from the MouseAdapter - by doing this we can listen for mouse input. We do this differently from the KeyListener because MouseAdapter has SEVEN mandatory methods - we only need one of them, and we don't want to make 6 empty methods
     addMouseListener(new MouseAdapter() {
@@ -169,8 +215,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   //call the draw methods in each class to update positions as things move
   public void draw(Graphics g){
     ice.draw(g);
-
+  
+    for(int i = 0; i < 20; i++) {
+    	iceC2.get(i).draw(g);
+    }
     
+    /*
     iceC1.draw(g);
     iceC2.draw(g);
     iceC3.draw(g);
@@ -191,9 +241,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     iceC18.draw(g);
     iceC19.draw(g);
     iceC20.draw(g);
+    */
     
     igloo.draw(g);
     
+    for (int j = 0; j < 16; j++) {
+    	if(drawBanana[j]) {
+    		banana2.get(j).draw(g);
+    	}
+    }
+    
+    /*
     if (drawBanana) {
         banana.draw(g);
     }
@@ -242,7 +300,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     if (drawBanana16) {
         banana16.draw(g);
     }
-
+    */
+    
     score.draw(g);
     player1.draw(g);
     player2.draw(g);
@@ -258,6 +317,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
   //handles all collision detection and responds accordingly
   public void checkCollision() {
+	  
+	  /*
 	  // ------------------------------------------------------------------------------------
 	  if(player1.intersects(iceC1) && player1.x > iceC1.x && player1.xVelocity < 0) {
 		  player1.x = iceC1.x + 50;
@@ -532,7 +593,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	  if(player1.intersects(igloo) && player1.y  < igloo.y && player1.yVelocity > 0) {
 		  player1.y = igloo.y - 50;
 	  } 
+	  */
 	  
+	  for (int k = 0; k < 16; k++) {
+		  if (player1.intersects(banana2.get(k)) && drawBanana[k] == true) {
+			  Score.score += 150;
+			  drawBanana[k] = false;
+		  }
+	  }
+	  
+	  /*
 	  
 	  if (player1.intersects(banana) && drawBanana == true) {
 		  Score.score += 150; 
@@ -598,7 +668,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 		  Score.score += 150;  
 		  drawBanana16 = false;
 	  }
-	  
+	  */
 	  
 	  if (player1.x > 650) {
 		  player1.x = 650;
