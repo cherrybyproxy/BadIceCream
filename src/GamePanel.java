@@ -126,12 +126,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
       add(play); */
 
-	  playGame = false;
-		gameEnd = false;
-
-		mainMenu = false;
-		clickPlay = true;
-		controls = false;
+//	  playGame = false;
+//		gameEnd = false;
+//
+//		mainMenu = false;
+//		clickPlay = true;
+//		controls = false;
 		
    ice = new Ice(0, 0);
     
@@ -291,79 +291,86 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
   //call the draw methods in each class to update positions as things move
   public void draw(Graphics g){
 	
-	  if(clickPlay) {
-	 
-	  menubg = Toolkit.getDefaultToolkit().getImage("menubg.gif"); // create image 
-
-	  logo = Toolkit.getDefaultToolkit().getImage("logo.png"); // create image 
-	  
-	  playbtn = Toolkit.getDefaultToolkit().getImage("playbtn.png"); // create image 
-	  
-	  authors = Toolkit.getDefaultToolkit().getImage("authors.png"); // create image 
+	  //MAIN MENU LOGIC 
+//	  if(clickPlay) {
+//	 
+//	  menubg = Toolkit.getDefaultToolkit().getImage("menubg.gif"); // create image 
+//
+//	  logo = Toolkit.getDefaultToolkit().getImage("logo.png"); // create image 
+//	  
+//	  playbtn = Toolkit.getDefaultToolkit().getImage("playbtn.png"); // create image 
+//	  
+//	  authors = Toolkit.getDefaultToolkit().getImage("authors.png"); // create image 
+//	
+//	  g.drawImage(menubg, -20, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
+//
+//	  g.drawImage(logo, 200, 0, 400, 600, null); // draw loser image to screen
+//	
+//	  // Start new thread to implement runnable interface to delay and terminate game
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() { // override run method
+//
+//						// catch block used if another thread interrupts this thread
+//						try {
+//							while (true) {
+//								drawBtn = true;
+//								Thread.sleep(2000);
+//
+//								drawBtn = false;
+//								//g.dispose();
+//								Thread.sleep(1000);
+//								
+//							}
+//
+//						} catch (InterruptedException e) {
+//							e.printStackTrace();
+//						}
+//
+//					}
+//				}).start(); // begins execution of thread
+//	 
+//if (drawBtn) {
+//	g.drawImage(playbtn, 250, 550, 300, 75, null); // draw loser image to screen
+//	
+//}
+//	  g.drawImage(authors, 250, GAME_HEIGHT-50, 300, 50, null); // draw loser image to screen
+//	
+//	  settings = Toolkit.getDefaultToolkit().getImage("controls.png"); // create image 
+//	  
+//	  g.drawImage(settings, GAME_WIDTH-100, 0, 40, 40, null); // draw loser image to screen
+//	  
+//	  sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image 
+//	  
+//	  g.drawImage(sound, GAME_WIDTH-50, 0, 40, 40, null); // draw loser image to screen
+//	
+//	  clickPlay();
+//	  
+//	  }
+//	  
+//	  if (mainMenu) {
+//		  menubg = Toolkit.getDefaultToolkit().getImage("menubg.gif"); // create image 
+//		  g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
+//
+//		  authors = Toolkit.getDefaultToolkit().getImage("authors.png"); // create image 
+//		  g.drawImage(authors, 250, GAME_HEIGHT-50, 300, 50, null); // draw loser image to screen
+//			
+//		  menu = Toolkit.getDefaultToolkit().getImage("menu.png"); // create image 
+//		  g.drawImage(menu, 120, -20, 550, 750, null); // draw loser image to screen
+//
+//		  settings = Toolkit.getDefaultToolkit().getImage("controls.png"); // create image 
+//		  
+//		  g.drawImage(settings, GAME_WIDTH-100, 0, 40, 40, null); // draw loser image to screen
+//		  
+//		  sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image 
+//		  
+//		  g.drawImage(sound, GAME_WIDTH-50, 0, 40, 40, null); // draw loser image to screen
+//		
+//		  
+//	  }
+//	  
+//	  
 	
-	  g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
-
-	  g.drawImage(logo, 200, -20, 400, 600, null); // draw loser image to screen
-	
-	  // Start new thread to implement runnable interface to delay and terminate game
-				new Thread(new Runnable() {
-					@Override
-					public void run() { // override run method
-
-						// catch block used if another thread interrupts this thread
-						try {
-							while (true) {
-								drawBtn = true;
-								Thread.sleep(2000);
-
-								drawBtn = false;
-								//g.dispose();
-								Thread.sleep(1000);
-								
-							}
-
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-
-					}
-				}).start(); // begins execution of thread
-	 
-if (drawBtn) {
-	g.drawImage(playbtn, 250, 550, 300, 75, null); // draw loser image to screen
-	
-}
-	clickPlay();
-	  g.drawImage(authors, 250, GAME_HEIGHT-50, 300, 50, null); // draw loser image to screen
-	
-	  }
-	  
-	  if (mainMenu) {
-		  menubg = Toolkit.getDefaultToolkit().getImage("menubg.gif"); // create image 
-		  g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
-
-		  logo = Toolkit.getDefaultToolkit().getImage("logo.png"); // create image 
-		  g.drawImage(logo, 200, -20, 400, 600, null); // draw loser image to screen
-			
-		  authors = Toolkit.getDefaultToolkit().getImage("authors.png"); // create image 
-		  g.drawImage(authors, 250, GAME_HEIGHT-50, 300, 50, null); // draw loser image to screen
-			
-		  menu = Toolkit.getDefaultToolkit().getImage("menu.png"); // create image 
-		  g.drawImage(menu, 200, -20, 400, 600, null); // draw loser image to screen
-
-		  settings = Toolkit.getDefaultToolkit().getImage("controls.png"); // create image 
-		  
-		  g.drawImage(settings, GAME_WIDTH-120, 0, 40, 40, null); // draw loser image to screen
-		  
-		  sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image 
-		  
-		  g.drawImage(sound, GAME_WIDTH-50, 0, 40, 40, null); // draw loser image to screen
-		
-		  
-	  }
-	  
-	  
-	if (playGame) {
 	  ice.draw(g);
   
     for(int i = 0; i < 20; i++) {
@@ -455,7 +462,7 @@ if (drawBtn) {
     score.draw(g);
     player1.draw(g);
     player2.draw(g);
-	}
+	
   }
  
  
