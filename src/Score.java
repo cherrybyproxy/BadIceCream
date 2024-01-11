@@ -15,6 +15,7 @@ public class Score extends Rectangle{
   public static int GAME_WIDTH;//width of the window
   public static int GAME_HEIGHT;//height of the window
   public static int score;
+  public static int score2;
 
   //constructor sets score to 0 and establishes dimensions of game window
   public Score(int w, int h){
@@ -28,6 +29,7 @@ public class Score extends Rectangle{
   public void draw(Graphics g){
     g.setColor(Color.black); // set colour
     g.setFont(new Font("Consolas", Font.PLAIN, 50)); // set font
-    g.drawString(String.valueOf(score), (int)(GAME_WIDTH*0.43), (int)(GAME_HEIGHT*0.8)); //setting location of score to be about the middle 
+    g.drawString(String.valueOf(score), (int)(GAME_WIDTH*0.2), (int)(GAME_HEIGHT*0.2)); 
+    g.drawString(String.valueOf(score2), (int)(GAME_WIDTH*0.5), (int)(GAME_HEIGHT*0.2)); 
   }
 }
