@@ -9,7 +9,7 @@ import javax.swing.*;
 // extends JPanel to access draw methods
 // implements Runnable to run multiple things at once
 // implements KeyListener to listen to keyboard input
-public class GamePanel extends JPanel implements Runnable, KeyListener{
+public class GamePanel extends JPanel implements Runnable, KeyListener, ActionListener {
 
   //dimensions of window
   public static final int GAME_WIDTH = 800;
@@ -24,6 +24,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public Player2 player2;
   public Score score;
   
+  
+  public Image logo, menubg, playbtn, authors, settings, menu, sound;
+  
+   
+ //booleans for certain key input 
+ 	boolean playGame;
+ 	boolean gameEnd;
+ 	boolean clickPlay;
+
+ 	boolean mainMenu;
+ 	boolean controls;
+ 
+ 	//coordinates for play button on main menu
+ 	int playbtnX;
+ 	int playbtnY;
+ 	boolean drawBtn;
+
   /*
   public IceC iceC1;
   public IceC iceC2;
@@ -48,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   */
   
   public Igloo igloo;
+  JButton play;
   
   public IceC[] iceC = new IceC[15];
   public ArrayList<IceC> iceC2 = new ArrayList<IceC>();
@@ -93,12 +111,30 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public boolean drawBanana15 = true;
   public boolean drawBanana16 = true;
   */
+  private MouseAdapter mouseAdapter; // Declare a MouseAdapter instance
+
   
   public GamePanel(){
    
-    this.setFocusable(true); //make everything in this class appear on the screen
-    this.addKeyListener(this); //start listening for keyboard input
-    ice = new Ice(0, 0);
+	//BUTTON DOES NOT WORK 
+	/*  play = new JButton("Play!");
+      play.addActionListener(this);
+      play.setBounds(400, 100, 120, 30);
+
+      // Set the Z-order of the button explicitly to make sure it's on top
+      setComponentZOrder(play, 0);
+
+      add(play); */
+
+	  playGame = false;
+		gameEnd = false;
+
+		mainMenu = false;
+		clickPlay = true;
+		controls = false;
+		
+   ice = new Ice(0, 0);
+    
     player1 = new Player1(350, 400);
     player2 = new Player2(400, 400);
     score = new Score(GAME_WIDTH, GAME_HEIGHT);
@@ -189,12 +225,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     banana15 = new Banana(450, 300);
     banana16 = new Banana(450, 350);
     */
-    
+    this.setFocusable(true); //make everything in this class appear on the screen
+    this.addKeyListener(this); //start listening for keyboard input
+
     //add the MousePressed method from the MouseAdapter - by doing this we can listen for mouse input. We do this differently from the KeyListener because MouseAdapter has SEVEN mandatory methods - we only need one of them, and we don't want to make 6 empty methods
-    addMouseListener(new MouseAdapter() {
+   addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+				
 			}
-		});
+		}); 
     this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 
     //make this class run at the same time as other classes (without this each class would "pause" while another class runs). By using threading we can remove lag, and also allows us to do features like display timers in real time!
@@ -202,19 +241,130 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     gameThread.start();
   }
 
+
+	public void paintComponent(Graphics g) {
+		// Required for painting graphics and images including all game elements
+		super.paintComponent(g);
+		
+	}
+
   //paint is a method in java.awt library that we are overriding. It is a special method - it is called automatically in the background in order to update what appears in the window. You NEVER call paint() yourself
   public void paint(Graphics g){
     //we are using "double buffering" here - if we draw images directly onto the screen, it takes time and the human eye can actually notice flashes of lag as each pixel on the screen is drawn one at a time. Instead, we are going to draw images OFF the screen (outside dimensions of the frame), then simply move the image on screen as needed. 
-    image = createImage(GAME_WIDTH, GAME_HEIGHT); //draw off screen
-    graphics = image.getGraphics();
-    draw(graphics); //update the positions of everything on the screen 
-    g.drawImage(image, 0, 0, this); //redraw everything on the screen
+	  image = createImage(GAME_WIDTH, GAME_HEIGHT); //draw off screen
+	    graphics = image.getGraphics();
+	    draw(graphics); //update the positions of everything on the screen 
+	    g.drawImage(image, 0, 0, this); //redraw everything on the screen
 
+  }
+  
+  public void clickPlay() {
+	  
+	  // Instantiate a MouseAdapter and override the mousePressed method
+      MouseAdapter mouseAdapter = new MouseAdapter() {
+          @Override
+          
+          public void mouseClicked(MouseEvent e) {
+        
+        
+        playbtnX = e.getX();
+          playbtnY = e.getY();
+
+          if (playbtnX > 250 && playbtnX < 550 && playbtnY > 550 && playbtnY < 625) {
+        	  System.out.println("You clicked the mouse");
+              
+        	  mainMenu = true;
+        	  clickPlay = false;
+        	
+        }
+        	  
+          repaint();
+          
+          }
+      };
+
+      // Add the mouseAdapter to your component
+      addMouseListener(mouseAdapter);
+  
   }
 
   //call the draw methods in each class to update positions as things move
   public void draw(Graphics g){
-    ice.draw(g);
+	
+	  if(clickPlay) {
+	 
+	  menubg = Toolkit.getDefaultToolkit().getImage("menubg.gif"); // create image 
+
+	  logo = Toolkit.getDefaultToolkit().getImage("logo.png"); // create image 
+	  
+	  playbtn = Toolkit.getDefaultToolkit().getImage("playbtn.png"); // create image 
+	  
+	  authors = Toolkit.getDefaultToolkit().getImage("authors.png"); // create image 
+	
+	  g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
+
+	  g.drawImage(logo, 200, -20, 400, 600, null); // draw loser image to screen
+	
+	  // Start new thread to implement runnable interface to delay and terminate game
+				new Thread(new Runnable() {
+					@Override
+					public void run() { // override run method
+
+						// catch block used if another thread interrupts this thread
+						try {
+							while (true) {
+								drawBtn = true;
+								Thread.sleep(2000);
+
+								drawBtn = false;
+								//g.dispose();
+								Thread.sleep(1000);
+								
+							}
+
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+					}
+				}).start(); // begins execution of thread
+	 
+if (drawBtn) {
+	g.drawImage(playbtn, 250, 550, 300, 75, null); // draw loser image to screen
+	
+}
+	clickPlay();
+	  g.drawImage(authors, 250, GAME_HEIGHT-50, 300, 50, null); // draw loser image to screen
+	
+	  }
+	  
+	  if (mainMenu) {
+		  menubg = Toolkit.getDefaultToolkit().getImage("menubg.gif"); // create image 
+		  g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
+
+		  logo = Toolkit.getDefaultToolkit().getImage("logo.png"); // create image 
+		  g.drawImage(logo, 200, -20, 400, 600, null); // draw loser image to screen
+			
+		  authors = Toolkit.getDefaultToolkit().getImage("authors.png"); // create image 
+		  g.drawImage(authors, 250, GAME_HEIGHT-50, 300, 50, null); // draw loser image to screen
+			
+		  menu = Toolkit.getDefaultToolkit().getImage("menu.png"); // create image 
+		  g.drawImage(menu, 200, -20, 400, 600, null); // draw loser image to screen
+
+		  settings = Toolkit.getDefaultToolkit().getImage("controls.png"); // create image 
+		  
+		  g.drawImage(settings, GAME_WIDTH-120, 0, 40, 40, null); // draw loser image to screen
+		  
+		  sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image 
+		  
+		  g.drawImage(sound, GAME_WIDTH-50, 0, 40, 40, null); // draw loser image to screen
+		
+		  
+	  }
+	  
+	  
+	if (playGame) {
+	  ice.draw(g);
   
     for(int i = 0; i < 20; i++) {
     	iceC2.get(i).draw(g);
@@ -305,8 +455,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     score.draw(g);
     player1.draw(g);
     player2.draw(g);
+	}
   }
-  
+ 
+ 
+  public void mousePressed(MouseEvent e) {
+	  
+		/*
+		 * playbtnX = e.getX(); playbtnY = e.getY();
+		 * 
+		 * if(250 > playbtnX && 250 < playbtnX+300 && 550 > playbtnY && 550 <
+		 * playbtnY+75) { mainMenu = false;
+		 * 
+		 * }
+		 * 
+		 * repaint(); System.out.println("You clicked the mouse");
+		 */
+  }
 
   //call the move methods in other classes to update positions
   //this method is constantly called from run(). By doing this, movements appear fluid and natural. If we take this out the movements appear sluggish and laggy
@@ -747,5 +912,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
   public void keyTyped(KeyEvent e){
 
   }
+
+@Override
+public void actionPerformed(ActionEvent evt) {
+	
+	if (evt.getActionCommand().equals("Reset")) {
+		
+	}
+	//repaint();
+	
+}
+
+
+
+
+
 
 }
