@@ -9,7 +9,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTabbedPaneUI.MouseHandler;
 
 // extends JPanel to access draw methods
 // implements Runnable to run multiple things at once
@@ -30,23 +29,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public Score score;
 	public Score score2;
 
-	public Image logo, menubg, playbtn, authors, settings, menu, sound, cross, instructions, instructions2, 
-	ming, smokeyb, sorbet, arrow, arrow2, icecream;
+	public Image logo, menubg, playbtn, authors, settings, menu, sound, cross, playerControls, ming, smokeyb, sorbet,
+			arrow, arrow2, icecream, snow, backbtn, scores;
 
 	// booleans for certain key input
 	boolean playGame;
-	boolean gameEnd;
+	boolean exitGame;
 	boolean clickPlay;
 
 	boolean mainMenu;
 	boolean controls;
-	boolean audio;
+	static boolean audio;
 	// coordinates for play button on main menu
 	int btnX;
 	int btnY;
 	boolean drawBtn;
-	
-	boolean icecream1, icecream2, icecream3, icecream4;
+
+	boolean icecream1, icecream2, icecream3, icecream4, scoreBoard;
 
 	public Igloo igloo;
 	JButton play;
@@ -61,22 +60,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public boolean[] drawBanana = new boolean[16];
 	public ArrayList<Banana> banana2 = new ArrayList<Banana>();
 
-	//private MouseAdapter mouseAdapter; // Declare a MouseAdapter instance
-	
-		public GamePanel() {
+	// private MouseAdapter mouseAdapter; // Declare a MouseAdapter instance
+
+	public GamePanel() {
 
 		playGame = false;
-		gameEnd = false;
+		exitGame = false;
 
 		mainMenu = false;
 		clickPlay = true;
 		controls = false;
+		scoreBoard = false;
 		audio = true;
-		
-		icecream1=false;
-		icecream2=false;
-		icecream3=false;
+
+		icecream1 = false;
+		icecream2 = false;
+		icecream3 = false;
 		icecream4 = false;
+
+		playMusic("menu music.wav"); // plays sound file
 
 		ice = new Ice(0, 0);
 
@@ -175,7 +177,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		this.setFocusable(true); // make everything in this class appear on the screen
 		this.addKeyListener(this); // start listening for keyboard input
 		this.addMouseMotionListener(this);
-		
+
 		// add the MousePressed method from the MouseAdapter - by doing this we can
 		// listen for mouse input. We do this differently from the KeyListener because
 		// MouseAdapter has SEVEN mandatory methods - we only need one of them, and we
@@ -184,6 +186,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			public void mousePressed(MouseEvent e) {
 
 			}
+
 			public void mouseMoved(MouseEvent e) {
 
 			}
@@ -224,7 +227,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		// Instantiate a MouseAdapter and override the mousePressed method
 		MouseAdapter mouseAdapter = new MouseAdapter() {
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
@@ -248,91 +251,125 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					System.out.println("audio toggle");
 
 					audio = !audio;
-					
-					//playMusic("arcade-opener.wav"); // plays sound file
-					
+
+					playMusic(""); // plays sound file
+
 					repaint();
 
 				}
 
-				// view controls and settings
+				// display settings in top right corner
 				if (btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
 
-					System.out.println("You clicked the mouse");
+					// controls = !controls;
 
-					controls = !controls;
 					System.out.println("controls");
-
 				}
-				if (mainMenu) {
-				//PLAY BUTTON
-				if (btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
-					//g.drawLine(180, 350, 580, 350);
-					
+
+				// back to main menu button click
+				if (controls | scoreBoard & (btnX >= 300 && btnX <= 500 && btnY >= 200 && btnY <= 650)) {
+					// g.drawLine(180, 350, 580, 350);
+
+					mainMenu = true;
+					controls = false;
+					scoreBoard = false;
+
+					repaint();
+				}
+
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
+					// g.drawLine(180, 350, 580, 350);
+
 					playGame = true;
 					mainMenu = false;
-					
+
 					repaint();
-					
-				} 
+				}
+
+				// Display Score Leader Board
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
+
+					scoreBoard = true;
+
+					mainMenu = false;
+
+				}
+				// Display Player Controls
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
+
+					controls = true;
+					mainMenu = false;
+
+					repaint();
+
+				}
+
+				// Exit Game when Clicked
+				if (mainMenu && controls | scoreBoard | btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
+					// g.drawLine(180, 350, 580, 350);
+					exitGame = true;
+
+					mainMenu = false;
+					playGame = false;
+
+					clickPlay = false;
+					controls = false;
 				}
 			}
+
 			@Override
 			public void mouseMoved(MouseEvent e) {
 
 				btnX = e.getX();
 				btnY = e.getY();
-				
-				//PLAY BUTTON
-				if (btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
-					//g.drawLine(180, 350, 580, 350);
-					
+
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
+					// g.drawLine(180, 350, 580, 350);
+
 					icecream1 = true;
 					System.out.println("1");
 					repaint();
-					
+
 				} else {
 					icecream1 = false;
 				}
-				if (btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
-					//g.drawLine(180, 350, 580, 350);
-				
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
+					// g.drawLine(180, 350, 580, 350);
+
 					icecream2 = true;
 					System.out.println("2");
 					repaint();
 				} else {
 					icecream2 = false;
 				}
-				if (btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
-					//g.drawLine(180, 350, 580, 350);
-					
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
+					// g.drawLine(180, 350, 580, 350);
+
 					icecream3 = true;
 					repaint();
 					System.out.println("3");
 				} else {
 					icecream3 = false;
 				}
-				if (btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
-					//g.drawLine(180, 350, 580, 350);
-					
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
+					// g.drawLine(180, 350, 580, 350);
+
 					icecream4 = true;
 					repaint();
 					System.out.println("4");
-				
+
 				} else {
 					icecream4 = false;
 				}
 			}
 		};
 		// Add the mouseAdapter to your component
-				addMouseListener(mouseAdapter);
-				addMouseMotionListener(mouseAdapter);
-			
-				repaint();
+		addMouseListener(mouseAdapter);
+		addMouseMotionListener(mouseAdapter);
 
-		
+		repaint();
+
 	}
-
 
 	// call the draw methods in each class to update positions as things move
 	public void draw(Graphics g) {
@@ -350,7 +387,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		g.drawImage(logo, 200, 0, 400, 600, null); // draw loser image to screen
 
-		// Start new thread to implement runnable interface to delay and terminate game
+		// Start new thread to implement runnable interface to delay
 		new Thread(new Runnable() {
 			@Override
 			public void run() { // override run method
@@ -360,17 +397,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					while (true) {
 						drawBtn = true;
 						Thread.sleep(3000);
-						
+
 						drawBtn = false;
 						// g.dispose();
 						Thread.sleep(3000);
-						repaint();
 
 					}
 
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				repaint();
 
 			}
 		}).start(); // begins execution of thread
@@ -381,7 +418,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		}
 		g.drawImage(authors, 250, GAME_HEIGHT - 50, 300, 50, null); // draw loser image to screen
 
-		settings = Toolkit.getDefaultToolkit().getImage("controls.png"); // create image
+		settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
 
 		g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw loser image to screen
 
@@ -392,16 +429,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		mouseInput();
 
 		if (mainMenu) {
-			menubg = Toolkit.getDefaultToolkit().getImage("menubg.gif"); // create image
 			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
 
-			authors = Toolkit.getDefaultToolkit().getImage("authors.png"); // create image
 			g.drawImage(authors, 250, GAME_HEIGHT - 50, 300, 50, null); // draw loser image to screen
 
 			menu = Toolkit.getDefaultToolkit().getImage("menu.png"); // create image
 			g.drawImage(menu, 120, -20, 550, 750, null); // draw loser image to screen
-
-			settings = Toolkit.getDefaultToolkit().getImage("controls.png"); // create image
 
 			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw loser image to screen
 
@@ -416,29 +449,30 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawLine(180, 470, 580, 470);
 			g.drawLine(180, 520, 580, 520);
 			g.drawLine(180, 570, 580, 570);
-			
+
 			icecream = Toolkit.getDefaultToolkit().getImage("icecream.gif"); // create image
-			
-			
+
 			if (icecream1) {
-			g.drawImage(icecream, 180, 350, 60, 50, null); // draw loser image to screen
-			g.drawImage(icecream, 520, 350, 60, 50, null); // draw loser image to screen
-			//icecream1 = false;
+				g.drawImage(icecream, 180, 350, 60, 50, null); // draw loser image to screen
+				g.drawImage(icecream, 520, 350, 60, 50, null); // draw loser image to screen
+				// icecream1 = false;
 			}
 			if (icecream2) {
-			g.drawImage(icecream, 180, 410, 60, 50, null); // draw loser image to screen
-			g.drawImage(icecream, 520, 410, 60, 50, null); // draw loser image to screen
-			//icecream2 = false;
-			
-			} if (icecream3) {
-			g.drawImage(icecream, 180, 470, 60, 50, null); // draw loser image to screen
-			g.drawImage(icecream, 520, 470, 60, 50, null); // draw loser image to screen
-			//icecream3 = false;
-			
-			} if (icecream4) {
-			g.drawImage(icecream, 180, 520, 60, 50, null); // draw loser image to screen
-			g.drawImage(icecream, 520, 520, 60, 50, null); // draw loser image to screen
-			//icecream4 = false;
+				g.drawImage(icecream, 180, 410, 60, 50, null); // draw loser image to screen
+				g.drawImage(icecream, 520, 410, 60, 50, null); // draw loser image to screen
+				// icecream2 = false;
+
+			}
+			if (icecream3) {
+				g.drawImage(icecream, 180, 470, 60, 50, null); // draw loser image to screen
+				g.drawImage(icecream, 520, 470, 60, 50, null); // draw loser image to screen
+				// icecream3 = false;
+
+			}
+			if (icecream4) {
+				g.drawImage(icecream, 180, 520, 60, 50, null); // draw loser image to screen
+				g.drawImage(icecream, 520, 520, 60, 50, null); // draw loser image to screen
+				// icecream4 = false;
 			}
 			mouseInput();
 		}
@@ -446,17 +480,74 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
 
-			g.drawImage(cross, GAME_WIDTH - 100, 0, 40, 40, null); // draw loser image to screen
-			
+			g.drawImage(cross, GAME_WIDTH - 95, 0, 40, 40, null); // draw loser image to screen
+
 		}
-		if (!controls) {
+		if (controls) {
 
-			cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
+			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
 
-			g.drawImage(cross, GAME_WIDTH - 100, 0, 40, 40, null); // draw loser image to screen
-		
+			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw loser image to screen
+
+			g.drawImage(settings, GAME_WIDTH - 50, 0, 40, 40, null); // draw loser image to screen
+
+			playerControls = Toolkit.getDefaultToolkit().getImage("playerControls.png"); // create image
+
+			g.drawImage(playerControls, 50, 50, 700, 500, null); // draw loser image to screen
+
+			backbtn = Toolkit.getDefaultToolkit().getImage("backbtn.png"); // create image
+
+			g.drawImage(backbtn, 300, 550, 200, 100, null); // draw loser image to screen
+
+		}
+		if (exitGame) {
+			// Start new thread to implement runnable interface to delay and terminate game
+			System.out.println("Bad Ice Cream Game Ended.");
+
+			new Thread(new Runnable() {
+				@Override
+				public void run() { // override run method
+
+					// catch block used if another thread interrupts this thread
+					try {
+						Thread.sleep(3000);
+
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					// Performs code asynchronously in Event dispatcher thread
+					SwingUtilities.invokeLater(() -> {
+
+						System.exit(0); // Terminate the program
+					});
+				}
+			}).start(); // begins execution of thread
+
+		} // end of game over screen
+
+		if (scoreBoard) {
+
+			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
+
+			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw loser image to screen
+
+			g.drawImage(settings, GAME_WIDTH - 50, 0, 40, 40, null); // draw loser image to screen
+
+			scores = Toolkit.getDefaultToolkit().getImage("scores.png"); // create image
+
+			g.drawImage(scores, 100, 50, 600, 500, null); // draw loser image to screen
+
+			backbtn = Toolkit.getDefaultToolkit().getImage("backbtn.png"); // create image
+
+			g.drawImage(backbtn, 300, 550, 200, 100, null); // draw loser image to screen
+
 		}
 		if (playGame) {
+
+			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create image
+
+			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
 
 			ice.draw(g);
 
@@ -648,6 +739,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		// repaint();
 
 	}
+
 	/* Music filepath is passed as argument into method to play audio file */
 	public static void playMusic(String filepath) {
 
@@ -659,7 +751,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			music = new File(filepath);
 
 			// check if music file exists before playing
-			if (music.exists()) {
+			if (music.exists() && audio) {
 
 				audioInput = AudioSystem.getAudioInputStream(music);
 				Clip clip = AudioSystem.getClip(); // clip reference object from AudioStream
@@ -679,12 +771,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
