@@ -1,3 +1,8 @@
+/* Leah Huang and Selvahini Kamalarajan
+   January 12, 2024
+   Player2
+   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -6,109 +11,108 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 // extends Rectangle because drawing and managing collisions is easy
-public class Player2 extends Rectangle{
+public class Player2 extends Rectangle {
 
-	// variable declaration
-  public int xVelocity;
-  public int yVelocity;
-  public final int SPEED = 3; //movement speed of ball
-  
-  public BufferedImage icon;
+	private static final long serialVersionUID = 1L; // add default serial id for class
 
-  //constructor creates ball at given location with given dimensions, and the icon
-  public Player2(int x, int y){
-    super(x, y, 50, 50);
-    getIcon(); 
+	// variable declarations for velocity and speed of player 1
+	public int xVelocity;
+	public int yVelocity;
 
-  }
+	public final int SPEED = 3; // movement speed
 
-  //called from GamePanel when any keyboard input is detected
-  //updates the direction of the ball based on user input
-  //if the keyboard input isn't any of the options (d, a, w, s), then nothing happens
-  public void keyPressed(KeyEvent e){
-    if(e.getKeyChar() == 'l'){
-      setXDirection(SPEED);
-      move();
-    }
+	public BufferedImage icon;
 
-    if(e.getKeyChar() == 'j'){
-      setXDirection(SPEED*-1);
-      move();
-    }
-    
-    if(e.getKeyChar() == 'i'){
-        setYDirection(SPEED*-1);
-        move();
-      }
-    
-    if(e.getKeyChar() == 'k'){
-        setYDirection(SPEED);
-        move();
-      }
+	// constructor creates player 2 at given location with given dimensions, and the
+	// icon
+	public Player2(int x, int y) {
+		super(x, y, 50, 50);
+		getIcon();
 
-  }
+	}
 
-  //called from GamePanel when any key is released (no longer being pressed down)
-  //Makes the ball stop moving in that direction
-  public void keyReleased(KeyEvent e){
-    if(e.getKeyChar() == 'l'){
-      setXDirection(0);
-      move();
-    }
+	// updates the direction of player 2 based on user input
+	public void keyPressed(KeyEvent e) {
+		// set movement and speed
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			// move right
+			setXDirection(SPEED);
+			move();
+		}
 
-    if(e.getKeyChar() == 'j'){
-      setXDirection(0);
-      move();
-    }
-    
-    if(e.getKeyChar() == 'i'){
-        setYDirection(0);
-        move();
-      }
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			// move left
+			setXDirection(SPEED * -1);
+			move();
+		}
 
-      if(e.getKeyChar() == 'k'){
-        setYDirection(0);
-        move();
-      }
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			// move up
+			setYDirection(SPEED * -1);
+			move();
+		}
 
-  }
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			// move down
+			setYDirection(SPEED);
+			move();
+		}
 
-  //called from GamePanel whenever a mouse click is detected
-  //changes the current location of the ball to be wherever the mouse is located on the screen
-  public void mousePressed(MouseEvent e){
+	}
 
-  }
+	// Makes player 2 stop moving in that direction
+	public void keyReleased(KeyEvent e) {
+		// stop all movement and speed
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			setXDirection(0);
+			move();
+		}
 
-  //called whenever the movement of the ball changes in the x-direction (left/right)
-  public void setXDirection(int xDirection){
-    xVelocity = xDirection;
-  }
-  
-  public void setYDirection(int yDirection){
-	    yVelocity = yDirection;
-	  }
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			setXDirection(0);
+			move();
+		}
 
-  //called frequently from both Moon class and GamePanel class
-  //updates the current location of the ball
-  public void move(){
-    x += xVelocity;
-    y += yVelocity;
-  }
-  
-  // this method is used to get the image from source folder
-  public void getIcon() {
-	  try {
-		  icon = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
-	  }
-	  catch(IOException e) {
-		  e.printStackTrace();
-	  }
-  }
-  //called frequently from the GamePanel class
-  //draws the current location of the ball to the screen
-  public void draw(Graphics g){
-	  g.drawImage(icon, x, y, 50, 50, null);
-	  
-  }
-  
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			setYDirection(0);
+			move();
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			setYDirection(0);
+			move();
+		}
+	}
+
+	// called whenever the movement of the ball changes in the x-direction
+	// (left/right)
+	public void setXDirection(int xDirection) {
+		xVelocity = xDirection;
+	}
+
+	public void setYDirection(int yDirection) {
+		yVelocity = yDirection;
+	}
+
+	// updates the current location of player 2
+	public void move() {
+		x += xVelocity;
+		y += yVelocity;
+	}
+
+	// this method is used to get the image from source folder
+	public void getIcon() {
+		try {
+			icon = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// draws the current location of the ball to the screen
+	public void draw(Graphics g) {
+		g.drawImage(icon, x, y, 50, 50, null);
+
+	}
+
 }
