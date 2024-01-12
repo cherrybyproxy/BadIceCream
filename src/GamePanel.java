@@ -28,6 +28,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public Player2 player2;
 	public Score score;
 	public Score score2;
+	public BlueCircle blueCircle;
+	public BlueCircle blueCircle2;
+	public RoundWinner roundWinner;
 
 	public Image logo, menubg, playbtn, authors, settings, menu, sound, cross, playerControls, ming, smokeyb, sorbet,
 			arrow, arrow2, icecream, snow, backbtn, scores;
@@ -56,10 +59,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public int[] iceCX = new int[20];
 	public int[] iceCY = new int[20];
 
-	public Banana[] banana = new Banana[16];
+	//public Banana[] banana = new Banana[16];
 	public boolean[] drawBanana = new boolean[16];
 	public ArrayList<Banana> banana2 = new ArrayList<Banana>();
+	public int onBanana = 0;
 
+	//public Grape[] grape = new Grape[12];
+	public boolean[] drawGrape = new boolean[12];
+	public ArrayList<Grape> grapeCoord = new ArrayList<Grape>();
+	public int onGrape = 0;
+	
 	// private MouseAdapter mouseAdapter; // Declare a MouseAdapter instance
 
 	public GamePanel() {
@@ -81,14 +90,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		playMusic("menu music.wav"); // plays sound file
 
 		ice = new Ice(0, 0);
+		blueCircle = new BlueCircle(345, 635);
+		blueCircle2 = new BlueCircle(395, 635);
 
 		player1 = new Player1(350, 400);
 		player2 = new Player2(400, 400);
 		score = new Score(GAME_WIDTH, GAME_HEIGHT);
 		score2 = new Score(GAME_WIDTH, GAME_HEIGHT);
+		roundWinner = new RoundWinner(GAME_WIDTH, GAME_HEIGHT);
 		igloo = new Igloo(350, 300);
 
 		Arrays.fill(drawBanana, true);
+		Arrays.fill(drawGrape, true);
 
 		// coordinates of ice Cs
 		iceC2.add(new IceC(200, 200));
@@ -173,6 +186,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		banana2.add(new Banana(300, 350));
 		banana2.add(new Banana(450, 300));
 		banana2.add(new Banana(450, 350));
+		
+		grapeCoord.add(new Grape(100, 100));
+		grapeCoord.add(new Grape(650, 100));
+		grapeCoord.add(new Grape(650, 550));
+		grapeCoord.add(new Grape(100, 550));
+		grapeCoord.add(new Grape(375, 100));
+		grapeCoord.add(new Grape(100, 325));
+		grapeCoord.add(new Grape(375, 550));
+		grapeCoord.add(new Grape(650, 325));
+		grapeCoord.add(new Grape(250, 250));
+		grapeCoord.add(new Grape(500, 250));
+		grapeCoord.add(new Grape(250, 400));
+		grapeCoord.add(new Grape(500, 400));
 
 		this.setFocusable(true); // make everything in this class appear on the screen
 		this.addKeyListener(this); // start listening for keyboard input
@@ -550,6 +576,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw loser image to screen
 
 			ice.draw(g);
+			if (onBanana == 16) {
+				blueCircle2.draw(g);
+			}
+			else {
+				blueCircle.draw(g);
+			}
 
 			for (int i = 0; i < 20; i++) {
 				iceC2.get(i).draw(g);
@@ -557,15 +589,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			igloo.draw(g);
 
-			for (int j = 0; j < 16; j++) {
-				if (drawBanana[j]) {
-					banana2.get(j).draw(g);
+			for (int i = 0; i < 16; i++) {
+				if (drawBanana[i]) {
+					banana2.get(i).draw(g);
+				}
+			}
+			
+			if (onBanana == 16) {
+				for (int i = 0; i < 12; i++) {
+					if(drawGrape[i]) {
+						grapeCoord.get(i).draw(g);
+					}
 				}
 			}
 
 			score.draw(g);
 			player1.draw(g);
 			player2.draw(g);
+			
+			if (onBanana == 16 && onGrape == 12) {
+				roundWinner.draw(g);
+			}
 
 		}
 
@@ -596,33 +640,33 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	// handles all collision detection and responds accordingly
 	public void checkCollision() {
 
-		for (int m = 0; m < 20; m++) {
-			if (player1.intersects(iceC2.get(m)) && player1.x > iceCX[m] && player1.xVelocity < 0) {
-				player1.x = iceCX[m] + 50;
+		for (int i = 0; i < 20; i++) {
+			if (player1.intersects(iceC2.get(i)) && player1.x > iceCX[i] && player1.xVelocity < 0) {
+				player1.x = iceCX[i] + 50;
 			}
-			if (player1.intersects(iceC2.get(m)) && player1.x < iceCX[m] && player1.xVelocity > 0) {
-				player1.x = iceCX[m] - 50;
+			if (player1.intersects(iceC2.get(i)) && player1.x < iceCX[i] && player1.xVelocity > 0) {
+				player1.x = iceCX[i] - 50;
 			}
-			if (player1.intersects(iceC2.get(m)) && player1.y > iceCY[m] && player1.yVelocity < 0) {
-				player1.y = iceCY[m] + 50;
+			if (player1.intersects(iceC2.get(i)) && player1.y > iceCY[i] && player1.yVelocity < 0) {
+				player1.y = iceCY[i] + 50;
 			}
-			if (player1.intersects(iceC2.get(m)) && player1.y < iceCY[m] && player1.yVelocity > 0) {
-				player1.y = iceCY[m] - 50;
+			if (player1.intersects(iceC2.get(i)) && player1.y < iceCY[i] && player1.yVelocity > 0) {
+				player1.y = iceCY[i] - 50;
 			}
 		}
 
-		for (int m = 0; m < 20; m++) {
-			if (player2.intersects(iceC2.get(m)) && player2.x > iceCX[m] && player2.xVelocity < 0) {
-				player2.x = iceCX[m] + 50;
+		for (int i = 0; i < 20; i++) {
+			if (player2.intersects(iceC2.get(i)) && player2.x > iceCX[i] && player2.xVelocity < 0) {
+				player2.x = iceCX[i] + 50;
 			}
-			if (player2.intersects(iceC2.get(m)) && player2.x < iceCX[m] && player2.xVelocity > 0) {
-				player2.x = iceCX[m] - 50;
+			if (player2.intersects(iceC2.get(i)) && player2.x < iceCX[i] && player2.xVelocity > 0) {
+				player2.x = iceCX[i] - 50;
 			}
-			if (player2.intersects(iceC2.get(m)) && player2.y > iceCY[m] && player2.yVelocity < 0) {
-				player2.y = iceCY[m] + 50;
+			if (player2.intersects(iceC2.get(i)) && player2.y > iceCY[i] && player2.yVelocity < 0) {
+				player2.y = iceCY[i] + 50;
 			}
-			if (player2.intersects(iceC2.get(m)) && player2.y < iceCY[m] && player2.yVelocity > 0) {
-				player2.y = iceCY[m] - 50;
+			if (player2.intersects(iceC2.get(i)) && player2.y < iceCY[i] && player2.yVelocity > 0) {
+				player2.y = iceCY[i] - 50;
 			}
 		}
 
@@ -636,19 +680,40 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		 * { player1.y = igloo.y - 50; }
 		 */
 
-		for (int k = 0; k < 16; k++) {
-			if (player1.intersects(banana2.get(k)) && drawBanana[k] == true) {
+		for (int i = 0; i < 16; i++) {
+			if (player1.intersects(banana2.get(i)) && drawBanana[i] == true) {
 				Score.score += 150;
-				drawBanana[k] = false;
+				drawBanana[i] = false;
+				onBanana++;
 			}
 		}
 
-		for (int n = 0; n < 16; n++) {
-			if (player2.intersects(banana2.get(n)) && drawBanana[n] == true) {
+		for (int i = 0; i < 16; i++) {
+			if (player2.intersects(banana2.get(i)) && drawBanana[i] == true) {
 				Score.score2 += 150;
-				drawBanana[n] = false;
+				drawBanana[i] = false;
+				onBanana++;
 			}
 		}
+		
+		if (onBanana == 16) {
+			for (int i = 0; i < 12; i++) {
+				if (player1.intersects(grapeCoord.get(i)) && drawGrape[i] == true) {
+					Score.score += 150;
+					drawGrape[i] = false;
+					onGrape++;
+				}
+			}
+
+			for (int i = 0; i < 12; i++) {
+				if (player2.intersects(grapeCoord.get(i)) && drawGrape[i] == true) {
+					Score.score2 += 150;
+					drawGrape[i] = false;
+					onGrape++;
+				}
+			}
+		}
+		
 
 		if (player1.x > 650) {
 			player1.x = 650;

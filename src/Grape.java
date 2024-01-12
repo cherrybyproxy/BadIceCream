@@ -13,12 +13,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 // extends Rectangle because drawing and managing collisions is easy
-public class Banana extends Rectangle{
+public class Grape extends Rectangle{
   
-  public BufferedImage bananaImg;
+  public BufferedImage grapeImg;
 
   //constructor creates ball at given location with given dimensions, and the iceImg
-  public Banana(int x, int y){
+  public Grape(int x, int y){
     super(x, y, 50, 50);
     getIcon(); 
 
@@ -28,7 +28,7 @@ public class Banana extends Rectangle{
   public void getIcon() {
 	  try {
 
-		  bananaImg = ImageIO.read(getClass().getResourceAsStream("/Banana.png"));
+		  grapeImg = ImageIO.read(getClass().getResourceAsStream("/Grape.png"));
 	  }
 	  catch(IOException e) {
 		  e.printStackTrace();
@@ -37,7 +37,7 @@ public class Banana extends Rectangle{
   //called frequently from the GamePanel class
   //draws the current location of the ball to the screen
   public void draw(Graphics g){
-	  g.drawImage(bananaImg, x, y, 50, 50, null); // for testing
+	  g.drawImage(grapeImg, x, y, 50, 50, null); // for testing
 	  
   }
   

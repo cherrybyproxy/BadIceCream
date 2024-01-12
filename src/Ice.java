@@ -17,6 +17,9 @@ public class Ice extends Rectangle{
   
   public BufferedImage iceImg;
   public BufferedImage iglooImg;
+  public BufferedImage bananaImg;
+  public BufferedImage grapeImg;
+  
   //constructor creates ball at given location with given dimensions, and the iceImg
   public Ice(int x, int y){
     super(x, y, 50, 50);
@@ -29,6 +32,8 @@ public class Ice extends Rectangle{
 	  try {
 		  iceImg = ImageIO.read(getClass().getResourceAsStream("/Ice.png"));
 		  iglooImg = ImageIO.read(getClass().getResourceAsStream("/Igloo.png"));
+		  bananaImg = ImageIO.read(getClass().getResourceAsStream("Banana.png"));
+		  grapeImg = ImageIO.read(getClass().getResourceAsStream("Grape.png"));
 	  }
 	  catch(IOException e) {
 		  e.printStackTrace();
@@ -103,7 +108,7 @@ public class Ice extends Rectangle{
 	  g.drawImage(iceImg, 650, 600, 50, 50, null);
 	
 	  Graphics2D g4 = (Graphics2D) g;
-	  Color c4 =new Color(248,242,226);
+	  Color c4 = new Color(248,242,226);
 	  g4.setColor(c4);
 	  g4.fillRect(175, 625, 450, 70);
 	  
@@ -113,6 +118,8 @@ public class Ice extends Rectangle{
 	  g3.setStroke(new BasicStroke(10));
 	  g3.drawRect(175, 625, 450, 70);
 	  
+	  g.drawImage(bananaImg, 350, 640, 40, 40, null);
+	  g.drawImage(grapeImg, 400, 640, 40, 40, null);
   }
   
 }
