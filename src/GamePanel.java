@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	// Child of JPanel and implements KeyListener and Runnable interface
 
 	private static final long serialVersionUID = 1L; // add default serial id for class
-	
+
 	// dimensions of window
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 700;
@@ -42,8 +42,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			sorbetMenu, arrow, arrow2, icecream, snow, backbtn, scores, charselection, help1, help2, help3;
 
 	// booleans for certain key input
-	boolean playGame, exitGame, clickPlay, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3,
-			icecream4, scoreBoard;
+	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
+			scoreBoard, gameEnd;
 	static boolean audio;
 
 	// coordinates for play button on main menu
@@ -55,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	static long clipTimePosition;
 
 	public Igloo igloo;
-	
+
 	// Array List to store ice cubes
 	public ArrayList<IceC> iceC2 = new ArrayList<IceC>();
 	public int[] iceCX = new int[20];
@@ -77,9 +77,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		playGame = false;
 		exitGame = false;
 		mainMenu = false;
-		clickPlay = true;
 		controls = false;
 		scoreBoard = false;
+		gameEnd = false;
 		audio = true;
 
 		cornerControls = false;
@@ -105,7 +105,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		score2 = new Score(GAME_WIDTH, GAME_HEIGHT);
 
 		roundWinner = new RoundWinner(GAME_WIDTH, GAME_HEIGHT);
-		igloo = new Igloo(350, 300);
+		igloo = new Igloo(300, 275);
 
 		// fill Array lists with fruit objects
 		Arrays.fill(drawBanana, true);
@@ -266,14 +266,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				btnX = e.getX();
 				btnY = e.getY();
 
-				// conditions for game play based on mouse input
-				if (clickPlay) {
-					// display starter screen for user to progress to main menu
-					if (btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
+				// display starter screen for user to progress to main menu
 
-						mainMenu = true;
-						clickPlay = false;
-					}
+				if (btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
+
+					mainMenu = true;
+					playGame = false;
+					exitGame = false;
+					controls = false;
+					scoreBoard = false;
 				}
 
 				// toggle music on and off
@@ -291,13 +292,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 
 				// back to main menu button click
-				if (controls | scoreBoard & (btnX >= 300 && btnX <= 500 && btnY >= 200 && btnY <= 650)) {
+				if (scoreBoard & (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650)
+						|| (controls & (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
 
 					// display main menu
+					exitGame = false;
 					mainMenu = true;
 					controls = false;
 					scoreBoard = false;
-					exitGame = false;
 
 					repaint(); // reset everything on screen
 				}
@@ -306,6 +308,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
 
 					playGame = true;
+					controls = false;
+					scoreBoard = false;
+					exitGame = false;
 					mainMenu = false;
 
 					repaint();
@@ -315,10 +320,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
 
 					scoreBoard = true;
-
-					mainMenu = false;
+					controls = false;
 					exitGame = false;
-
+					mainMenu = false;
 				}
 				// Display Player Controls
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
@@ -326,23 +330,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					controls = true;
 					mainMenu = false;
 					exitGame = false;
+					scoreBoard = false;
 
 					repaint();
-
 				}
 
 				// Exit Game when Clicked
-				if (mainMenu && controls | scoreBoard | btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
+				if (!scoreBoard && mainMenu && (btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570)
+						|| !controls && mainMenu && (btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570)) {
 
 					exitGame = true;
 
 					// hide all screens to exit game
 					mainMenu = false;
 					playGame = false;
-
-					clickPlay = false;
-					exitGame = false;
-					controls = false;
 				}
 			}
 
@@ -354,7 +355,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				btnY = e.getY();
 
 				// display icecream animations when hovering over each menu option
-				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
+				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 350 && btnY <= 410) {
 
 					icecream1 = true;
 					repaint();
@@ -363,7 +364,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					icecream1 = false;
 				}
 				// display effects when hovering over second option
-				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
+				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 410 && btnY <= 470) {
 
 					icecream2 = true;
 					repaint();
@@ -372,7 +373,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					icecream2 = false;
 				}
 				// display effects when hovering over third option
-				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
+				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 470 && btnY <= 520) {
 
 					icecream3 = true;
 					repaint();
@@ -381,7 +382,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					icecream3 = false;
 				}
 				// display effects when hovering over fourth option
-				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
+				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 520 && btnY <= 570) {
 
 					icecream4 = true;
 					repaint();
@@ -455,7 +456,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 			if (icecream2) {
 				g.drawImage(icecream, 180, 410, 60, 50, null);
-				g.drawImage(icecream, 520, 410, 60, 50, null);
+				g.drawImage(icecream, 520, 410, 60, 50, null); // draw image to screen
 
 			}
 			if (icecream3) {
@@ -488,7 +489,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawImage(backbtn, 300, 550, 200, 100, null); // draw image to screen
 
 		}
-		if (exitGame) { // terminate program after delay
+		if (!scoreBoard && exitGame || !controls && exitGame) { // terminate program after delay
 
 			System.out.println("Bad Ice Cream Game Ended.");
 
@@ -567,7 +568,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				roundWinner.draw(g);
 
-				mainMenu = true; // return to main menu
+				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
+
+				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
+
+				gameEnd = true;
 			}
 
 			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
@@ -762,6 +767,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		player1.keyPressed(e);
 		player2.keyPressed(e);
+
+		// return to main menu option on controls and game page - cannot be acccessed
+		// from other pages
+		if (e.getKeyCode() == KeyEvent.VK_ENTER && gameEnd) {
+
+			// set game boolean values only if game has ended
+			mainMenu = true;
+			playGame = false;
+			controls = false;
+			scoreBoard = false;
+
+		}
 	}
 
 	// send key input to classes for processing
@@ -822,6 +839,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 	}
 }

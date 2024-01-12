@@ -13,8 +13,9 @@ import javax.imageio.ImageIO;
 public class Ice extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public BufferedImage iceImg;
+	public Image block;
 	public BufferedImage iglooImg;
 	public BufferedImage bananaImg;
 	public BufferedImage grapeImg;
@@ -32,6 +33,9 @@ public class Ice extends Rectangle {
 
 		try {
 			iceImg = ImageIO.read(getClass().getResourceAsStream("/Ice.png"));
+			// block = ImageIO.read(getClass().getResourceAsStream("block.png"));
+			block = Toolkit.getDefaultToolkit().getImage("block.png"); // create image
+
 			iglooImg = ImageIO.read(getClass().getResourceAsStream("/Igloo.png"));
 			bananaImg = ImageIO.read(getClass().getResourceAsStream("Banana.png"));
 			grapeImg = ImageIO.read(getClass().getResourceAsStream("Grape.png"));
@@ -64,6 +68,21 @@ public class Ice extends Rectangle {
 		g.drawImage(iceImg, 50, 550, 50, 50, null);
 		g.drawImage(iceImg, 50, 600, 50, 50, null);
 
+		// create block border on left
+		g.drawImage(block, 0, 50, 50, 50, null);
+		g.drawImage(block, 0, 100, 50, 50, null);
+		g.drawImage(block, 0, 100, 50, 50, null);
+		g.drawImage(block, 0, 150, 50, 50, null);
+		g.drawImage(block, 0, 200, 50, 50, null);
+		g.drawImage(block, 0, 250, 50, 50, null);
+		g.drawImage(block, 0, 300, 50, 50, null);
+		g.drawImage(block, 0, 350, 50, 50, null);
+		g.drawImage(block, 0, 400, 50, 50, null);
+		g.drawImage(block, 0, 450, 50, 50, null);
+		g.drawImage(block, 0, 500, 50, 50, null);
+		g.drawImage(block, 0, 550, 50, 50, null);
+		g.drawImage(block, 0, 600, 50, 50, null);
+
 		// create ice border on right
 		g.drawImage(iceImg, 700, 50, 50, 50, null);
 		g.drawImage(iceImg, 700, 100, 50, 50, null);
@@ -78,6 +97,21 @@ public class Ice extends Rectangle {
 		g.drawImage(iceImg, 700, 500, 50, 50, null);
 		g.drawImage(iceImg, 700, 550, 50, 50, null);
 		g.drawImage(iceImg, 700, 600, 50, 50, null);
+
+		// create block border on right
+		g.drawImage(block, 750, 50, 50, 50, null);
+		g.drawImage(block, 750, 100, 50, 50, null);
+		g.drawImage(block, 750, 100, 50, 50, null);
+		g.drawImage(block, 750, 150, 50, 50, null);
+		g.drawImage(block, 750, 200, 50, 50, null);
+		g.drawImage(block, 750, 250, 50, 50, null);
+		g.drawImage(block, 750, 300, 50, 50, null);
+		g.drawImage(block, 750, 350, 50, 50, null);
+		g.drawImage(block, 750, 400, 50, 50, null);
+		g.drawImage(block, 750, 450, 50, 50, null);
+		g.drawImage(block, 750, 500, 50, 50, null);
+		g.drawImage(block, 750, 550, 50, 50, null);
+		g.drawImage(block, 750, 600, 50, 50, null);
 
 		// create ice border on top of screen
 		g.drawImage(iceImg, 100, 50, 50, 50, null);

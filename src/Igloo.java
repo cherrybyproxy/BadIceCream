@@ -35,7 +35,7 @@ public class Igloo extends Rectangle {
 
 	// draws the current location of the ball to the screen
 	public void draw(Graphics g) {
-		g.drawImage(iglooImg, x, y, 100, 100, null); // for testing
+		g.drawImage(iglooImg, x, y, 200, 200, null); // for testing
 
 	}
 
