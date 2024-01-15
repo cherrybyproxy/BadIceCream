@@ -39,9 +39,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public RoundWinner roundWinner;
 
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, smokeyb,
-			sorbetMenu, arrow, arrow2, icecream, snow, backbtn, scores, charselection, help1, help2, help3;
+			sorbetMenu, arrow, arrow2, icecream, snow, backbtn, scores, charselection;
 
-	Image[] movementPics = { help1, help2, help3 };
+	 Image[] movementPics = new Image[5]; {
+	
+	movementPics[0] = new ImageIcon("help1.png").getImage();
+	movementPics[1] = new ImageIcon("help2.png").getImage();
+	movementPics[2] = new ImageIcon("help3.png").getImage();
+	 }
+	
 
 	// booleans for certain key input
 	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
@@ -623,13 +629,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		if (cornerControls) { // display settings to user
 
-			help1 = Toolkit.getDefaultToolkit().getImage("help1.png"); // create image
+			//movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.png"); // create image
 			
-			help2 = Toolkit.getDefaultToolkit().getImage("help2.png"); // create image
+			//movementPics[1] = Toolkit.getDefaultToolkit().getImage("help2.png"); // create image
 			
-			help3 = Toolkit.getDefaultToolkit().getImage("help3.png"); // create image
+			//movementPics[2] = Toolkit.getDefaultToolkit().getImage("help3.png"); // create image
 
-			g.drawImage(help1, 150, 150, 500, 400, null); // draw image to screen
+			g.drawImage(movementPics[0], 150, 150, 500, 400, null); // draw image to screen
 
 			g.setColor(Color.black); // set score elements to color white
 
@@ -638,18 +644,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawLine(310, 480, 490, 480);
 
 			g.drawLine(310, 500, 490, 500);
+			
+			int frame = 0;
+			
+			while (continueBtn) {
+				
+				frame = (frame+1) % movementPics.length;
+			
+				
+				g.drawImage(movementPics[frame], 150, 150, 500, 400, null); // draw image to screen
 
-			if (continueBtn) {
-				
-				for (int i=0; i<movementPics.length; i++) {
-				
-					movementPics[i] = movementPics[i++];
-					
-					if (i == movementPics.length) {
-						
-						i = 0;
-					}
-				}
+				repaint();
 			}
 
 		}
