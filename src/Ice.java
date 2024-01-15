@@ -82,6 +82,7 @@ public class Ice extends Rectangle {
 		g.drawImage(block, 0, 500, 50, 50, null);
 		g.drawImage(block, 0, 550, 50, 50, null);
 		g.drawImage(block, 0, 600, 50, 50, null);
+		g.drawImage(block, 0, 650, 50, 50, null);
 
 		// create ice border on right
 		g.drawImage(iceImg, 700, 50, 50, 50, null);
@@ -112,6 +113,7 @@ public class Ice extends Rectangle {
 		g.drawImage(block, 750, 500, 50, 50, null);
 		g.drawImage(block, 750, 550, 50, 50, null);
 		g.drawImage(block, 750, 600, 50, 50, null);
+		g.drawImage(block, 750, 650, 50, 50, null);
 
 		// create ice border on top of screen
 		g.drawImage(iceImg, 100, 50, 50, 50, null);
@@ -127,6 +129,24 @@ public class Ice extends Rectangle {
 		g.drawImage(iceImg, 600, 50, 50, 50, null);
 		g.drawImage(iceImg, 650, 50, 50, 50, null);
 
+		// create block border on top of screen
+		g.drawImage(block, 0, 0, 50, 50, null);
+		g.drawImage(block, 50, 0, 50, 50, null);
+		g.drawImage(block, 100, 0, 50, 50, null);
+		g.drawImage(block, 150, 0, 50, 50, null);
+		g.drawImage(block, 200, 0, 50, 50, null);
+		g.drawImage(block, 250, 0, 50, 50, null);
+		g.drawImage(block, 300, 0, 50, 50, null);
+		g.drawImage(block, 350, 0, 50, 50, null);
+		g.drawImage(block, 400, 0, 50, 50, null);
+		g.drawImage(block, 450, 0, 50, 50, null);
+		g.drawImage(block, 500, 0, 50, 50, null);
+		g.drawImage(block, 550, 0, 50, 50, null);
+		g.drawImage(block, 600, 0, 50, 50, null);
+		g.drawImage(block, 650, 0, 50, 50, null);
+		g.drawImage(block, 700, 0, 50, 50, null);
+		g.drawImage(block, 750, 0, 50, 50, null);
+
 		// create ice border on bottom
 		g.drawImage(iceImg, 100, 600, 50, 50, null);
 		g.drawImage(iceImg, 150, 600, 50, 50, null);
@@ -140,6 +160,23 @@ public class Ice extends Rectangle {
 		g.drawImage(iceImg, 550, 600, 50, 50, null);
 		g.drawImage(iceImg, 600, 600, 50, 50, null);
 		g.drawImage(iceImg, 650, 600, 50, 50, null);
+
+		// create block border on bottom
+		g.drawImage(block, 0, 650, 50, 50, null);
+		g.drawImage(block, 50, 650, 50, 50, null);
+		g.drawImage(block, 100, 650, 50, 50, null);
+		g.drawImage(block, 150, 650, 50, 50, null);
+		g.drawImage(block, 200, 650, 50, 50, null);
+		g.drawImage(block, 250, 650, 50, 50, null);
+		g.drawImage(block, 300, 650, 50, 50, null);
+		g.drawImage(block, 350, 650, 50, 50, null);
+		g.drawImage(block, 400, 650, 50, 50, null);
+		g.drawImage(block, 450, 650, 50, 50, null);
+		g.drawImage(block, 500, 650, 50, 50, null);
+		g.drawImage(block, 550, 650, 50, 50, null);
+		g.drawImage(block, 600, 650, 50, 50, null);
+		g.drawImage(block, 650, 650, 50, 50, null);
+		g.drawImage(block, 700, 650, 50, 50, null);
 
 		// create additional graphics objects
 		Graphics2D g4 = (Graphics2D) g;

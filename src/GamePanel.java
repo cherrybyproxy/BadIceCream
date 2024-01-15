@@ -41,9 +41,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, smokeyb,
 			sorbetMenu, arrow, arrow2, icecream, snow, backbtn, scores, charselection, help1, help2, help3;
 
+	Image[] movementPics = { help1, help2, help3 };
+
 	// booleans for certain key input
 	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
-			scoreBoard, gameEnd;
+			scoreBoard, gameEnd, continueBtn;
+
 	static boolean audio;
 
 	// coordinates for play button on main menu
@@ -81,6 +84,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		scoreBoard = false;
 		gameEnd = false;
 		audio = true;
+		continueBtn = false;
 
 		cornerControls = false;
 
@@ -300,6 +304,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					mainMenu = true;
 					controls = false;
 					scoreBoard = false;
+					playGame = false;
 
 					repaint(); // reset everything on screen
 				}
@@ -336,14 +341,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 
 				// Exit Game when Clicked
-				if (!scoreBoard && mainMenu && (btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570)
-						|| !controls && mainMenu && (btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570)) {
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
 
 					exitGame = true;
 
 					// hide all screens to exit game
 					mainMenu = false;
 					playGame = false;
+					controls = false;
+					scoreBoard = false;
+				}
+
+				// Click Continue Button to see Control Examaples
+				if (btnX >= 310 && btnX <= 800 && btnY >= 480 && btnY <= 500) {
+
+					continueBtn = true;
+					
+					System.out.println("corner controls true");
+
+				} else {
+					continueBtn = false;
 				}
 			}
 
@@ -488,17 +505,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			g.drawImage(backbtn, 300, 550, 200, 100, null); // draw image to screen
 
+			mouseInput(); // checks for mouse input
+
 		}
-		if (!scoreBoard && exitGame || !controls && exitGame) { // terminate program after delay
+		if (!scoreBoard && exitGame) { // terminate program after delay
 
 			System.out.println("Bad Ice Cream Game Ended.");
 
 			try { // catches any error and adds a 2 second delay
 
 				Thread.sleep(2000);
+
 			} catch (InterruptedException e) {
 
 				e.printStackTrace();
+
 			} // game ends after 2 seconds
 
 			System.exit(0); // force program to end
@@ -520,6 +541,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			g.drawImage(backbtn, 300, 550, 200, 100, null); // draw image to screen
 
+			mouseInput(); // checks for mouse input
 		}
 
 		if (playGame) { // display game screen
@@ -602,13 +624,38 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		if (cornerControls) { // display settings to user
 
 			help1 = Toolkit.getDefaultToolkit().getImage("help1.png"); // create image
+			
+			help2 = Toolkit.getDefaultToolkit().getImage("help2.png"); // create image
+			
+			help3 = Toolkit.getDefaultToolkit().getImage("help3.png"); // create image
 
 			g.drawImage(help1, 150, 150, 500, 400, null); // draw image to screen
 
-			g.setColor(Color.white); // set score elements to color white
+			g.setColor(Color.black); // set score elements to color white
+
+			// draw line for continue button
+
+			g.drawLine(310, 480, 490, 480);
+
+			g.drawLine(310, 500, 490, 500);
+
+			if (continueBtn) {
+				
+				for (int i=0; i<movementPics.length; i++) {
+				
+					movementPics[i] = movementPics[i++];
+					
+					if (i == movementPics.length) {
+						
+						i = 0;
+					}
+				}
+			}
 
 		}
+		g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
 
+		g.drawImage(settings, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 	}
 
 	// call the move methods in other classes to update positions for fluid
