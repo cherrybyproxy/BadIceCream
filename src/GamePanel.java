@@ -30,6 +30,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public Image image;
 	public Graphics graphics;
 	public Ice ice;
+	public Level2Scenery level2Scenery;
 	public Player1 player1;
 	public Player2 player2;
 	public Score score;
@@ -51,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	// booleans for certain key input
 	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
-			scoreBoard, gameEnd, continueBtn;
+			scoreBoard, gameEnd, continueBtn, level1, level2, nextLevel;
 
 	static boolean audio;
 
@@ -71,19 +72,34 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public int[] iceCY = new int[20];
 
 	public boolean[] drawBanana = new boolean[16];
-	public ArrayList<Banana> banana2 = new ArrayList<Banana>();
+	public ArrayList<Banana> bananaCoord = new ArrayList<Banana>();
 	public int onBanana = 0;
 
 	public boolean[] drawGrape = new boolean[12];
 	public ArrayList<Grape> grapeCoord = new ArrayList<Grape>();
 	public int onGrape = 0;
-
+	
+	public ArrayList<Level2Ice> level2Ice = new ArrayList<Level2Ice>();
+	public int[] level2IceX = new int[12];
+	public int[] level2IceY = new int[12];
+	
+	public boolean[] drawBanana2 = new boolean[20];
+	public ArrayList<Banana> bananaCoord2 = new ArrayList<Banana>();
+	public int onBanana2 = 0;
+	
+	public boolean[] drawGrape2 = new boolean[8];
+	public ArrayList<Grape> grapeCoord2 = new ArrayList<Grape>();
+	public int onGrape2 = 0;
+	
 	public GamePanel() { // constructor sets values for booleans and creates game elements
 
 		playMusic("menu music.wav"); // plays sound file
 
 		// set game condition booleans
-		playGame = false;
+		playGame = false; 
+		level1 = false;
+		level2 = false; // change to false when done creating level obviously
+		nextLevel = false;
 		exitGame = false;
 		mainMenu = false;
 		controls = false;
@@ -102,6 +118,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		// create graphics and set start location on game screen
 		ice = new Ice(0, 0);
+		level2Scenery = new Level2Scenery(0, 0);
 
 		// create blue circle graphic
 		blueCircle = new BlueCircle(345, 635);
@@ -120,6 +137,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		// fill Array lists with fruit objects
 		Arrays.fill(drawBanana, true);
 		Arrays.fill(drawGrape, true);
+		
+		Arrays.fill(drawBanana2, true);
+		Arrays.fill(drawGrape2, true);
 
 		// coordinates of ice Cs
 		iceC2.add(new IceC(200, 200));
@@ -187,24 +207,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		iceCY[18] = 350;
 		iceCY[19] = 400;
 
-		// add banana graphics to game panel
-		banana2.add(new Banana(150, 150));
-		banana2.add(new Banana(150, 200));
-		banana2.add(new Banana(200, 150));
-		banana2.add(new Banana(150, 450));
-		banana2.add(new Banana(150, 500));
-		banana2.add(new Banana(200, 500));
-		banana2.add(new Banana(550, 150));
-		banana2.add(new Banana(600, 200));
+		// add bananaCoord graphics to game panel
+		bananaCoord.add(new Banana(150, 150));
+		bananaCoord.add(new Banana(150, 200));
+		bananaCoord.add(new Banana(200, 150));
+		bananaCoord.add(new Banana(150, 450));
+		bananaCoord.add(new Banana(150, 500));
+		bananaCoord.add(new Banana(200, 500));
+		bananaCoord.add(new Banana(550, 150));
+		bananaCoord.add(new Banana(600, 200));
 
-		banana2.add(new Banana(600, 150));
-		banana2.add(new Banana(600, 450));
-		banana2.add(new Banana(550, 500));
-		banana2.add(new Banana(600, 500));
-		banana2.add(new Banana(300, 300));
-		banana2.add(new Banana(300, 350));
-		banana2.add(new Banana(450, 300));
-		banana2.add(new Banana(450, 350));
+		bananaCoord.add(new Banana(600, 150));
+		bananaCoord.add(new Banana(600, 450));
+		bananaCoord.add(new Banana(550, 500));
+		bananaCoord.add(new Banana(600, 500));
+		bananaCoord.add(new Banana(300, 300));
+		bananaCoord.add(new Banana(300, 350));
+		bananaCoord.add(new Banana(450, 300));
+		bananaCoord.add(new Banana(450, 350));
 
 		// add coordinates of grapes to game panel
 		grapeCoord.add(new Grape(100, 100));
@@ -219,6 +239,76 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		grapeCoord.add(new Grape(500, 250));
 		grapeCoord.add(new Grape(250, 400));
 		grapeCoord.add(new Grape(500, 400));
+		
+		level2Ice.add(new Level2Ice(150, 150));
+		level2Ice.add(new Level2Ice(150, 250));
+		level2Ice.add(new Level2Ice(150, 400));
+		level2Ice.add(new Level2Ice(150, 500));
+		level2Ice.add(new Level2Ice(250, 150));
+		level2Ice.add(new Level2Ice(250, 500));
+		level2Ice.add(new Level2Ice(500, 150));
+		level2Ice.add(new Level2Ice(500, 500));
+		level2Ice.add(new Level2Ice(600, 150));
+		level2Ice.add(new Level2Ice(600, 250));
+		level2Ice.add(new Level2Ice(600, 400));
+		level2Ice.add(new Level2Ice(600, 500));
+		
+		level2IceX[0] = 150;
+		level2IceX[1] = 150;
+		level2IceX[2] = 150;
+		level2IceX[3] = 150;
+		level2IceX[4] = 250;
+		level2IceX[5] = 250;
+		level2IceX[6] = 500;
+		level2IceX[7] = 500;
+		level2IceX[8] = 600;
+		level2IceX[9] = 600;
+		level2IceX[10] = 600;
+		level2IceX[11] = 600;
+		
+		level2IceY[0] = 150;
+		level2IceY[1] = 250;
+		level2IceY[2] = 400;
+		level2IceY[3] = 500;
+		level2IceY[4] = 150;
+		level2IceY[5] = 500;
+		level2IceY[6] = 150;
+		level2IceY[7] = 500;
+		level2IceY[8] = 150;
+		level2IceY[9] = 250;
+		level2IceY[10] = 400;
+		level2IceY[11] = 500;
+		
+		bananaCoord2.add(new Banana(150, 200));
+		bananaCoord2.add(new Banana(200, 250));
+		bananaCoord2.add(new Banana(150, 300));
+		bananaCoord2.add(new Banana(100, 250));
+		bananaCoord2.add(new Banana(150, 350));
+		bananaCoord2.add(new Banana(200, 400));
+		bananaCoord2.add(new Banana(150, 450));
+		bananaCoord2.add(new Banana(100, 400));
+		bananaCoord2.add(new Banana(600, 200));
+		bananaCoord2.add(new Banana(650, 250));
+		bananaCoord2.add(new Banana(600, 300));
+		bananaCoord2.add(new Banana(550, 250));
+		bananaCoord2.add(new Banana(600, 350));
+		bananaCoord2.add(new Banana(650, 400));
+		bananaCoord2.add(new Banana(600, 450));
+		bananaCoord2.add(new Banana(550, 400));
+		bananaCoord2.add(new Banana(400, 150));
+		bananaCoord2.add(new Banana(350, 150));
+		bananaCoord2.add(new Banana(400, 500));
+		bananaCoord2.add(new Banana(350, 500));
+		
+		grapeCoord2.add(new Grape(200, 150));
+		grapeCoord2.add(new Grape(550, 150));
+		grapeCoord2.add(new Grape(150, 200));
+		grapeCoord2.add(new Grape(600, 200));
+		
+		grapeCoord2.add(new Grape(200, 500));
+		grapeCoord2.add(new Grape(550, 500));
+		grapeCoord2.add(new Grape(150, 450));
+		grapeCoord2.add(new Grape(600, 450));
 
 		this.setFocusable(true); // make everything in this class appear on the screen
 
@@ -282,6 +372,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					mainMenu = true;
 					playGame = false;
+					level1 = false;
+					level2 = false;
 					exitGame = false;
 					controls = false;
 					scoreBoard = false;
@@ -311,6 +403,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					controls = false;
 					scoreBoard = false;
 					playGame = false;
+					level1 = false;
+					level2 = false;
 
 					repaint(); // reset everything on screen
 				}
@@ -319,6 +413,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
 
 					playGame = true;
+					level1 = true;
+					level2 = false;
 					controls = false;
 					scoreBoard = false;
 					exitGame = false;
@@ -331,13 +427,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
 
 					scoreBoard = true;
+					playGame = false;
+					level1 = false;
+					level2 = false;
 					controls = false;
 					exitGame = false;
 					mainMenu = false;
 				}
 				// Display Player Controls
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
-
+					playGame = false;
+					level1 = false;
+					level2 = false;
 					controls = true;
 					mainMenu = false;
 					exitGame = false;
@@ -354,6 +455,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					// hide all screens to exit game
 					mainMenu = false;
 					playGame = false;
+					level1 = false;
+					level2 = false;
 					controls = false;
 					scoreBoard = false;
 				}
@@ -550,7 +653,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			mouseInput(); // checks for mouse input
 		}
 
-		if (playGame) { // display game screen
+		if (playGame && level1) { // display game screen
 
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
 
@@ -559,6 +662,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// draw game graphics and objects
 
 			ice.draw(g);
+			igloo.draw(g); // draw igloo in center
 
 			if (onBanana == 16) {
 				blueCircle2.draw(g);
@@ -570,11 +674,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				iceC2.get(i).draw(g);
 			}
 
-			igloo.draw(g); // draw igloo in center
-
 			for (int i = 0; i < 16; i++) {
 				if (drawBanana[i]) {
-					banana2.get(i).draw(g);
+					bananaCoord.get(i).draw(g);
 				}
 			}
 
@@ -592,15 +694,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			player2.draw(g);
 
 			// end condition for winner / loser
-			if (onBanana == 16 && onGrape == 12) {
-
+			if (onBanana == 16 && onGrape == 12) {	
 				roundWinner.draw(g);
-
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
-
+				
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
+				nextLevel = true;
 
-				gameEnd = true;
 			}
 
 			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
@@ -609,6 +709,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			g.drawImage(settings, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
+		}
+		
+		if (level2 == true) {
+			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
+			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
+			level2Scenery.draw(g);
+			
+			for (int i = 0; i < 12; i++) {
+				level2Ice.get(i).draw(g);
+			}
+			
+			for (int i = 0; i < 20; i++) {
+				if (drawBanana2[i]) {
+					bananaCoord2.get(i).draw(g);
+				}
+			}
+			
+			if (onBanana2 == 20) {
+				for (int i = 0; i < 8; i++) {
+					if (drawGrape2[i]) {
+						grapeCoord2.get(i).draw(g);
+					}
+				}
+			}
+			
+			// display score and players on screen
+			score.draw(g); // might need a new var
+			player1.draw(g);
+			player2.draw(g);
 		}
 		if (!audio) { // pause music
 
@@ -672,114 +801,158 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	// handles all collision detection and responds accordingly
 	public void checkCollision() {
-
-		// detects collision between player 1 and iceblocks
-		for (int i = 0; i < 20; i++) {
-			if (player1.intersects(iceC2.get(i)) && player1.x > iceCX[i] && player1.xVelocity < 0) {
-				player1.x = iceCX[i] + 50;
+		
+		if (level1 == true) {
+			// detects collision between player 1 and iceblocks
+			for (int i = 0; i < 20; i++) {
+				if (player1.intersects(iceC2.get(i)) && player1.x > iceCX[i] && player1.xVelocity < 0) {
+					player1.x = iceCX[i] + 50;
+				}
+				if (player1.intersects(iceC2.get(i)) && player1.x < iceCX[i] && player1.xVelocity > 0) {
+					player1.x = iceCX[i] - 50;
+				}
+				if (player1.intersects(iceC2.get(i)) && player1.y > iceCY[i] && player1.yVelocity < 0) {
+					player1.y = iceCY[i] + 50;
+				}
+				if (player1.intersects(iceC2.get(i)) && player1.y < iceCY[i] && player1.yVelocity > 0) {
+					player1.y = iceCY[i] - 50;
+				}
 			}
-			if (player1.intersects(iceC2.get(i)) && player1.x < iceCX[i] && player1.xVelocity > 0) {
-				player1.x = iceCX[i] - 50;
+	
+			// detects collision between player 2 and iceblocks
+			for (int i = 0; i < 20; i++) {
+				if (player2.intersects(iceC2.get(i)) && player2.x > iceCX[i] && player2.xVelocity < 0) {
+					player2.x = iceCX[i] + 50;
+				}
+				if (player2.intersects(iceC2.get(i)) && player2.x < iceCX[i] && player2.xVelocity > 0) {
+					player2.x = iceCX[i] - 50;
+				}
+				if (player2.intersects(iceC2.get(i)) && player2.y > iceCY[i] && player2.yVelocity < 0) {
+					player2.y = iceCY[i] + 50;
+				}
+				if (player2.intersects(iceC2.get(i)) && player2.y < iceCY[i] && player2.yVelocity > 0) {
+					player2.y = iceCY[i] - 50;
+				}
 			}
-			if (player1.intersects(iceC2.get(i)) && player1.y > iceCY[i] && player1.yVelocity < 0) {
-				player1.y = iceCY[i] + 50;
-			}
-			if (player1.intersects(iceC2.get(i)) && player1.y < iceCY[i] && player1.yVelocity > 0) {
-				player1.y = iceCY[i] - 50;
-			}
-		}
-
-		// detects collision between player 2 and iceblocks
-		for (int i = 0; i < 20; i++) {
-			if (player2.intersects(iceC2.get(i)) && player2.x > iceCX[i] && player2.xVelocity < 0) {
-				player2.x = iceCX[i] + 50;
-			}
-			if (player2.intersects(iceC2.get(i)) && player2.x < iceCX[i] && player2.xVelocity > 0) {
-				player2.x = iceCX[i] - 50;
-			}
-			if (player2.intersects(iceC2.get(i)) && player2.y > iceCY[i] && player2.yVelocity < 0) {
-				player2.y = iceCY[i] + 50;
-			}
-			if (player2.intersects(iceC2.get(i)) && player2.y < iceCY[i] && player2.yVelocity > 0) {
-				player2.y = iceCY[i] - 50;
-			}
-		}
-
-		for (int i = 0; i < 16; i++) {
-			// conditions for when player intersects with fruits
-			if (player1.intersects(banana2.get(i)) && drawBanana[i] == true) {
-
-				Score.score += 150; // increase score
-
-				drawBanana[i] = false;
-				onBanana++;
-			}
-		}
-
-		for (int i = 0; i < 16; i++) {
-			// conditions for when player 2 collects fruits
-			if (player2.intersects(banana2.get(i)) && drawBanana[i] == true) {
-
-				Score.score2 += 150; // increase score
-
-				drawBanana[i] = false;
-				onBanana++;
-			}
-		}
-
-		if (onBanana == 16) {
-			// display conditions for when player 1 collects grapes
-			for (int i = 0; i < 12; i++) {
-
-				if (player1.intersects(grapeCoord.get(i)) && drawGrape[i] == true) {
-
+	
+			for (int i = 0; i < 16; i++) {
+				// conditions for when player intersects with fruits
+				if (player1.intersects(bananaCoord.get(i)) && drawBanana[i] == true) {
+	
 					Score.score += 150; // increase score
-					drawGrape[i] = false;
-					onGrape++;
+	
+					drawBanana[i] = false;
+					onBanana++;
 				}
 			}
-
-			for (int i = 0; i < 12; i++) {
-				// grapes disappear when player "collects" (touches) them
-				if (player2.intersects(grapeCoord.get(i)) && drawGrape[i] == true) {
-					Score.score2 += 150;
-					drawGrape[i] = false;
-					onGrape++;
+	
+			for (int i = 0; i < 16; i++) {
+				// conditions for when player 2 collects fruits
+				if (player2.intersects(bananaCoord.get(i)) && drawBanana[i] == true) {
+	
+					Score.score2 += 150; // increase score
+	
+					drawBanana[i] = false;
+					onBanana++;
 				}
 			}
+	
+			if (onBanana == 16) {
+				// display conditions for when player 1 collects grapes
+				for (int i = 0; i < 12; i++) {
+	
+					if (player1.intersects(grapeCoord.get(i)) && drawGrape[i] == true) {
+	
+						Score.score += 150; // increase score
+						drawGrape[i] = false;
+						onGrape++;
+					}
+				}
+	
+				for (int i = 0; i < 12; i++) {
+					// grapes disappear when player "collects" (touches) them
+					if (player2.intersects(grapeCoord.get(i)) && drawGrape[i] == true) {
+						Score.score2 += 150;
+						drawGrape[i] = false;
+						onGrape++;
+					}
+				}
+			}
+	
+			// define game bounds for players
+			if (player1.x > 650) {
+				player1.x = 650;
+			}
+	
+			if (player1.x < 100) {
+				player1.x = 100;
+			}
+	
+			if (player1.y > 550) {
+				player1.y = 550;
+			}
+	
+			if (player1.y < 100) {
+				player1.y = 100;
+			}
+	
+			if (player2.x > 650) {
+				player2.x = 650;
+			}
+	
+			if (player2.x < 100) {
+				player2.x = 100;
+			}
+	
+			if (player2.y > 550) {
+				player2.y = 550;
+			}
+	
+			if (player2.y < 100) {
+				player2.y = 100;
+			}
 		}
-
-		// define game bounds for players
-		if (player1.x > 650) {
-			player1.x = 650;
-		}
-
-		if (player1.x < 100) {
-			player1.x = 100;
-		}
-
-		if (player1.y > 550) {
-			player1.y = 550;
-		}
-
-		if (player1.y < 100) {
-			player1.y = 100;
-		}
-
-		if (player2.x > 650) {
-			player2.x = 650;
-		}
-
-		if (player2.x < 100) {
-			player2.x = 100;
-		}
-
-		if (player2.y > 550) {
-			player2.y = 550;
-		}
-
-		if (player2.y < 100) {
-			player2.y = 100;
+		
+		if(level2 == true) {
+			for (int i = 0; i < 20; i++) {
+				// conditions for when player intersects with fruits
+				if (player1.intersects(bananaCoord2.get(i)) && drawBanana2[i] == true) {
+					Score.score += 150; // increase score
+					drawBanana2[i] = false;
+					onBanana2++;
+				}
+			}
+	
+			for (int i = 0; i < 20; i++) {
+				// conditions for when player 2 collects fruits
+				if (player2.intersects(bananaCoord2.get(i)) && drawBanana2[i] == true) {
+					Score.score2 += 150; // increase score
+					drawBanana2[i] = false;
+					onBanana2++;
+				}
+			}
+			
+			if (onBanana2 == 20) {
+				// display conditions for when player 1 collects grapes
+				for (int i = 0; i < 8; i++) {
+	
+					if (player1.intersects(grapeCoord2.get(i)) && drawGrape2[i] == true) {
+	
+						Score.score += 150; // increase score
+						drawGrape2[i] = false;
+						onGrape2++;
+					}
+				}
+	
+				for (int i = 0; i < 8; i++) {
+					// grapes disappear when player "collects" (touches) them
+					if (player2.intersects(grapeCoord2.get(i)) && drawGrape2[i] == true) {
+						Score.score2 += 150;
+						drawGrape2[i] = false;
+						onGrape2++;
+					}
+				}
+			}
 		}
 
 	}
@@ -822,10 +995,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		// return to main menu option on controls and game page - cannot be acccessed
 		// from other pages
-		if (e.getKeyCode() == KeyEvent.VK_ENTER && gameEnd) {
-
+		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel) {
+			Score.score = 0;
+			Score.score2 = 0;
 			// set game boolean values only if game has ended
-			mainMenu = true;
+			level1 = false;
+			level2 = true;
+			mainMenu = false;
 			playGame = false;
 			controls = false;
 			scoreBoard = false;
