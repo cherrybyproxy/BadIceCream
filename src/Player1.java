@@ -27,10 +27,8 @@ public class Player1 extends Rectangle {
 	// constructor creates player 1 at given location with given dimensions, and the
 	// icon
 	public Player1(int x, int y) {
-
-		super(x, y, 50, 50);
+		super(x, y, 40, 40);
 		getIcon();
-
 	}
 
 	// called from GamePanel when any keyboard input is detected
@@ -116,7 +114,7 @@ public class Player1 extends Rectangle {
 	// draws the current location of the ball to the screen
 	public void draw(Graphics g) {
 		// draw image to screen
-		g.drawImage(icon, x, y, 50, 50, null);
+		g.drawImage(icon, x, y, 40, 40, null);
 
 	}
 

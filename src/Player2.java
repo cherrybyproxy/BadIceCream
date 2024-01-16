@@ -26,7 +26,7 @@ public class Player2 extends Rectangle {
 	// constructor creates player 2 at given location with given dimensions, and the
 	// icon
 	public Player2(int x, int y) {
-		super(x, y, 50, 50);
+		super(x, y, 40, 40);
 		getIcon();
 
 	}
@@ -111,7 +111,7 @@ public class Player2 extends Rectangle {
 
 	// draws the current location of the ball to the screen
 	public void draw(Graphics g) {
-		g.drawImage(icon, x, y, 50, 50, null);
+		g.drawImage(icon, x, y, 40, 40, null);
 
 	}
 
