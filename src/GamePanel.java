@@ -790,6 +790,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	// call the move methods in other classes to update positions for fluid
 	// movements
 	public void move() {
+		checkCollision();
 		player1.move();
 		player2.move();
 	}
@@ -924,20 +925,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		if (level2 == true) {
 			for (int i = 0; i < 12; i++) {
-				if (player1.intersects(level2Ice.get(i)) && player1.x >= (level2IceX[i]+50) && player1.xVelocity < 0) {
+				if (player1.intersects(level2Ice.get(i)) && player1.x > level2IceX[i] && player1.xVelocity < 0) {
+					System.out.println("L");
 					player1.x = level2IceX[i] + 50;
 					player1.xVelocity = 0;
 				}
-				if (player1.intersects(level2Ice.get(i)) && player1.x <= level2IceX[i] && player1.xVelocity > 0) {
-					player1.x = level2IceX[i] - 50;
+				if (player1.intersects(level2Ice.get(i)) && player1.x+5 < level2IceX[i] && player1.xVelocity > 0) {
+					System.out.println("R");
+					player1.x = level2IceX[i] - 40;
 					player1.xVelocity = 0;
 				}
-				if (player1.intersects(level2Ice.get(i)) && player1.y >= (level2IceY[i]+50) && player1.yVelocity < 0) {
+				if (player1.intersects(level2Ice.get(i)) && player1.y > level2IceY[i] && player1.yVelocity < 0) {
+					System.out.println("U");
 					player1.y = level2IceY[i] + 50;
 					player1.yVelocity = 0;	
 				}
-				if (player1.intersects(level2Ice.get(i)) && player1.y <= level2IceY[i] && player1.yVelocity > 0) {
-					player1.y = level2IceY[i] - 50;
+				if (player1.intersects(level2Ice.get(i)) && player1.y < level2IceY[i] && player1.yVelocity > 0) {
+					System.out.println("D");
+					player1.y = level2IceY[i] - 40;
 					player1.yVelocity = 0;	
 				}
 			}

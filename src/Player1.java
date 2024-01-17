@@ -23,18 +23,24 @@ public class Player1 extends Rectangle {
 	public final int SPEED = 3; // movement speed of player 1
 
 	public BufferedImage icon; // create image for player 1
+	
+	boolean up, down, left, right;
 
 	// constructor creates player 1 at given location with given dimensions, and the
 	// icon
 	public Player1(int x, int y) {
 		super(x, y, 40, 40);
 		getIcon();
+		up = false;
+		down = false;
+		left = false;
+		right = false;
 	}
 
 	// called from GamePanel when any keyboard input is detected
 	public void keyPressed(KeyEvent e) {
 
-		// controls for player 1
+	/*	// controls for player 1
 		if (e.getKeyChar() == 'd') {
 			// move right
 			setXDirection(SPEED);
@@ -58,7 +64,28 @@ public class Player1 extends Rectangle {
 			setYDirection(SPEED);
 			move();
 		}
-
+*/
+		if  (e.getKeyChar() == 's') {
+			down = true;
+		}
+		
+		
+		if (e.getKeyChar() == 'w') {
+		up = true;
+		}
+		
+		if (e.getKeyChar() == 'd') {
+			// move forward
+			setYDirection(SPEED * -1);
+			move();
+		}
+		
+		if (e.getKeyChar() == 'a') {
+			// move forward
+			setYDirection(SPEED * -1);
+			move();
+		}
+		
 	}
 
 	// Makes player 1 stop moving when keys are released

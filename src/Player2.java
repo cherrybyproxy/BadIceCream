@@ -19,7 +19,7 @@ public class Player2 extends Rectangle {
 	public int xVelocity;
 	public int yVelocity;
 
-	public final int SPEED = 3; // movement speed
+	public final int SPEED = 2; // movement speed
 
 	public BufferedImage icon;
 
