@@ -98,7 +98,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		// set game condition booleans
 		playGame = false;
 		level1 = false;
-		level2 = false; // change to false when done creating level obviously
+		level2 = true; // change to false when done creating level obviously
 		nextLevel = false;
 		exitGame = false;
 		mainMenu = false;
@@ -924,29 +924,33 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		if (level2 == true) {
 			for (int i = 0; i < 12; i++) {
-				if (player1.intersects(level2Ice.get(i)) && player1.x > level2IceX[i] && player1.xVelocity <= 0) {
+				if (player1.intersects(level2Ice.get(i)) && player1.x >= (level2IceX[i]+50) && player1.xVelocity < 0) {
 					player1.x = level2IceX[i] + 50;
+					player1.xVelocity = 0;
 				}
-				if (player1.intersects(level2Ice.get(i)) && player1.x < level2IceX[i] && player1.xVelocity >= 0) {
+				if (player1.intersects(level2Ice.get(i)) && player1.x <= level2IceX[i] && player1.xVelocity > 0) {
 					player1.x = level2IceX[i] - 50;
+					player1.xVelocity = 0;
 				}
-				if (player1.intersects(level2Ice.get(i)) && player1.y > level2IceY[i] && player1.yVelocity <= 0) {
+				if (player1.intersects(level2Ice.get(i)) && player1.y >= (level2IceY[i]+50) && player1.yVelocity < 0) {
 					player1.y = level2IceY[i] + 50;
+					player1.yVelocity = 0;	
 				}
-				if (player1.intersects(level2Ice.get(i)) && player1.y < level2IceY[i] && player1.yVelocity >= 0) {
+				if (player1.intersects(level2Ice.get(i)) && player1.y <= level2IceY[i] && player1.yVelocity > 0) {
 					player1.y = level2IceY[i] - 50;
+					player1.yVelocity = 0;	
 				}
 			}
 
 			// detects collision between player 2 and iceblocks
 			for (int i = 0; i < 12; i++) {
-				if (player2.intersects(level2Ice.get(i)) && player2.x > level2IceX[i] && player2.xVelocity <= 0) {
+				if (player2.intersects(level2Ice.get(i)) && player2.x > level2IceX[i] && player2.xVelocity < 0) {
 					player2.x = level2IceX[i] + 50;
 				}
-				if (player2.intersects(level2Ice.get(i)) && player2.x < level2IceX[i] && player2.xVelocity >= 0) {
+				if (player2.intersects(level2Ice.get(i)) && player2.x < level2IceX[i] && player2.xVelocity > 0) {
 					player2.x = level2IceX[i] - 50;
 				}
-				if (player2.intersects(level2Ice.get(i)) && player2.y > level2IceY[i] && player2.yVelocity <= 0) {
+				if (player2.intersects(level2Ice.get(i)) && player2.y > level2IceY[i] && player2.yVelocity < 0) {
 					player2.y = level2IceY[i] + 50;
 				}
 				if (player2.intersects(level2Ice.get(i)) && player2.y < level2IceY[i] && player2.yVelocity >= 0) {
