@@ -97,8 +97,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		// set game condition booleans
 		playGame = false;
-		level1 = false;
-		level2 = true; // change to false when done creating level obviously
+		level1 = true;
+		level2 = false; // change to false when done creating level obviously
 		nextLevel = false;
 		exitGame = false;
 		mainMenu = false;

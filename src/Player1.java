@@ -65,24 +65,50 @@ public class Player1 extends Rectangle {
 			move();
 		}
 */
-		if  (e.getKeyChar() == 's') {
-			down = true;
+		switch  (e.getKeyChar()) {
+			
+			case 'w':
+				up = true;
+				down = false;
+				left = false;
+				right = false;
+				break;
+			case 's':
+				
+				up = false;
+				down = true;
+				left = false;
+				right = false;
+				break;
+			case 'a':
+				up = false;
+				down = false;
+				left = true;
+				right = false;
+				break;
+			case 'd':
+				
+				up = false;
+				down = false;
+				left = false;
+				right = true;
+				break;
 		}
-		
-		
-		if (e.getKeyChar() == 'w') {
-		up = true;
+		if (up) {
+			setYDirection(SPEED * -1); //paddle 1 moves up for keyboard input 'w'
+			
+			move(); //updates movement of paddle 1
 		}
-		
-		if (e.getKeyChar() == 'd') {
-			// move forward
-			setYDirection(SPEED * -1);
+		if (down) {
+			setYDirection(SPEED);
 			move();
 		}
-		
-		if (e.getKeyChar() == 'a') {
-			// move forward
-			setYDirection(SPEED * -1);
+		if (left) {
+			setXDirection(SPEED * -1);
+			move();
+		}
+		if (right) {
+			setXDirection(SPEED);
 			move();
 		}
 		
