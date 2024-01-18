@@ -20,13 +20,21 @@ public class Mint extends Rectangle {
 	public int yVelocity;
 
 	public final int SPEED = 3; // movement speed
-
-	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+	public int spriteCounter =0;
+	public int spriteNum = 1;
+	
+	public String direction; // direction of sprite
+	
+	public Image up1, up2, down1, down2, left1, left2, right1, right2;
 
 	// constructor creates player 2 at given location with given dimensions, and the icon
 	public Mint(int x, int y) {
 		super(x, y, 40, 40);
-		getIcon();
+
+
+		down1 = Toolkit.getDefaultToolkit().getImage("down1.png"); // create image for ball
+		down2 = Toolkit.getDefaultToolkit().getImage("down2.png"); // create image for ball
+
 
 	}
 
@@ -35,26 +43,39 @@ public class Mint extends Rectangle {
 		// set movement and speed
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			// move right
+			direction = "right";
 			setXDirection(SPEED);
 			move();
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			// move left
+			direction = "left";
 			setXDirection(SPEED * -1);
 			move();
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			// move up
+			direction = "up";
 			setYDirection(SPEED*-1);
 			move();
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			// move down
+			direction = "down";
 			setYDirection(SPEED);
 			move();
+		}
+		spriteCounter++;
+		if (spriteCounter > 10) {
+			if (spriteNum ==1) {
+				spriteNum =2;
+			} else if (spriteNum ==2) {
+				spriteNum =1;
+			}
+			spriteCounter =0;
 		}
 
 	}
@@ -98,20 +119,13 @@ public class Mint extends Rectangle {
 		x += xVelocity;
 		y += yVelocity;
 	}
-
-	// this method is used to get the image from source folder
-	public void getIcon() {
-		try {
-			icon = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	// draws the current location of player 2 to the screen
 	public void draw(Graphics g) {
-		g.drawImage(icon, x, y, 40, 40, null);
-
+				
+		g.drawImage(down1, x, y, 50, 50, null);
+			
+		g.drawImage(down2, x, y, 50, 50, null);
+	
 	}
 
 }

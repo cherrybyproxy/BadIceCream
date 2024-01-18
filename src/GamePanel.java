@@ -64,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	static long clipTimePosition;
 
 	public Igloo igloo;
+	Mint mintSprite;
 
 	// Array List to store ice cubes
 	public ArrayList<IceC> iceC2 = new ArrayList<IceC>();
@@ -115,6 +116,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		icecream2 = false;
 		icecream3 = false;
 		icecream4 = false;
+
+		// creating sprite - experiment
+		mintSprite = new Mint(400, 450);
 
 		// create graphics and set start location on game screen
 		ice = new Ice(0, 0);
@@ -439,7 +443,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					clip.stop(); // stop music clip
 					playMusic("main theme.wav"); // plays sound file
-					
+
 					repaint();
 				}
 
@@ -686,6 +690,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				roundWinner.draw(g);
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Play Next Level...", 200, 580); // draw winner result to screen
+
+				// FIX LEVEL 2
 				level2 = true;
 			}
 
@@ -758,7 +764,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				roundWinner.draw(g);
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
-				//level2 = true;
+				// level2 = true;
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
@@ -789,8 +795,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		 * 
 		 * clip.start(); clip.loop(Clip.LOOP_CONTINUOUSLY); }
 		 */
-		
-		
+
 		if (!audio) {
 			cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
 
