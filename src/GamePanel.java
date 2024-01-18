@@ -40,10 +40,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public RoundWinner roundWinner;
 
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, smokeyb,
-			sorbetMenu, arrow, arrow2, icecream, snow, backbtn, scores, charselection;
+			sorbetMenu, arrow, arrow2, icecream, snow, backbtn, scores, charselection, exitgame;
 
-	Image[] movementPics = new Image[3];
-	{
+	Image[] movementPics = new Image[3]; {
 
 		movementPics[0] = new ImageIcon("help1.png").getImage();
 		movementPics[1] = new ImageIcon("help2.png").getImage();
@@ -52,7 +51,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	// booleans for certain key input
 	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
-			scoreBoard, gameEnd, continueBtn, level1, level2, nextLevel;
+			scoreBoard, gameEnd, continueBtn, level1, level2, nextLevel, returnMain;
 
 	static boolean audio;
 
@@ -105,6 +104,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		controls = false;
 		scoreBoard = false;
 		gameEnd = false;
+		returnMain = false;
 		audio = true;
 		continueBtn = false;
 
@@ -320,7 +320,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		// add the MousePressed method from the MouseAdapter
 		addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {
 
 			}
 
@@ -374,44 +374,53 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					playGame = false;
 					level1 = false;
 					level2 = false;
-					exitGame = false;
 					controls = false;
 					scoreBoard = false;
 				}
 
-				// toggle music on and off
-				if (btnX >= GAME_WIDTH - 100 && btnX <= GAME_WIDTH - 60 && btnY >= 0 && btnY <= 40) {
-
-					audio = !audio;
-
-					repaint();
-				}
-
-				// display settings in top right corner
-				if (btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
+				// toggle player controls on and off
+				if (playGame && btnX >= GAME_WIDTH - 100 && btnX <= GAME_WIDTH - 60 && btnY >= 0 && btnY <= 40) {
 
 					cornerControls = !cornerControls; // invert boolean value
-					playGame = true;
+		
 					controls = false;
 					mainMenu = false;
 					exitGame = false;
 					scoreBoard = false;
+					
+					System.out.println("Player Controls");
 				}
-
 				// back to main menu button click
 				if (scoreBoard & (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650)
 						|| (controls & (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
 
 					// display main menu
 					exitGame = false;
-					mainMenu = true;
+					returnMain = true; //redirect to main menu so game does not exit
 					controls = false;
 					scoreBoard = false;
 					playGame = false;
 					level1 = false;
+					mainMenu = false;
 					level2 = false;
 
 					repaint(); // reset everything on screen
+				}
+				
+				// Exit Game when Clicked
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
+			                exitGame = true;
+			                exitScreen=true;
+			          
+				}
+				// display audio in top right corner
+				if (btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
+
+					audio = !audio;
+					
+					System.out.println("Audio Toggle On/Off");
+
+					repaint();
 				}
 
 				// Display Level 1 of game
@@ -424,6 +433,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					scoreBoard = false;
 					exitGame = false;
 					mainMenu = false;
+					
+					clip.stop(); // stop music clip
+					
+					playMusic("main theme.wav"); // plays sound file
 
 					repaint();
 				}
@@ -452,24 +465,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					repaint();
 				}
 
-				// Exit Game when Clicked
-				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
-
-					exitGame = true;
-
-					// hide all screens to exit game
-					mainMenu = false;
-					playGame = false;
-					level1 = false;
-					level2 = false;
-					controls = false;
-					scoreBoard = false;
-				}
-
 				// Click Continue Button to see Control Examples
 				if (btnX >= 310 && btnX <= 800 && btnY >= 480 && btnY <= 500) {
 
-					continueBtn = true;
+					continueBtn = !continueBtn;
 					playGame = true;
 					mainMenu = false;
 
@@ -486,7 +485,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				btnY = e.getY();
 
 				// display icecream animations when hovering over each menu option
-				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 350 && btnY <= 410) {
+				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 350 && btnY <= 410 ||
+						returnMain && btnX >= 180 && btnX <= 580 && btnY >= 350 && btnY <= 410 ) {
 
 					icecream1 = true;
 					repaint();
@@ -495,7 +495,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					icecream1 = false;
 				}
 				// display effects when hovering over second option
-				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 410 && btnY <= 470) {
+				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 410 && btnY <= 470 ||
+						returnMain && btnX >= 180 && btnX <= 580 && btnY >= 410 && btnY <= 470) {
 
 					icecream2 = true;
 					repaint();
@@ -504,7 +505,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					icecream2 = false;
 				}
 				// display effects when hovering over third option
-				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 470 && btnY <= 520) {
+				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 470 && btnY <= 520 ||
+						returnMain && btnX >= 180 && btnX <= 580 && btnY >= 470 && btnY <= 520) {
 
 					icecream3 = true;
 					repaint();
@@ -513,7 +515,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					icecream3 = false;
 				}
 				// display effects when hovering over fourth option
-				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 520 && btnY <= 570) {
+				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 520 && btnY <= 570||
+						returnMain && btnX >= 180 && btnX <= 580 && btnY >= 520 && btnY <= 570) {
 
 					icecream4 = true;
 					repaint();
@@ -524,8 +527,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 		};
 		// Add the mouseAdapter to your components
-		addMouseListener(mouseAdapter);
-		addMouseMotionListener(mouseAdapter);
+				addMouseListener(mouseAdapter);
+				addMouseMotionListener(mouseAdapter);
+		
 
 		repaint(); // reset graphics on screen
 
@@ -553,11 +557,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
 
-		g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw settings icon to screen
+		g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw settings icon to screen
 
 		mouseInput(); // checks for mouse input
 
-		if (mainMenu) { // run all conditions for main menu screen
+		if (mainMenu || returnMain) { // run all conditions for main menu screen
 
 			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw background image to screen
 
@@ -569,7 +573,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
 
-			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw icon to screen
+			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw icon to screen
 
 			icecream = Toolkit.getDefaultToolkit().getImage("icecream.gif"); // create image
 
@@ -601,7 +605,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
 
-			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
+			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
 			playerControls = Toolkit.getDefaultToolkit().getImage("playerControls.png"); // create image
 
@@ -614,13 +618,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			mouseInput(); // checks for mouse input
 
 		}
-		if (!scoreBoard && exitGame) { // terminate program after delay
+		
+		if (exitGame) { // terminate program after delay
 
 			System.out.println("Bad Ice Cream Game Ended.");
-
+			
 			try { // catches any error and adds a 2 second delay
 
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 
 			} catch (InterruptedException e) {
 
@@ -635,7 +640,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
 
-			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
+			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
 			scores = Toolkit.getDefaultToolkit().getImage("scores.png"); // create image
 
@@ -649,6 +654,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		}
 
 		if (playGame && level1) { // display game screen
+			
 			mouseInput(); // checks for mouse input
 
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
@@ -697,24 +703,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				nextLevel = true;
 			}
 
-			g.drawImage(sound, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
+			// Player Controls Toggle
+			if (!cornerControls) { // display settings to user
 
-			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
-
-			settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
-
-			g.drawImage(settings, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
-
-			// fix settings !!
-			if (cornerControls) { // display settings to user
-
-				movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.png"); //
+				movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.gif"); 
 				// create image
 
-				// movementPics[1] = Toolkit.getDefaultToolkit().getImage("help2.png"); //
+				movementPics[1] = Toolkit.getDefaultToolkit().getImage("help2.gif"); 
 				// create image
 
-				// movementPics[2] = Toolkit.getDefaultToolkit().getImage("help3.png"); //
+				 movementPics[2] = Toolkit.getDefaultToolkit().getImage("help3.gif"); 
 				// create image
 
 				g.drawImage(movementPics[0], 150, 150, 500, 400, null); // draw image to screen
@@ -729,16 +727,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				mouseInput(); // detects mouse input
 
-				while (playGame && continueBtn) {
+				if (playGame && !continueBtn) {
 
 					for (int i = 0; i < movementPics.length; i++) {
 
 						g.drawImage(movementPics[i], 150, 150, 500, 400, null); // draw image to screen
-
 						repaint();
 					}
 				}
+				
 			}
+			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
+
+			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
+			
+			settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
+
+			g.drawImage(settings, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
+
 		}
 
 		if (level2 == true) {
@@ -768,23 +774,39 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			score.draw(g); // might need a new var
 			player1.draw(g);
 			player2.draw(g);
+			
+			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
+
+			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
+			
+			settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
+
+			g.drawImage(settings, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
+
 		}
+		
+		g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
+
+		sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
+
 		if (!audio) { // pause music
 
 			cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
 
-			g.drawImage(cross, GAME_WIDTH - 95, 0, 40, 40, null); // draw image to screen
-
+			g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
+			
 			clipTimePosition = clip.getMicrosecondLength();
 
 			clip.stop(); // stop music clip
 
 		} else if (audio) {
 			// resume music
+			
 			clip.start();
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 
 		}
+	
 	}
 
 	// call the move methods in other classes to update positions for fluid
@@ -1113,9 +1135,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public void mouseDragged(MouseEvent e) {
 
 	}
+	  
+	public void mouseExited(MouseEvent e) {
+
+	}
+	public void mouseEntered(MouseEvent e) {
+
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 	}
+	
 }
