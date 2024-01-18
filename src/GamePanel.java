@@ -726,7 +726,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		}
 
-		if (level2 == true) {
+		if (playGame && level2 == true) {
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
 			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
 			level2Scenery.draw(g);
@@ -1042,7 +1042,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			level1 = false;
 			level2 = true;
 			mainMenu = false;
-			playGame = false;
+			playGame = true;
 			controls = false;
 			scoreBoard = false;
 
@@ -1055,7 +1055,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			level1 = false;
 			level2 = false;
 			mainMenu = true;
-			playGame = false;
+			playGame = true;
 			controls = false;
 			scoreBoard = false;
 
