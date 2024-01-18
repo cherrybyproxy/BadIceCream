@@ -1,5 +1,5 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    RoundWinner
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
@@ -21,6 +21,7 @@ public class RoundWinner extends Rectangle {
 	public static int GAME_WIDTH;// width of the window
 	public static int GAME_HEIGHT;// height of the window
 
+	//Declare variables for images
 	public BufferedImage player1Img;
 	public BufferedImage player2Img;
 	public BufferedImage crown;

@@ -1,7 +1,8 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    GameFrame
-   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+   GameFrame class establishes the frame (window) for the game
+   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game and score. */
 
 import java.awt.*;
 import javax.swing.*;
@@ -26,9 +27,8 @@ public class GameFrame extends JFrame {
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // X button will stop program execution
 
-		this.pack();// makes components fit in window - don't need to set JFrame size, as it will
-					// adjust accordingly
-
+		this.pack();// makes components fit in window 
+		
 		this.setVisible(true); // makes window visible to user
 
 		this.setLocationRelativeTo(null);// set window in middle of screen

@@ -1,7 +1,8 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    BlueCircle
-   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+   BlueCircle class draws a blue circle graphic in Level 1. 
+   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game and score. */
 
 //import packages
 import java.awt.BasicStroke;
@@ -19,7 +20,7 @@ public class BlueCircle extends Rectangle { // class extends from Rectangle
 	}
 
 	public void draw(Graphics g) {
-		// draw graphics to screen
+		// draw Blue Circle graphics to screen
 		Graphics2D g2 = (Graphics2D) g;
 		Color c2 = new Color(45, 222, 246);
 		g2.setColor(c2);

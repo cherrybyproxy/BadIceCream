@@ -1,5 +1,5 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    IceC
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
@@ -13,10 +13,9 @@ import javax.imageio.ImageIO;
 public class IceC extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
-	public BufferedImage iceImg;
+	public BufferedImage iceImg; //create ice block image
 
-	// constructor creates ball at given location with given dimensions, and the
-	// iceImg
+	// constructor creates ice cubes at given location with given dimensions
 	public IceC(int x, int y) {
 		super(x, y, 50, 50);
 		getIcon();
@@ -33,9 +32,9 @@ public class IceC extends Rectangle {
 		}
 	}
 
-	// draws the current location of the ball to the screen
+	// draws the current location of the c-shape ice blocks to the screen
 	public void draw(Graphics g) {
-		g.drawImage(iceImg, x, y, 50, 50, null); // for testing
+		g.drawImage(iceImg, x, y, 50, 50, null); 
 
 	}
 

@@ -1,5 +1,5 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    Igloo
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
@@ -15,8 +15,7 @@ public class Igloo extends Rectangle {
 	private static final long serialVersionUID = 1L;
 	public BufferedImage iglooImg;
 
-	// constructor creates ball at given location with given dimensions, and the
-	// iceImg
+	// constructor creates igloo image at given location with given dimensions 
 	public Igloo(int x, int y) {
 		super(x, y, 50, 50);
 		getIcon();
@@ -33,7 +32,7 @@ public class Igloo extends Rectangle {
 		}
 	}
 
-	// draws the current location of the ball to the screen
+	// draws the current location of the igloo to the screen
 	public void draw(Graphics g) {
 		g.drawImage(iglooImg, x, y, 200, 200, null); // for testing
 

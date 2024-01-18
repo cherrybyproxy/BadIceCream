@@ -1,5 +1,5 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    Player2
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
@@ -19,12 +19,11 @@ public class Player2 extends Rectangle {
 	public int xVelocity;
 	public int yVelocity;
 
-	public final int SPEED = 2; // movement speed
+	public final int SPEED = 3; // movement speed
 
 	public BufferedImage icon;
 
-	// constructor creates player 2 at given location with given dimensions, and the
-	// icon
+	// constructor creates player 2 at given location with given dimensions, and the icon
 	public Player2(int x, int y) {
 		super(x, y, 40, 40);
 		getIcon();
@@ -84,7 +83,7 @@ public class Player2 extends Rectangle {
 		}
 	}
 
-	// called whenever the movement of the ball changes in the x-direction
+	// called whenever the movement of player 2 changes in the x-direction
 	// (left/right)
 	public void setXDirection(int xDirection) {
 		xVelocity = xDirection;
@@ -109,7 +108,7 @@ public class Player2 extends Rectangle {
 		}
 	}
 
-	// draws the current location of the ball to the screen
+	// draws the current location of player 2 to the screen
 	public void draw(Graphics g) {
 		g.drawImage(icon, x, y, 40, 40, null);
 

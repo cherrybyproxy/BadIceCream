@@ -1,6 +1,6 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
-   Ice
+   January 18, 2024
+   Level2Scenery
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
 import java.awt.*;
@@ -14,6 +14,7 @@ public class Level2Scenery extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
 
+	//Variable and Object Declarations
 	public BufferedImage iceImg;
 	public Image block;
 	public BufferedImage iglooImg;

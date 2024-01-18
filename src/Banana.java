@@ -1,8 +1,10 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    Banana
-   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+   Banana class draws the banana fruits in GamePanel. 
+   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game and score. */
 
+//import packages
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -16,8 +18,7 @@ public class Banana extends Rectangle {
 
 	public BufferedImage bananaImg;
 
-	// constructor creates ball at given location with given dimensions, and the
-	// iceImg
+	// constructor creates banana at given location with given dimensions
 	public Banana(int x, int y) {
 
 		super(x, y, 50, 50);
@@ -35,7 +36,7 @@ public class Banana extends Rectangle {
 		}
 	}
 
-	// draws the current location of the ball to the screen
+	// draws the current location of the banana to the screen
 	public void draw(Graphics g) {
 
 		g.drawImage(bananaImg, x, y, 50, 50, null); // draws image to screen

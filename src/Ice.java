@@ -1,6 +1,7 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    Ice
+   Ice class draws ice blocks in Level 1 and 2
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
 import java.awt.*;
@@ -14,37 +15,37 @@ public class Ice extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
 
+	//Variable and Object declarations
 	public BufferedImage iceImg;
 	public Image block;
 	public BufferedImage iglooImg;
 	public BufferedImage bananaImg;
 	public BufferedImage grapeImg;
 
-	// constructor creates ball at given location with given dimensions, and the
-	// iceImg
+	// constructor creates iceblocks at given location with given dimensions 
 	public Ice(int x, int y) {
 		super(x, y, 50, 50);
 		getIcon();
 
 	}
 
-	// this method is used to get the image from source folder
+	// this method is used to get the images from source folder
 	public void getIcon() {
 
 		try {
 			iceImg = ImageIO.read(getClass().getResourceAsStream("/Ice.png"));
-			// block = ImageIO.read(getClass().getResourceAsStream("block.png"));
 			block = Toolkit.getDefaultToolkit().getImage("block.png"); // create image
 
 			iglooImg = ImageIO.read(getClass().getResourceAsStream("/Igloo.png"));
 			bananaImg = ImageIO.read(getClass().getResourceAsStream("Banana.png"));
 			grapeImg = ImageIO.read(getClass().getResourceAsStream("Grape.png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	// draws the current location of the ball to the screen
+	// draws the current location of the ice blocks to the screen
 	public void draw(Graphics g) {
 		// create graphics objects to display
 		Graphics2D g2 = (Graphics2D) g;

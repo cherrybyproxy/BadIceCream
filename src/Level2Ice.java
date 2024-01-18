@@ -1,6 +1,6 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
-   IceC
+   January 18, 2024
+   Level2Ice
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
 import java.awt.*;
@@ -13,10 +13,9 @@ import javax.imageio.ImageIO;
 public class Level2Ice extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
-	public BufferedImage iceImg;
+	public BufferedImage iceImg; //create ice block image 
 
-	// constructor creates ball at given location with given dimensions, and the
-	// iceImg
+	// constructor creates ice blocks at given location for Level 2
 	public Level2Ice(int x, int y) {
 		super(x, y, 50, 50);
 		getIcon();
@@ -33,7 +32,7 @@ public class Level2Ice extends Rectangle {
 		}
 	}
 
-	// draws the current location of the ball to the screen
+	// draws the current location of the ice blocks in Level 2
 	public void draw(Graphics g) {
 		g.drawImage(iceImg, x, y, 50, 50, null); // for testing
 

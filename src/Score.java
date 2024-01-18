@@ -1,5 +1,5 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    Score
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 

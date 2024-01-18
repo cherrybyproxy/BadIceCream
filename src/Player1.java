@@ -1,5 +1,5 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
+   January 18, 2024
    Player1
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
@@ -14,8 +14,8 @@ import javax.imageio.ImageIO;
 public class Player1 extends Rectangle {
 
 	private static final long serialVersionUID = 1L; // add default serial id for class
-	
-	//Variable declarations
+
+	// Variable declarations
 	public int xVelocity;
 
 	public int yVelocity; // sets velocity in vertical direction
@@ -23,7 +23,7 @@ public class Player1 extends Rectangle {
 	public final int SPEED = 3; // movement speed of player 1
 
 	public BufferedImage icon; // create image for player 1
-	
+
 	boolean up, down, left, right;
 
 	// constructor creates player 1 at given location with given dimensions, and the
@@ -40,7 +40,7 @@ public class Player1 extends Rectangle {
 	// called from GamePanel when any keyboard input is detected
 	public void keyPressed(KeyEvent e) {
 
-	/*	// controls for player 1
+		// controls for player 1
 		if (e.getKeyChar() == 'd') {
 			// move right
 			setXDirection(SPEED);
@@ -64,54 +64,7 @@ public class Player1 extends Rectangle {
 			setYDirection(SPEED);
 			move();
 		}
-*/
-		switch  (e.getKeyChar()) {
-			
-			case 'w':
-				up = true;
-				down = false;
-				left = false;
-				right = false;
-				break;
-			case 's':
-				
-				up = false;
-				down = true;
-				left = false;
-				right = false;
-				break;
-			case 'a':
-				up = false;
-				down = false;
-				left = true;
-				right = false;
-				break;
-			case 'd':
-				
-				up = false;
-				down = false;
-				left = false;
-				right = true;
-				break;
-		}
-		if (up) {
-			setYDirection(SPEED * -1); //paddle 1 moves up for keyboard input 'w'
-			
-			move(); //updates movement of paddle 1
-		}
-		if (down) {
-			setYDirection(SPEED);
-			move();
-		}
-		if (left) {
-			setXDirection(SPEED * -1);
-			move();
-		}
-		if (right) {
-			setXDirection(SPEED);
-			move();
-		}
-		
+
 	}
 
 	// Makes player 1 stop moving when keys are released
@@ -139,7 +92,7 @@ public class Player1 extends Rectangle {
 
 	}
 
-	// called whenever the movement of the ball changes in the x-direction
+	// called whenever the movement of player 1 changes in the x-direction
 	// (left/right)
 	public void setXDirection(int xDirection) {
 		xVelocity = xDirection;
@@ -149,7 +102,7 @@ public class Player1 extends Rectangle {
 		yVelocity = yDirection;
 	}
 
-	// updates the current location of the ball
+	// updates the current location of player 1
 	public void move() {
 		x += xVelocity;
 		y += yVelocity;
@@ -164,7 +117,7 @@ public class Player1 extends Rectangle {
 		}
 	}
 
-	// draws the current location of the ball to the screen
+	// draws the current location of player 1 to the screen
 	public void draw(Graphics g) {
 		// draw image to screen
 		g.drawImage(icon, x, y, 40, 40, null);

@@ -1,7 +1,8 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 12, 2024
-   Grape
-   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+January 18, 2024
+Grape
+Grape draws the images for grapes in GamePanel. 
+Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game and score. */
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,10 +15,9 @@ public class Grape extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
 	
-	public BufferedImage grapeImg;
+	public BufferedImage grapeImg; //declare grape image variable
 
-	// constructor creates ball at given location with given dimensions and the
-	// iceImg
+	// constructor creates grape at given location with given dimensions 
 	public Grape(int x, int y) {
 		super(x, y, 50, 50);
 		getIcon();
@@ -34,7 +34,7 @@ public class Grape extends Rectangle {
 		}
 	}
 
-	// draws the current location of the ball to the screen
+	// draws the current location of the grape to the screen
 	public void draw(Graphics g) {
 		g.drawImage(grapeImg, x, y, 50, 50, null); // for testing
 
