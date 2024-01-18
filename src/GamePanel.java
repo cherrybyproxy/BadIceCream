@@ -417,8 +417,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// display audio in top right corner
 				if (btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
 
-					audio = !audio;
+					// audio = !audio;
 
+					audio = false;
 					System.out.println("Audio Toggle On/Off");
 
 					repaint();
@@ -438,6 +439,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					clip.stop(); // stop music clip
 					playMusic("main theme.wav"); // plays sound file
+					
 					repaint();
 				}
 
@@ -650,6 +652,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			ice.draw(g);
 			igloo.draw(g); // draw igloo in center
 
+			// display score and players on screen
+			score.draw(g);
+			player1.draw(g);
+			player2.draw(g);
+
 			if (onBanana == 16) {
 				blueCircle2.draw(g);
 			} else {
@@ -674,21 +681,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 			}
 
-			// display score and players on screen
-			score.draw(g);
-			player1.draw(g);
-			player2.draw(g);
-
 			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
 				roundWinner.draw(g);
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Play Next Level...", 200, 580); // draw winner result to screen
-				nextLevel = true;
+				level2 = true;
 			}
 
 			// Player Controls Toggle
-			if (!cornerControls) { // display settings to user
+			if (cornerControls) { // display settings to user
 
 				movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.gif");
 				// create image
@@ -698,8 +700,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				movementPics[2] = Toolkit.getDefaultToolkit().getImage("help3.gif");
 				// create image
-
-				g.drawImage(movementPics[0], 150, 150, 500, 400, null); // draw image to screen
 
 				g.setColor(Color.black); // set score elements to color white
 
@@ -714,7 +714,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 						repaint();
 					}
 				}
-
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
@@ -726,10 +725,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		}
 
-		if (playGame && level2 == true) {
+		if (playGame && level2) {
+
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
 			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
 			level2Scenery.draw(g);
+			// display score and players on screen
+			score.draw(g);
+			player1.draw(g);
+			player2.draw(g);
 
 			for (int i = 0; i < 12; i++) {
 				level2Ice.get(i).draw(g);
@@ -749,17 +753,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 			}
 
-			// display score and players on screen
-			score.draw(g);
-			player1.draw(g);
-			player2.draw(g);
-
 			// end condition for winner / loser
 			if (onBanana2 == 20 && onGrape2 == 8) {
 				roundWinner.draw(g);
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
-				
+				//level2 = true;
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
@@ -775,8 +774,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
 
-		if (!audio) { // pause music
-
+		/*
+		 * if (!audio) { // pause music
+		 * 
+		 * cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
+		 * 
+		 * g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
+		 * 
+		 * clipTimePosition = clip.getMicrosecondLength();
+		 * 
+		 * clip.stop(); // stop music clip
+		 * 
+		 * } else { // resume music
+		 * 
+		 * clip.start(); clip.loop(Clip.LOOP_CONTINUOUSLY); }
+		 */
+		
+		
+		if (!audio) {
 			cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
 
 			g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
@@ -785,11 +800,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			clip.stop(); // stop music clip
 
-		} else if (audio) {
-			// resume music
-
+		}
+		if (audio) {
 			clip.start();
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
+			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
+
 		}
 	}
 
@@ -1039,13 +1055,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			Score.score = 0;
 			Score.score2 = 0;
 			// set game boolean values only if game has ended
-			level1 = false;
 			level2 = true;
+			level1 = false;
 			mainMenu = false;
-			playGame = true;
+			playGame = false;
 			controls = false;
 			scoreBoard = false;
-
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && level2) {
@@ -1055,10 +1070,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			level1 = false;
 			level2 = false;
 			mainMenu = true;
-			playGame = true;
+			playGame = false;
 			controls = false;
 			scoreBoard = false;
-
 		}
 	}
 
