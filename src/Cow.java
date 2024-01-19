@@ -102,7 +102,7 @@ public class Cow extends Rectangle {
 	// this method is used to get the image from source folder
 	public void getIcon() {
 		try {
-			icon = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
+			up1 = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -110,7 +110,7 @@ public class Cow extends Rectangle {
 
 	// draws the current location of player 2 to the screen
 	public void draw(Graphics g) {
-		g.drawImage(icon, x, y, 40, 40, null);
+		g.drawImage(up1, x, y, 40, 40, null);
 
 	}
 

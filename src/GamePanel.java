@@ -51,7 +51,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	// booleans for certain key input
 	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
-			scoreBoard, gameEnd, continueBtn, level1, level2, nextLevel, returnMain;
+			scoreBoard, continueBtn, level1, level2, nextLevel, nextLevel2, returnMain;
 
 	static boolean audio;
 
@@ -104,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		mainMenu = false;
 		controls = false;
 		scoreBoard = false;
-		gameEnd = false;
+		nextLevel2 = false;
 		returnMain = false;
 		audio = true;
 		continueBtn = false;
@@ -372,7 +372,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				// display starter screen for user to progress to main menu
 
-				if (btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
+				if (!playGame & btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
 
 					mainMenu = true;
 					playGame = false;
@@ -396,15 +396,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					System.out.println("Player Controls");
 				}
 				// back to main menu button click
-				if (scoreBoard & (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650)
-						|| (controls & (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
+				if (!playGame & !level1 & !level2 & scoreBoard & (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650)
+						|| (!playGame & !level1 & !level2 & controls & (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
 
 					// display main menu
 					exitGame = false;
 					returnMain = true; // redirect to main menu so game does not exit
 					controls = false;
 					scoreBoard = false;
-					playGame = false;
 					level1 = false;
 					mainMenu = false;
 					level2 = false;
@@ -611,9 +610,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		if (exitGame) { // terminate program after delay
 
-			System.out.println("Bad Ice Cream Game Ended.");
+			exitgame = Toolkit.getDefaultToolkit().getImage("exit-game.gif"); // create image
 
-			try { // catches any error and adds a 2 second delay
+			g.drawImage(exitgame, 75, 10, 500, 550, null); // draw image to screen
+
+			// Start new thread to implement runnable interface to delay and terminate game
+						new Thread(new Runnable() {
+							@Override
+							public void run() { // override run method
+
+								// catch block used if another thread interrupts this thread
+								try {
+									Thread.sleep(5000);
+
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+
+								// Performs code asynchronously in Event dispatcher thread
+								SwingUtilities.invokeLater(() -> {
+
+									//System.exit(0); // Terminate the program
+								});
+							}
+						}).start(); // begins execution of thread
+
+		/*	try { // catches any error and adds a 2 second delay
 
 				Thread.sleep(2000);
 
@@ -623,7 +645,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			} // game ends after 2 seconds
 
-			System.exit(0); // force program to end
+			System.exit(0); // force program to end */
 		}
 
 		if (scoreBoard) { // display score board - will update with saved high scores
@@ -644,7 +666,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		}
 
 		if (playGame && level1) { // display game screen
-
+			
 			mouseInput(); // checks for mouse input
 
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
@@ -690,9 +712,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				roundWinner.draw(g);
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Play Next Level...", 200, 580); // draw winner result to screen
-
-				// FIX LEVEL 2
-				level2 = true;
+				
+				nextLevel = true;
 			}
 
 			// Player Controls Toggle
@@ -706,8 +727,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				movementPics[2] = Toolkit.getDefaultToolkit().getImage("help3.gif");
 				// create image
-
-				g.setColor(Color.black); // set score elements to color white
 
 				mouseInput(); // detects mouse input
 
@@ -732,7 +751,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		}
 
 		if (playGame && level2) {
-
+			
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
 			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
 			level2Scenery.draw(g);
@@ -764,7 +783,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				roundWinner.draw(g);
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
-				// level2 = true;
+
+				nextLevel2=true;
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
@@ -1051,9 +1071,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	// send key input to classes for processing
 	public void keyPressed(KeyEvent e) {
 
-		player1.keyPressed(e);
-		player2.keyPressed(e);
-
 		// return to main menu option on controls and game page - cannot be acccessed
 		// from other pages
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel) {
@@ -1063,22 +1080,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			level2 = true;
 			level1 = false;
 			mainMenu = false;
-			playGame = false;
 			controls = false;
 			scoreBoard = false;
-		}
+		} 
 
-		if (e.getKeyCode() == KeyEvent.VK_ENTER && level2) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel2) {
 			Score.score = 0;
 			Score.score2 = 0;
 			// set game boolean values only if game has ended
+			mainMenu = true;
 			level1 = false;
 			level2 = false;
-			mainMenu = true;
-			playGame = false;
+			//playGame = false; //add to last game level
 			controls = false;
 			scoreBoard = false;
 		}
+		player1.keyPressed(e);
+		player2.keyPressed(e);
+
 	}
 
 	// send key input to classes for processing

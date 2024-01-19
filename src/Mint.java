@@ -121,7 +121,8 @@ public class Mint extends Rectangle {
 	}
 	// draws the current location of player 2 to the screen
 	public void draw(Graphics g) {
-				
+		
+		
 		g.drawImage(down1, x, y, 50, 50, null);
 			
 		g.drawImage(down2, x, y, 50, 50, null);
