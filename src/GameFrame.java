@@ -19,6 +19,7 @@ public class GameFrame extends JFrame {
 		// JFrame setup for window
 		panel = new GamePanel(); // run GamePanel constructor
 		this.add(panel);
+		
 		this.setTitle("Bad Ice Cream"); // set title for frame
 
 		this.setResizable(false); // frame can't change size

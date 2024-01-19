@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public RoundWinner roundWinner;
 
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, smokeyb,
-			sorbetMenu, arrow, arrow2, icecream, snow, backbtn, scores, charselection, exitgame;
+			sorbetMenu, arrowLeft, arrowRight, icecream, snow, backbtn, scores, charselection, exitgame, char1, char2;
 
 	Image[] movementPics = new Image[3];
 	{
@@ -51,7 +51,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	// booleans for certain key input
 	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
-			scoreBoard, continueBtn, level1, level2, nextLevel, nextLevel2, returnMain;
+			scoreBoard, continueBtn, level1, level2, nextLevel, nextLevel2, returnMain, selectionMenu;
 
 	static boolean audio;
 
@@ -97,6 +97,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		// set game condition booleans
 		playGame = false;
+		selectionMenu = false;
 		level1 = true;
 		level2 = false;
 		nextLevel = false;
@@ -372,7 +373,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				// display starter screen for user to progress to main menu
 
-				if (!playGame & btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
+				if (!playGame && !selectionMenu && btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
 
 					mainMenu = true;
 					playGame = false;
@@ -431,7 +432,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// Display Level 1 of game
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
 
-					playGame = true;
+					playGame = false; //change to true after done char menu
+					selectionMenu = true;
 					level1 = true;
 					level2 = false;
 					returnMain = false;
@@ -589,6 +591,36 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 			mouseInput(); // detects mouse input
 		}
+		
+		if (selectionMenu) {
+			
+			//character selection menu 
+			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw background image to screen
+			
+			//draw character selection menu for player 1
+			
+			char1 = Toolkit.getDefaultToolkit().getImage("player1.png"); // create image
+
+			g.drawImage(char1, 15, 70, 380, 350, null); // draw image to screen
+			//draw character selection menu for player 2
+			
+			char2 = Toolkit.getDefaultToolkit().getImage("player2.png"); // create image
+
+			g.drawImage(char2, 400, 70, 380, 350, null); // draw image to screen
+			
+	//draw arrows to move menu 
+			
+			arrowLeft = Toolkit.getDefaultToolkit().getImage("arrow.png"); // create image
+
+			g.drawImage(arrowLeft, 165, 580, 50, 50, null); // draw image to screen
+			
+			arrowRight = Toolkit.getDefaultToolkit().getImage("arrow2.png"); // create image
+
+			g.drawImage(arrowRight, 50, 215, 50, 50, null); // draw image to screen
+
+			//add hover effects to red arrow 
+			//add gif 
+		}
 
 		if (controls) { // display player controls on screen
 
@@ -612,7 +644,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			exitgame = Toolkit.getDefaultToolkit().getImage("exit-game.gif"); // create image
 
-			g.drawImage(exitgame, 75, 10, 500, 550, null); // draw image to screen
+			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw background image to screen
+			
+			mainMenu = false;
+			scoreBoard = false;
+			playGame = false;
+			level1 = false;
+			level2 = false;
+			controls = false;
+			
+			g.drawImage(exitgame, 125, 50, 550, 600, null); // draw image to screen
 
 			// Start new thread to implement runnable interface to delay and terminate game
 						new Thread(new Runnable() {
@@ -630,22 +671,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 								// Performs code asynchronously in Event dispatcher thread
 								SwingUtilities.invokeLater(() -> {
 
-									//System.exit(0); // Terminate the program
+									System.exit(0); // Terminate the program
 								});
 							}
 						}).start(); // begins execution of thread
-
-		/*	try { // catches any error and adds a 2 second delay
-
-				Thread.sleep(2000);
-
-			} catch (InterruptedException e) {
-
-				e.printStackTrace();
-
-			} // game ends after 2 seconds
-
-			System.exit(0); // force program to end */
 		}
 
 		if (scoreBoard) { // display score board - will update with saved high scores
