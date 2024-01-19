@@ -432,8 +432,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// Display Level 1 of game
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
 
-					playGame = false; //change to true after done char menu
-					selectionMenu = true;
+					playGame = true; //change to true after done char menu
+					//selectionMenu = true;
 					level1 = true;
 					level2 = false;
 					returnMain = false;
@@ -619,7 +619,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawImage(arrowRight, 50, 215, 50, 50, null); // draw image to screen
 
 			//add hover effects to red arrow 
-			//add gif 
+			//add gifs to selection menu - change smokey b to normal w/o animation
+			//download arrows from canva + add
+			//mouse input for arrow if (mouse, arrow1 = true) { //slides
 		}
 
 		if (controls) { // display player controls on screen
