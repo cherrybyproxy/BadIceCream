@@ -51,8 +51,10 @@ public class RoundWinner extends Rectangle {
 		g.fillRect(200, 200, 400, 300);
 		g.setColor(Color.black);
 		g.setFont(new Font("Consolas", Font.PLAIN, 25)); // set font
-		g.drawImage(player1Img, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
+		
+		/*g.drawImage(player1Img, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 		g.drawImage(player2Img, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
+		 */
 		g.drawString(String.valueOf(Score.score), (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.65));
 		g.drawString(String.valueOf(Score.score2), (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.65));
 		g.setFont(new Font("Consolas", Font.PLAIN, 35)); // set font

@@ -41,14 +41,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, leftRed,
 			leftArrow, rightRed, rightArrow, icecream, snow, backbtn, scores, exitgame, char1, char2, smokeyb, title,
-			confirmBtn, sorbet, downArrow;
+			confirmBtn, sorbet, downArrow, sorbetMenu, mintMenu, smokeyMenu, error;
 
 	Image[] movementPics = new Image[3];
 
 // booleans for certain key input
 	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
 			scoreBoard, continueBtn, level1, level2, nextLevel, nextLevel2, returnMain, selectionMenu, leftHover,
-			rightHover, left2Hover, right2Hover, smokeyMenu, mintMenu, sorbetMenu,character1, character2;
+			rightHover, left2Hover, right2Hover, character1, character2, charError, displayChar;
 
 	static boolean audio;
 
@@ -96,10 +96,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		playMusic("menu music.wav"); // plays sound file
 
-// set game condition booleans
+		// set game condition booleans
 		playGame = false;
 		selectionMenu = false;
-		level1 = true;
+		level1 = false;
 		level2 = false;
 		nextLevel = false;
 		exitGame = false;
@@ -112,14 +112,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		continueBtn = false;
 
 		cornerControls = false;
+		charError = false;
+		displayChar = false;
 
-// set booleans for ice cream graphics
+	// set booleans for ice cream graphics
 		icecream1 = false;
 		icecream2 = false;
 		icecream3 = false;
 		icecream4 = false;
 
-//set booleans for arrow hover effects
+		//set booleans for arrow hover effects
 		leftHover = false;
 		rightHover = false;
 		left2Hover = false;
@@ -135,9 +137,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		for (int i = 0; i < charSelection2.length; i++) {
 			charSelection2[i] = false;
 		}
-		smokeyMenu = false;
-		mintMenu = false;
-		sorbetMenu = false;
 
 // creating sprite - experiment
 		mintSprite = new Mint(400, 450);
@@ -151,8 +150,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		blueCircle2 = new BlueCircle(395, 635);
 
 		// create ice cream characters and score
-		player1 = new Player1(350, 400, 0);
-		player2 = new Player2(400, 400, 0);
+		player1 = new Player1(350, 400, 1);
+		player2 = new Player2(400, 400, 1);
 
 		score = new Score(GAME_WIDTH, GAME_HEIGHT);
 		score2 = new Score(GAME_WIDTH, GAME_HEIGHT);
@@ -346,7 +345,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 // add the MousePressed method from the MouseAdapter
 		addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {
 
 			}
 
@@ -386,7 +385,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 
 			@Override
-			public void mousePressed(MouseEvent e) { // detects mouse clicks for input
+			public void mouseClicked(MouseEvent e) { // detects mouse clicks for input
 				// obtain coordinates for mouse
 				btnX = e.getX();
 				btnY = e.getY();
@@ -394,6 +393,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				if (!playGame && !selectionMenu && btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
 					mainMenu = true;
+					selectionMenu = false;
 					playGame = false;
 					level1 = false;
 					level2 = false;
@@ -403,7 +403,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// toggle player controls on and off
 				if (playGame && btnX >= GAME_WIDTH - 100 && btnX <= GAME_WIDTH - 60 && btnY >= 0 && btnY <= 40) {
 
-					cornerControls = !cornerControls; // invert boolean value
+					cornerControls = true; // invert boolean value
 
 					controls = false;
 					mainMenu = false;
@@ -447,14 +447,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					repaint();
 				}
-				// Display Level 1 of game
+				// Proceed to Character Selection Menu
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
-
-					playGame = false; // change to true after done char menu
 					selectionMenu = true;
-					level1 = false;
-					level2 = false;
-					returnMain = false;
 					controls = false;
 					scoreBoard = false;
 					exitGame = false;
@@ -489,89 +484,71 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					repaint();
 				}
 				// Click Continue Button to see Player Control Examples
-				if (btnX >= 310 && btnX <= 800 && btnY >= 480 && btnY <= 500) {
+				if (playGame && btnX >= 310 && btnX <= 800 && btnY >= 480 && btnY <= 500) {
 
 					continueBtn = !continueBtn;
 					playGame = true;
 					mainMenu = false;
 				}
-
-				// Confirm Button to Play Game
-				if (selectionMenu && btnX >= 275 && btnX <= 525 && btnY >= 570 && btnY <= 580) {
-					playGame = true; // change to true after done char menu
-					selectionMenu = false;
-					level1 = true;
-					level2 = false;
-					returnMain = false;
-					controls = false;
-					scoreBoard = false;
-					exitGame = false;
-					mainMenu = false;
-				}
 				// Draw Box for Character Selection
-				if (!character1 && selectionMenu && btnX >= 50 && btnX <= 135 && btnY >= 310 && btnY <= 410) {
-					charSelection[0] = true;
-					charSelection[1] = false;
-					charSelection[2] = false;
-					smokeyMenu = false;
-					mintMenu = false;
-					sorbetMenu = true;
-					player1 = new Player1(400, 400, 1);
-				} 
-				if (!character1 && selectionMenu && btnX >= 170 && btnX <= 260 && btnY >= 310 && btnY <= 410) {
-					smokeyMenu = true;
-					mintMenu = false;
-					sorbetMenu = false;
-					player1 = new Player1(400, 400, 2);
-					charSelection[0] = false;
-					charSelection[1] = true;
-					charSelection[2] = false;
-				} 
-				if (!character1 && selectionMenu && btnX >= 270 && btnX <= 380 && btnY >= 310 && btnY <= 410) {
-					charSelection[0] = false;
-					charSelection[1] = false;
-					charSelection[2] = false;
-					//character1 = true;
-					smokeyMenu = false;
-					mintMenu = true;
-					sorbetMenu = false;
-					player1 = new Player1(400, 400, 3);
-				} 
-				if (selectionMenu && btnX >= 435 && btnX <= 520 && btnY >= 310 && btnY <= 410) {
-					charSelection2[3] = true;
-					charSelect[0] = "sorbet";
-					player2 = new Player2(400, 400, 1);
-					character2= true;
-				} else {
-					charSelection2[3] = false;
+				if (selectionMenu && btnX >= 50 && btnX <= 135 && btnY >= 310 && btnY <= 410) {
+					// create sorbet character
 					charSelection2[0] = true;
+					charSelection2[1] = false;
+					charSelection2[2] = false;
+					player1 = new Player1(350, 400, 1);
+					character1 = true;
+				}
+				if (selectionMenu && btnX >= 170 && btnX <= 260 && btnY >= 310 && btnY <= 410) {
+					// create smokey bacon character
+					charSelection2[0] = false;
 					charSelection2[1] = true;
+					charSelection2[2] = false;
+					player1 = new Player1(350, 400, 2);
+					character1 = true;
+				}
+				if (selectionMenu && btnX >= 270 && btnX <= 380 && btnY >= 310 && btnY <= 410) {
+					// create mint choc chip character for player 1
+					charSelection2[0] = false;
+					charSelection2[1] = false;
 					charSelection2[2] = true;
-					character2= false;
+					player1 = new Player1(350, 400, 3);
+					character1 = true;
+				}
+				// Player 2 Selection
+				if (selectionMenu && btnX >= 435 && btnX <= 520 && btnY >= 310 && btnY <= 410) {
+					// create sorbet character for player 2
+					charSelection2[3] = true;
+					charSelection2[4] = false;
+					charSelection2[5] = false;
+					player2 = new Player2(400, 400, 1);
+					character2 = true;
 				}
 				if (selectionMenu && btnX >= 545 && btnX <= 640 && btnY >= 310 && btnY <= 410) {
+					// create smokey bacon character for player 2
+					charSelection2[3] = false;
 					charSelection2[4] = true;
-					charSelect[0] = "smokeyb";
+					charSelection2[5] = false;
 					player2 = new Player2(400, 400, 2);
-					character2= true;
-				} else {
-					charSelection2[4] = false;
-					charSelection2[0] = true;
-					charSelection2[1] = true;
-					charSelection2[2] = true;
-					character2= false;
+					character2 = true;
 				}
 				if (selectionMenu && btnX >= 660 && btnX <= 760 && btnY >= 310 && btnY <= 410) {
+					// create mint choc chip character for player 2
+					charSelection2[3] = false;
+					charSelection2[4] = false;
 					charSelection2[5] = true;
-					charSelect[0] = "mint";
 					player2 = new Player2(400, 400, 3);
-					character2= true;
+					character2 = true;
+				} 
+				// Confirm Button to Play Game
+				if (character1 && character2 && selectionMenu && !playGame && !mainMenu && btnX >= 275 && btnX <= 525 && btnY >= 570 && btnY <= 670) {
+					displayChar = true;
+				}
+				// Confirm Button to Play Game
+				if ((!character1 || !character2) && selectionMenu && !playGame && !mainMenu && btnX >= 275 && btnX <= 525 && btnY >= 570 && btnY <= 670) {
+					charError = true;
 				} else {
-					charSelection2[5] = false;
-					charSelection2[0] = true;
-					charSelection2[1] = true;
-					charSelection2[2] = true;
-					character2= true;
+					charError = false;
 				}
 			}
 
@@ -593,10 +570,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// display effects when hovering over second option
 				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 410 && btnY <= 470
 						|| returnMain && btnX >= 180 && btnX <= 580 && btnY >= 410 && btnY <= 470) {
-
 					icecream2 = true;
 					repaint();
-
 				} else {
 					icecream2 = false;
 				}
@@ -605,69 +580,55 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 						|| returnMain && btnX >= 180 && btnX <= 580 && btnY >= 470 && btnY <= 520) {
 					icecream3 = true;
 					repaint();
-
 				} else {
 					icecream3 = false;
 				}
 				// display effects when hovering over fourth option
 				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 520 && btnY <= 570
 						|| returnMain && btnX >= 180 && btnX <= 580 && btnY >= 520 && btnY <= 570) {
-
 					icecream4 = true;
 					repaint();
-
 				} else {
 					icecream4 = false;
 				}
 
 				// display hover effects for character selection
 				if (selectionMenu && btnX >= 50 && btnX <= 135 && btnY >= 310 && btnY <= 410) {
-
 					charSelection[0] = true;
 					repaint();
-
 				} else {
 					charSelection[0] = false;
 				}
 				// display hover effects for character selection
 				if (selectionMenu && btnX >= 170 && btnX <= 260 && btnY >= 310 && btnY <= 410) {
-
 					charSelection[1] = true;
 					repaint();
-
 				} else {
 					charSelection[1] = false;
 				}
 				// display hover effects for character selection
 				if (selectionMenu && btnX >= 270 && btnX <= 380 && btnY >= 310 && btnY <= 410) {
-
 					charSelection[2] = true;
 					repaint();
-
 				} else {
 					charSelection[2] = false;
 				}
 
 				if (selectionMenu && btnX >= 435 && btnX <= 520 && btnY >= 310 && btnY <= 410) {
-
 					charSelection[3] = true;
 					repaint();
-
 				} else {
 					charSelection[3] = false;
 				}
 				if (selectionMenu && btnX >= 545 && btnX <= 640 && btnY >= 310 && btnY <= 410) {
-
 					charSelection[4] = true;
 					repaint();
-
 				} else {
 					charSelection[4] = false;
 				}
 				if (selectionMenu && btnX >= 660 && btnX <= 760 && btnY >= 310 && btnY <= 410) {
 					charSelection[5] = true;
 					repaint();
-
 				} else {
 					charSelection[5] = false;
 				}
@@ -678,7 +639,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		addMouseMotionListener(mouseAdapter);
 
 		repaint(); // reset graphics on screen
-
 	}
 
 // call the draw methods in each class to update positions as things move
@@ -742,10 +702,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			title = Toolkit.getDefaultToolkit().getImage("charselection.png");
 			g.drawImage(title, 150, 25, 500, 100, null); // draw background image to screen
-
-			confirmBtn = Toolkit.getDefaultToolkit().getImage("confirmbtn.png");
-			g.drawImage(confirmBtn, 275, 570, 250, 100, null); // draw background image to screen
-
+			
 			// PLAYER 1 SELECTION MENU
 			char1 = Toolkit.getDefaultToolkit().getImage("player1.png"); // draw character selection menu for player
 			g.drawImage(char1, 15, 160, 380, 350, null); // draw image to screen
@@ -762,24 +719,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			// PLAYER 2 SELECTION MENU
 			char2 = Toolkit.getDefaultToolkit().getImage("player2.png"); // draw character selection menu for player 2
-
 			g.drawImage(char2, 400, 160, 380, 350, null); // draw image to screen
 
 			// character selection menu for player 1
-
 			g.drawImage(sorbet, 430, 310, 100, 100, null); // draw image to screen
 			g.drawImage(smokeyb, 540, 310, 100, 100, null); // draw image to screen
 			g.drawImage(mint, 660, 310, 100, 100, null); // draw image to screen
 
 			downArrow = Toolkit.getDefaultToolkit().getImage("pointdown.gif");
 
+			//draw arrow when mouse hovers over character
 			if (charSelection[0]) {
 				g.drawImage(downArrow, 45, 230, 100, 100, null); // draw image to screen
 			}
 			if (charSelection[1]) {
 				g.drawImage(downArrow, 160, 230, 100, 100, null); // draw image to screen
 			}
-
 			if (charSelection[2]) {
 				g.drawImage(downArrow, 270, 230, 100, 100, null); // draw image to screen
 			}
@@ -789,41 +744,97 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			if (charSelection[4]) {
 				g.drawImage(downArrow, 540, 230, 100, 100, null); // draw image to screen
 			}
-
 			if (charSelection[5]) {
 				g.drawImage(downArrow, 660, 230, 100, 100, null); // draw image to screen
 			}
 
 			// draw boxes around selected character
-			if (charSelection2[0] ||character1) {
+			if (charSelection2[0]) {
 				Color c2 = new Color(45, 222, 246);
 				g.setColor(c2);
 				g.drawRect(45, 310, 100, 100); // draw image to screen
 			}
-			if (charSelection2[1]||character1) {
+			if (charSelection2[1]) {
 				Color c2 = new Color(45, 222, 246);
 				g.setColor(c2);
 				g.drawRect(160, 310, 100, 100); // draw image to screen
 			}
-			if (charSelection2[2]||character1) {
+			if (charSelection2[2]) {
 				Color c2 = new Color(45, 222, 246);
 				g.setColor(c2);
 				g.drawRect(270, 310, 100, 100); // draw image to screen
 			}
-			if (charSelection2[3]||character2) {
+			if (charSelection2[3]) {
 				Color c2 = new Color(45, 222, 246);
 				g.setColor(c2);
 				g.drawRect(430, 310, 100, 100); // draw image to screen
 			}
-			if (charSelection2[4]||character2) {
+			if (charSelection2[4]) {
 				Color c2 = new Color(45, 222, 246);
 				g.setColor(c2);
 				g.drawRect(540, 310, 100, 100); // draw image to screen
 			}
-			if (charSelection2[5]||character2) {
+			if (charSelection2[5]) {
 				Color c2 = new Color(45, 222, 246);
 				g.setColor(c2);
 				g.drawRect(660, 310, 100, 100); // draw image to screen
+			}
+			confirmBtn = Toolkit.getDefaultToolkit().getImage("confirmbtn.png");
+			g.drawImage(confirmBtn, 275, 570, 250, 100, null); // draw background image to screen
+
+			if (charError) {
+				error = Toolkit.getDefaultToolkit().getImage("error.png");
+				g.drawImage(error, 275, 500, 250, 50, null); // draw background image to screen
+			}
+			sorbetMenu = Toolkit.getDefaultToolkit().getImage("sorbetMenu.gif"); // create image
+			smokeyMenu = Toolkit.getDefaultToolkit().getImage("smokeyMenu.png"); // create image
+			mintMenu = Toolkit.getDefaultToolkit().getImage("mintMenu.gif"); // create image
+
+			if (displayChar) {
+				if (charSelection2[0]) {
+					g.drawImage(sorbetMenu, 45, 240, 330, 200, null); 
+					
+				} else if (charSelection2[1]) {
+					g.drawImage(smokeyMenu, 45, 240, 330, 200, null); 
+					
+				} else if (charSelection2[2]) {
+					g.drawImage(mintMenu, 45, 240, 330, 200, null); 
+				} 
+				if (charSelection2[3]) {
+					g.drawImage(sorbetMenu, 430, 240, 330, 200, null);
+					
+				} else if (charSelection2[4]) {
+					g.drawImage(smokeyMenu, 430, 240, 330, 200, null);
+					
+				} else if (charSelection2[5]) {
+					g.drawImage(mintMenu, 430, 240, 330, 200, null); 
+				}
+				
+				// Start new thread to implement runnable interface to delay and terminate game
+				new Thread(new Runnable() {
+					@Override
+					public void run() { // override run method
+						// catch block used if another thread interrupts this thread
+						try {
+							Thread.sleep(5000);
+
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						// Performs code asynchronously in Event dispatcher thread
+						SwingUtilities.invokeLater(() -> {
+							playGame = true; // change to true after done char menu
+							level1 = true;
+							level2 = false;
+							selectionMenu = false;
+							cornerControls = true;
+							controls = false;
+							scoreBoard = false;
+							exitGame = false;
+							mainMenu = false;
+						});
+					}
+				}).start(); // begins execution of thread 
 			}
 		}
 
@@ -842,7 +853,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawImage(backbtn, 300, 580, 200, 100, null); // draw image to screen
 
 			mouseInput(); // checks for mouse input
-
 		}
 
 		if (exitGame) { // terminate program after delay
@@ -860,20 +870,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			g.drawImage(exitgame, 125, 50, 550, 600, null); // draw image to screen
 
-// Start new thread to implement runnable interface to delay and terminate game
+			// Start new thread to implement runnable interface to delay and terminate game
 			new Thread(new Runnable() {
 				@Override
 				public void run() { // override run method
-
-// catch block used if another thread interrupts this thread
+					// catch block used if another thread interrupts this thread
 					try {
 						Thread.sleep(5000);
 
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-
-// Performs code asynchronously in Event dispatcher thread
+					// Performs code asynchronously in Event dispatcher thread
 					SwingUtilities.invokeLater(() -> {
 
 						System.exit(0); // Terminate the program
@@ -940,39 +948,72 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					}
 				}
 			}
-
-// end condition for winner / loser
+			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
 				roundWinner.draw(g);
+				if (charSelection2[0]) {
+					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null); 
+					
+				} else if (charSelection2[1]) {
+					g.drawImage(smokeyb, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null); 
+					
+				} else if (charSelection2[2]) {
+					g.drawImage(mint, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null); 
+				} 
+				if (charSelection2[3]) {
+					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
+					
+				} else if (charSelection2[4]) {
+					g.drawImage(smokeyb, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
+					
+				} else if (charSelection2[5]) {
+					g.drawImage(mint, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null); 
+				}
+				
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Play Next Level...", 200, 580); // draw winner result to screen
 
 				nextLevel = true;
 			}
-
-// Player Controls Toggle
-			if (cornerControls) { // display settings to user
+			// Player Controls Toggle
+			if (playGame && cornerControls) { // display settings to user
 
 				movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.gif");
-// create image
+				g.drawImage(movementPics[0], 150, 150, 500, 400, null); 
+				// Start new thread to implement runnable interface to delay and terminate game
+				new Thread(new Runnable() {
+					@Override
+					public void run() { // override run method
+						// catch block used if another thread interrupts this thread
+						try {
+							Thread.sleep(2000);
 
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}).start(); // begins execution of thread 
+				
 				movementPics[1] = Toolkit.getDefaultToolkit().getImage("help2.gif");
-// create image
+				g.drawImage(movementPics[1], 150, 150, 500, 400, null); 
+				// Start new thread to implement runnable interface to delay and terminate game
+				new Thread(new Runnable() {
+					@Override
+					public void run() { // override run method
+						// catch block used if another thread interrupts this thread
+						try {
+							Thread.sleep(2000);
 
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}).start(); // begins execution of thread 
 				movementPics[2] = Toolkit.getDefaultToolkit().getImage("help3.gif");
-// create image
+				g.drawImage(movementPics[2], 150, 150, 500, 400, null); 
 
 				mouseInput(); // detects mouse input
-
-				if (playGame && !continueBtn) {
-
-					for (int i = 0; i < movementPics.length; i++) {
-
-						g.drawImage(movementPics[i], 150, 150, 500, 400, null); // draw image to screen
-
-						repaint();
-					}
-				}
+				
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
@@ -1011,10 +1052,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					}
 				}
 			}
-
-// end condition for winner / loser
+			// end condition for winner / loser
 			if (onBanana2 == 20 && onGrape2 == 8) {
 				roundWinner.draw(g);
+				if (charSelection2[0]) {
+					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null); 
+					
+				} else if (charSelection2[1]) {
+					g.drawImage(smokeyb, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null); 
+					
+				} else if (charSelection2[2]) {
+					g.drawImage(mint, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null); 
+				} 
+				if (charSelection2[3]) {
+					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
+					
+				} else if (charSelection2[4]) {
+					g.drawImage(smokeyb, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
+					
+				} else if (charSelection2[5]) {
+					g.drawImage(mint, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null); 
+				}
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
 

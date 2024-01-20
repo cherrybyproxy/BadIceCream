@@ -5,10 +5,6 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 // extends Rectangle because drawing and managing collisions is easy
 public class Player1 extends Rectangle {
@@ -119,15 +115,12 @@ public class Player1 extends Rectangle {
 	// draws the current location of player 1 to the screen
 	public void draw(Graphics g) {
 		// draw image to screen
-		/*if (charNum == 1) {
+		if (charNum == 1) {
 			g.drawImage(sorbet, x, y, 40, 40, null);
 		} else if (charNum == 2) {
 			g.drawImage(smokeyb, x, y, 40, 40, null);
 		} else if (charNum == 3) {
 			g.drawImage(mint, x, y, 40, 40, null);
-		} */
-
-		g.drawImage(mint, x, y, 40, 40, null);
+		} 
 	}
-
 }
