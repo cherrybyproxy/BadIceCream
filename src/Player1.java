@@ -22,19 +22,27 @@ public class Player1 extends Rectangle {
 
 	public final int SPEED = 3; // movement speed of player 1
 
-	public BufferedImage icon; // create image for player 1
+	public int charNum; // stores value for paddle 1 or paddle 2
+
+	public Image sorbet, smokeyb, mint; // create image for player 1
 
 	boolean up, down, left, right;
 
 	// constructor creates player 1 at given location with given dimensions, and the
 	// icon
-	public Player1(int x, int y) {
+	public Player1(int x, int y, int num) {
 		super(x, y, 40, 40);
-		getIcon();
+
+		sorbet = Toolkit.getDefaultToolkit().getImage("sorbet.png"); //get image for broomstick paddle 
+		mint = Toolkit.getDefaultToolkit().getImage("MintChocChip.png"); //get image for broomstick paddle 
+		smokeyb = Toolkit.getDefaultToolkit().getImage("smokeyb.png"); //get image for broomstick paddle 
+		
 		up = false;
 		down = false;
 		left = false;
 		right = false;
+
+		charNum = num;
 	}
 
 	// called from GamePanel when any keyboard input is detected
@@ -107,21 +115,19 @@ public class Player1 extends Rectangle {
 		x += xVelocity;
 		y += yVelocity;
 	}
-
-	// this method is used to get the image from source folder
-	public void getIcon() {
-		try {
-			icon = ImageIO.read(getClass().getResourceAsStream("/Sorbet.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	// draws the current location of player 1 to the screen
 	public void draw(Graphics g) {
 		// draw image to screen
-		g.drawImage(icon, x, y, 40, 40, null);
+		/*if (charNum == 1) {
+			g.drawImage(sorbet, x, y, 40, 40, null);
+		} else if (charNum == 2) {
+			g.drawImage(smokeyb, x, y, 40, 40, null);
+		} else if (charNum == 3) {
+			g.drawImage(mint, x, y, 40, 40, null);
+		} */
 
+		g.drawImage(mint, x, y, 40, 40, null);
 	}
 
 }

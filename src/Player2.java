@@ -21,13 +21,20 @@ public class Player2 extends Rectangle {
 
 	public final int SPEED = 3; // movement speed
 
-	public BufferedImage icon;
+	public int char2Num; // stores value for paddle 1 or paddle 2
 
-	// constructor creates player 2 at given location with given dimensions, and the icon
-	public Player2(int x, int y) {
+	public Image sorbet, smokeyb, mint; // create image for player 1
+
+	// constructor creates player 2 at given location with given dimensions, and the
+	// icon
+	public Player2(int x, int y, int num) {
 		super(x, y, 40, 40);
-		getIcon();
-
+		
+		sorbet = Toolkit.getDefaultToolkit().getImage("sorbet.png"); //get image for broomstick paddle 
+		mint = Toolkit.getDefaultToolkit().getImage("MintChocChip.png"); //get image for broomstick paddle 
+		smokeyb = Toolkit.getDefaultToolkit().getImage("smokeyb.png"); //get image for broomstick paddle 
+		
+		char2Num = num;
 	}
 
 	// updates the direction of player 2 based on user input
@@ -99,19 +106,16 @@ public class Player2 extends Rectangle {
 		y += yVelocity;
 	}
 
-	// this method is used to get the image from source folder
-	public void getIcon() {
-		try {
-			icon = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	// draws the current location of player 2 to the screen
 	public void draw(Graphics g) {
-		g.drawImage(icon, x, y, 40, 40, null);
-
+	/*	if (char2Num == 1) {
+			g.drawImage(sorbet, x, y, 40, 40, null);
+		} else if (char2Num == 2) {
+			g.drawImage(smokeyb, x, y, 40, 40, null);
+		} else if (char2Num == 3) {
+			g.drawImage(mint, x, y, 40, 40, null);
+		} */
+		g.drawImage(mint, x, y, 40, 40, null);
 	}
 
 }
