@@ -39,21 +39,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public BlueCircle blueCircle2;
 	public RoundWinner roundWinner;
 
-	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, smokeybMenu,
-			mintMenu, sorbetMenu, leftRed, leftArrow, rightRed, rightArrow, icecream, snow, backbtn, scores,
-			charselection, exitgame, char1, char2;
+	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, leftRed,
+			leftArrow, rightRed, rightArrow, icecream, snow, backbtn, scores, exitgame, char1, char2, smokeyb, title,
+			confirmBtn, sorbet, downArrow;
 
 	Image[] movementPics = new Image[3];
-	{
-		movementPics[0] = new ImageIcon("help1.gif").getImage();
-		movementPics[1] = new ImageIcon("help2.gif").getImage();
-		movementPics[2] = new ImageIcon("help3.gif").getImage();
-	}
 
 // booleans for certain key input
 	boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3, icecream4,
 			scoreBoard, continueBtn, level1, level2, nextLevel, nextLevel2, returnMain, selectionMenu, leftHover,
-			rightHover, left2Hover, right2Hover;
+			rightHover, left2Hover, right2Hover, smokeyMenu, mintMenu, sorbetMenu;
 
 	static boolean audio;
 
@@ -61,6 +56,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	int btnX;
 	int btnY;
 
+	public boolean[] charSelection = new boolean[6];
+	public boolean[] charSelection2 = new boolean[6];
+	public String[] charSelect = new String[3];
+	
 // variables for audio effects
 	static Clip clip;
 	static long clipTimePosition;
@@ -125,6 +124,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		rightHover = false;
 		left2Hover = false;
 		right2Hover = false;
+
+		movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.gif");
+		movementPics[1] = Toolkit.getDefaultToolkit().getImage("help2.gif");
+		movementPics[2] = Toolkit.getDefaultToolkit().getImage("help3.gif");
+
+		for (int i = 0; i < charSelection.length; i++) {
+			charSelection[i] = false;
+		}
+		for (int i = 0; i < charSelection2.length; i++) {
+			charSelection2[i] = false;
+		}
+		smokeyMenu = false;
+		mintMenu = false;
+		sorbetMenu = false;
 
 // creating sprite - experiment
 		mintSprite = new Mint(400, 450);
@@ -333,7 +346,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 // add the MousePressed method from the MouseAdapter
 		addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 
 			}
 
@@ -369,17 +382,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	public void mouseInput() { // manually detect mouse input through motion and clicks
 
-// Instantiate a MouseAdapter and override the mousePressed method
+		// Instantiate a MouseAdapter and override the mousePressed method
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) { // detects mouse clicks for input
-
-// obtain coordinates for mouse
+			public void mousePressed(MouseEvent e) { // detects mouse clicks for input
+				// obtain coordinates for mouse
 				btnX = e.getX();
 				btnY = e.getY();
-
-// display starter screen for user to progress to main menu
+				// display starter screen for user to progress to main menu
 
 				if (!playGame && !selectionMenu && btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
 
@@ -390,8 +401,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					controls = false;
 					scoreBoard = false;
 				}
-
-// toggle player controls on and off
+				// toggle player controls on and off
 				if (playGame && btnX >= GAME_WIDTH - 100 && btnX <= GAME_WIDTH - 60 && btnY >= 0 && btnY <= 40) {
 
 					cornerControls = !cornerControls; // invert boolean value
@@ -404,13 +414,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					System.out.println("Player Controls");
 				}
-// back to main menu button click
+				// back to main menu button click
 				if (!playGame & !level1 & !level2 & scoreBoard
 						& (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650)
 						|| (!playGame & !level1 & !level2 & controls
 								& (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
 
-// display main menu
+					// display main menu
 					exitGame = false;
 					returnMain = true; // redirect to main menu so game does not exit
 					controls = false;
@@ -422,24 +432,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					repaint(); // reset everything on screen
 				}
 
-// Exit Game when Clicked
+				// Exit Game when Clicked
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
 
 					exitGame = true;
 
 				}
-// display audio in top right corner
+				// display audio in top right corner
 				if (btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
 
-// audio = !audio;
+					// audio = !audio;
 
 					audio = false;
 					System.out.println("Audio Toggle On/Off");
 
 					repaint();
 				}
-
-// Display Level 1 of game
+				// Display Level 1 of game
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
 
 					playGame = false; // change to true after done char menu
@@ -457,8 +466,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					repaint();
 				}
-
-// Display Score Leader Board
+				// Display Score Leader Board
 				if ((mainMenu || returnMain) && btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
 
 					scoreBoard = true;
@@ -469,7 +477,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					exitGame = false;
 					mainMenu = false;
 				}
-// Display Player Controls
+				// Display Player Controls
 				if ((mainMenu || returnMain) && btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
 					playGame = false;
 					level1 = false;
@@ -481,24 +489,59 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					repaint();
 				}
-
-// Click Continue Button to see Player Control Examples
+				// Click Continue Button to see Player Control Examples
 				if (btnX >= 310 && btnX <= 800 && btnY >= 480 && btnY <= 500) {
 
 					continueBtn = !continueBtn;
 					playGame = true;
 					mainMenu = false;
 				}
+
+				// Draw Box for Character Selection
+				if (selectionMenu && btnX >= 50 && btnX <= 135 && btnY >= 310 && btnY <= 410) {
+					charSelection2[0] = true;
+					charSelect[0] = "";
+				} else {
+					charSelection2[0] = false;
+				}
+				if (selectionMenu && btnX >= 170 && btnX <= 260 && btnY >= 310 && btnY <= 410) {
+					charSelection2[1] = true;
+					charSelect[0] = "";
+				}else {
+					charSelection2[1] = false;
+				}
+				if (selectionMenu && btnX >= 270 && btnX <= 380 && btnY >= 310 && btnY <= 410) {
+					charSelection2[2] = true;
+					charSelect[0] = "";
+				}else {
+					charSelection2[2] = false;
+				}
+				if (selectionMenu && btnX >= 435 && btnX <= 520 && btnY >= 310 && btnY <= 410) {
+					charSelection2[3] = true;
+					charSelect[0] = "";
+				}else {
+					charSelection2[3] = false;
+				}
+				if (selectionMenu && btnX >= 545 && btnX <= 640 && btnY >= 310 && btnY <= 410) {
+					charSelection2[4] = true;
+					charSelect[0] = "";
+				}else {
+					charSelection2[4] = false;
+				}
+				if (selectionMenu && btnX >= 660 && btnX <= 760 && btnY >= 310 && btnY <= 410) {
+					charSelection2[5] = true;
+					charSelect[0] = "";
+				}else {
+					charSelection2[5] = false;
+				}
 			}
 
 			@Override
 			public void mouseMoved(MouseEvent e) { // detects mouse motion for hover effects
-
-// obtain coordinates for mouse motion
+				// obtain coordinates for mouse motion
 				btnX = e.getX();
 				btnY = e.getY();
-
-// display icecream animations when hovering over each menu option
+				// display icecream animations when hovering over each menu option
 				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 350 && btnY <= 410
 						|| returnMain && btnX >= 180 && btnX <= 580 && btnY >= 350 && btnY <= 410) {
 
@@ -508,7 +551,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				} else {
 					icecream1 = false;
 				}
-// display effects when hovering over second option
+				// display effects when hovering over second option
 				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 410 && btnY <= 470
 						|| returnMain && btnX >= 180 && btnX <= 580 && btnY >= 410 && btnY <= 470) {
 
@@ -518,17 +561,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				} else {
 					icecream2 = false;
 				}
-// display effects when hovering over third option
+				// display effects when hovering over third option
 				if (mainMenu && btnX >= 190 && btnX <= 580 && btnY >= 470 && btnY <= 520
 						|| returnMain && btnX >= 180 && btnX <= 580 && btnY >= 470 && btnY <= 520) {
-
 					icecream3 = true;
 					repaint();
 
 				} else {
 					icecream3 = false;
 				}
-// display effects when hovering over fourth option
+				// display effects when hovering over fourth option
 				if (mainMenu && btnX >= 180 && btnX <= 580 && btnY >= 520 && btnY <= 570
 						|| returnMain && btnX >= 180 && btnX <= 580 && btnY >= 520 && btnY <= 570) {
 
@@ -539,42 +581,60 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					icecream4 = false;
 				}
 
-//display hover effects for left arrow for char 1
-				if (selectionMenu && btnX >= 120 && btnX <= 180 && btnY >= 410 && btnY <= 470) {
-					
-					leftHover = true;
-					repaint();
-				} else {
-					leftHover = false;
-				}
-//display hover effects for right arrow for char 1
-				if (selectionMenu && btnX >= 260 && btnX <= 320 && btnY >= 410 && btnY <= 470) {
+				// display hover effects for character selection
+				if (selectionMenu && btnX >= 50 && btnX <= 135 && btnY >= 310 && btnY <= 410) {
 
-					rightHover = true;
+					charSelection[0] = true;
 					repaint();
-				} else {
-					rightHover = false;
-				}
-				
-				//display hover effects for left arrow for char 2
-				if (selectionMenu && btnX >= 505 && btnX <= 565 && btnY >= 410 && btnY <= 470) {
-					
-					left2Hover = true;
-					repaint();
-				} else {
-					left2Hover = false;
-				}
-//display hover effects for right arrow for char 2
-				if (selectionMenu && btnX >= 645 && btnX <= 705 && btnY >= 410 && btnY <= 470) {
 
-					right2Hover = true;
-					repaint();
 				} else {
-					right2Hover = false;
+					charSelection[0] = false;
+				}
+				// display hover effects for character selection
+				if (selectionMenu && btnX >= 170 && btnX <= 260 && btnY >= 310 && btnY <= 410) {
+
+					charSelection[1] = true;
+					repaint();
+
+				} else {
+					charSelection[1] = false;
+				}
+				// display hover effects for character selection
+				if (selectionMenu && btnX >= 270 && btnX <= 380 && btnY >= 310 && btnY <= 410) {
+
+					charSelection[2] = true;
+					repaint();
+
+				} else {
+					charSelection[2] = false;
+				}
+
+				if (selectionMenu && btnX >= 435 && btnX <= 520 && btnY >= 310 && btnY <= 410) {
+
+					charSelection[3] = true;
+					repaint();
+
+				} else {
+					charSelection[3] = false;
+				}
+				if (selectionMenu && btnX >= 545 && btnX <= 640 && btnY >= 310 && btnY <= 410) {
+
+					charSelection[4] = true;
+					repaint();
+
+				} else {
+					charSelection[4] = false;
+				}
+				if (selectionMenu && btnX >= 660 && btnX <= 760 && btnY >= 310 && btnY <= 410) {
+					charSelection[5] = true;
+					repaint();
+
+				} else {
+					charSelection[5] = false;
 				}
 			}
 		};
-// Add the mouseAdapter to your components
+		// Add the mouseAdapter to your components
 		addMouseListener(mouseAdapter);
 		addMouseMotionListener(mouseAdapter);
 
@@ -638,73 +698,97 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		if (selectionMenu) {
 
-//character selection menu
+			// character selection menu
 			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw background image to screen
 
-//PLAYER 1 SELECTION MENU
+			title = Toolkit.getDefaultToolkit().getImage("charselection.png");
+			g.drawImage(title, 150, 25, 500, 100, null); // draw background image to screen
 
-			char1 = Toolkit.getDefaultToolkit().getImage("player1.png"); // draw character selection menu for player 1
+			confirmBtn = Toolkit.getDefaultToolkit().getImage("confirmbtn.png");
+			g.drawImage(confirmBtn, 85, 560, 230, 90, null); // draw background image to screen
 
+			confirmBtn = Toolkit.getDefaultToolkit().getImage("confirmbtn.png");
+			g.drawImage(confirmBtn, 475, 560, 230, 90, null); // draw background image to screen
+			
+			// PLAYER 1 SELECTION MENU
+			char1 = Toolkit.getDefaultToolkit().getImage("player1.png"); // draw character selection menu for player
 			g.drawImage(char1, 15, 160, 380, 350, null); // draw image to screen
 
-			sorbetMenu = Toolkit.getDefaultToolkit().getImage("sorbetMenu.gif"); // draw character selection menu for
-																					// player 1
+			// character selection menu for player 1
+			sorbet = Toolkit.getDefaultToolkit().getImage("sorbet.png"); // draw character selection menu for player
 
-			g.drawImage(sorbetMenu, 45, 240, 330, 150, null); // draw image to screen
+			g.drawImage(sorbet, 45, 310, 100, 100, null); // draw image to screen
+			smokeyb = Toolkit.getDefaultToolkit().getImage("smokeyb.png"); // draw character selection menu for player
+			g.drawImage(smokeyb, 160, 310, 100, 100, null); // draw image to screen
 
-			leftArrow = Toolkit.getDefaultToolkit().getImage("leftYellow.png"); // create image
+			mint = Toolkit.getDefaultToolkit().getImage("MintChocChip.png");
+			g.drawImage(mint, 270, 310, 100, 100, null); // draw image to screen
 
-			g.drawImage(leftArrow, 120, 410, 60, 60, null); // draw image to screen
-
-			rightArrow = Toolkit.getDefaultToolkit().getImage("rightYellow.png"); // create image
-
-			g.drawImage(rightArrow, 260, 410, 60, 60, null); // draw image to screen
-			
-			leftRed = Toolkit.getDefaultToolkit().getImage("leftRed.png"); // create image
-			rightRed = Toolkit.getDefaultToolkit().getImage("rightRed.png"); // create image
-
-			if (leftHover) {
-				
-				g.drawImage(leftRed, 120, 410, 60, 60, null); // draw image to screen
-
-			}
-			if (rightHover) {
-	
-				g.drawImage(rightRed, 260, 410, 60, 60, null); // draw image to screen
-
-			}
-			
-			if (left2Hover) {
-				
-				g.drawImage(leftRed, 505, 410, 60, 60, null); // draw image to screen
-			
-			}
-			if (right2Hover) {
-				
-				g.drawImage(rightRed, 645, 410, 60, 60, null); // draw image to screen
-				
-			}
-
-//PLAYER 2 SELECTION MENU
+			// PLAYER 2 SELECTION MENU
 			char2 = Toolkit.getDefaultToolkit().getImage("player2.png"); // draw character selection menu for player 2
 
 			g.drawImage(char2, 400, 160, 380, 350, null); // draw image to screen
 
-			g.drawImage(sorbetMenu, 430, 240, 330, 150, null); // draw image to screen
+			// character selection menu for player 1
 
-			leftArrow = Toolkit.getDefaultToolkit().getImage("leftYellow.png"); // create image
+			g.drawImage(sorbet, 430, 310, 100, 100, null); // draw image to screen
+			g.drawImage(smokeyb, 540, 310, 100, 100, null); // draw image to screen
+			g.drawImage(mint, 660, 310, 100, 100, null); // draw image to screen
 
-			g.drawImage(leftArrow, 505, 410, 60, 60, null); // draw image to screen
+			downArrow = Toolkit.getDefaultToolkit().getImage("pointdown.gif");
 
-			rightArrow = Toolkit.getDefaultToolkit().getImage("rightYellow.png"); // create image
+			if (charSelection[0]) {
+				g.drawImage(downArrow, 45, 230, 100, 100, null); // draw image to screen
+			}
+			if (charSelection[1]) {
+				g.drawImage(downArrow, 160, 230, 100, 100, null); // draw image to screen
+			}
 
-			g.drawImage(rightArrow, 645, 410, 60, 60, null); // draw image to screen
+			if (charSelection[2]) {
+				g.drawImage(downArrow, 270, 230, 100, 100, null); // draw image to screen
+			}
+			if (charSelection[3]) {
+				g.drawImage(downArrow, 430, 230, 100, 100, null); // draw image to screen
+			}
+			if (charSelection[4]) {
+				g.drawImage(downArrow, 540, 230, 100, 100, null); // draw image to screen
+			}
 
-//add hover effects to red arrow
-//SHIFT ALL ELEMENTS DOWN - ADD TITLE
-//add gifs to selection menu - change smokey b to normal w/o animation
-//download arrows from canva + add
-//mouse input for arrow if (mouse, arrow1 = true) { //slides
+			if (charSelection[5]) {
+				g.drawImage(downArrow, 660, 230, 100, 100, null); // draw image to screen
+			}
+
+			// draw boxes around selected character
+			if (charSelection2[0]) {
+				Color c2 = new Color(45, 222, 246);
+				g.setColor(c2);
+				g.drawRect(45, 310, 100, 100); // draw image to screen
+			}
+			if (charSelection2[1]) {
+				Color c2 = new Color(45, 222, 246);
+				g.setColor(c2);
+				g.drawRect(160, 310, 100, 100); // draw image to screen
+			}
+			if (charSelection2[2]) {
+				Color c2 = new Color(45, 222, 246);
+				g.setColor(c2);
+				g.drawRect(270, 310, 100, 100); // draw image to screen
+			}
+			if (charSelection2[3]) {
+				Color c2 = new Color(45, 222, 246);
+				g.setColor(c2);
+				g.drawRect(430, 310, 100, 100); // draw image to screen
+			}
+			if (charSelection2[4]) {
+				Color c2 = new Color(45, 222, 246);
+				g.setColor(c2);
+				g.drawRect(540, 310, 100, 100); // draw image to screen
+			}
+			if (charSelection2[5]) {
+				Color c2 = new Color(45, 222, 246);
+				g.setColor(c2);
+				g.drawRect(660, 310, 100, 100); // draw image to screen
+			}
 		}
 
 		if (controls) { // display player controls on screen
@@ -1209,6 +1293,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			controls = false;
 			scoreBoard = false;
 		}
+
 		player1.keyPressed(e);
 		player2.keyPressed(e);
 
