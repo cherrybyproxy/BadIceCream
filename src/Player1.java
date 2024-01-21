@@ -23,6 +23,7 @@ public class Player1 extends Rectangle {
 	public Image sorbet, smokeyb, mint; // create image for player 1
 
 	boolean up, down, left, right;
+	boolean canRight = true, canLeft = true, canUp = true, canDown = true;
 	
 	int level = 1;
 
@@ -48,51 +49,34 @@ public class Player1 extends Rectangle {
 		if(level == 1) {
 			// controls for player 1
 			if (e.getKeyChar() == 'd') {
-				if (x >= 650) {
-					setXDirection(0);
-				}
-				else if (x == 150 && x <= 250 && (y >= 250 && y <= 450)) {
-					setXDirection(0);
-				}
-				else {
+				if (canRight) {
 					setXDirection(SPEED);
+					move();
 				}
-				move();
 			}
 
 			if (e.getKeyChar() == 'a') {
-				if (x <= 100) {
-					setXDirection(0);
-				}
-				
-				else if (x >= 150 && x <= 250 && (y >= 250 && y <= 450)) {
-					setXDirection(0);
-				}
-				else {
+				canRight = true;
+				if (canLeft) {
 					setXDirection(SPEED*-1);
+					move();
 				}
-				move();
 			}
 
 			if (e.getKeyChar() == 'w') {
-				if (y <=100) {
-					setYDirection(0);
-				}
-				else {
+				canDown = true;
+				if (canUp){
 					setYDirection(SPEED *-1);
+					move();
 				}
-				move();
 			}
 
 			if (e.getKeyChar() == 's') {
-				// move down
-				if (y >= 550) {
-					setYDirection(0);
-				}
-				else {
+				canUp = true;
+				if (canDown) {
 					setYDirection(SPEED);
+					move();
 				}
-				move();
 			}
 		}
 		else {
@@ -161,6 +145,61 @@ public class Player1 extends Rectangle {
 	// updates the current location of player 1
 	public void move() {
 		if (level == 1) {
+			if (y <= 100 && yVelocity < 0) {
+				canUp = false;
+			}
+			else if (y >= 550 && yVelocity > 0) {
+				canDown = false;
+			}
+			else if (x <= 100 && xVelocity < 0) {
+				canLeft = false;
+			}
+			else if (x >= 650 && xVelocity > 0) {
+				canRight = false;
+			}
+			// column
+			else if (x >= 150 && x < 250 && xVelocity > 0 && (y > 150 && y < 500)) {
+				canRight = false;
+			}
+			else if (x > 150 && x <= 250 && xVelocity < 0 && (y > 200 && y < 450)) {
+				canLeft = false;
+			}
+			
+			// top row
+			else if (y >= 150 && y < 250 && yVelocity > 0 && (x > 150 && x < 350)) {
+				canDown = false;
+			}
+			else if (y > 150 && y <= 250 && yVelocity < 0 && (x > 200 && x < 350)) {
+				canUp = false;
+			}
+			else if (x >= 300 && x <= 350 && y > 150 && y < 250 && xVelocity < 0) {
+				canLeft = false;
+			}
+			
+			//bottom row
+			else if (y >= 400 && y < 500 && yVelocity > 0 && (x > 150 && x < 350)) {
+				canDown = false;
+			}
+			else if (y > 450 && y <= 500 && yVelocity < 0 && (x > 150 && x < 350)) {
+				canUp = false;
+			}
+			else if (x <= 350 && x > 150 && y > 400 && y < 500 && xVelocity <0 ) {
+				canLeft = false;
+			}
+			
+			else {
+				canUp = true;
+				canDown = true;
+				canRight = true;
+				canLeft = true;
+			}
+			if (canUp && canDown) {
+				y += yVelocity;
+			}
+			if (canRight && canLeft) {
+				x += xVelocity;
+			}
+			/*
 			if ((y <= 100 && yVelocity < 0) || (y >= 550 && yVelocity > 0) ) {
 				x += xVelocity;
 				yVelocity = 0;
@@ -178,11 +217,13 @@ public class Player1 extends Rectangle {
 				x += xVelocity;
 				y += yVelocity;
 			}
+			*/
 			
 		}
 		else {
 			x += xVelocity;
 			y += yVelocity;
+			
 		}
 		
 		
