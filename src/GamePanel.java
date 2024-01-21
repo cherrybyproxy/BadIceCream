@@ -953,7 +953,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
-				// roundwinner.draw(g);
+				roundWinner.draw(g);
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 

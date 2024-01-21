@@ -22,26 +22,12 @@ public class RoundWinner extends Rectangle {
 	public static int GAME_HEIGHT;// height of the window
 
 	//Declare variables for images
-	public BufferedImage player1Img;
-	public BufferedImage player2Img;
 	public BufferedImage crown;
 
 	public RoundWinner(int w, int h) {
 
 		RoundWinner.GAME_WIDTH = w;
 		RoundWinner.GAME_HEIGHT = h;
-		getIcon();
-	}
-
-	public void getIcon() {
-		// get images for players
-		try {
-			player1Img = ImageIO.read(getClass().getResourceAsStream("/Sorbet.png"));
-			player2Img = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
-			crown = ImageIO.read(getClass().getResourceAsStream("/Crown.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void draw(Graphics g) {
@@ -52,9 +38,6 @@ public class RoundWinner extends Rectangle {
 		g.setColor(Color.black);
 		g.setFont(new Font("Consolas", Font.PLAIN, 25)); // set font
 		
-		/*g.drawImage(player1Img, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
-		g.drawImage(player2Img, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
-		 */
 		g.drawString(String.valueOf(Score.score), (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.65));
 		g.drawString(String.valueOf(Score.score2), (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.65));
 		g.setFont(new Font("Consolas", Font.PLAIN, 35)); // set font
