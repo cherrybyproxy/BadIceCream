@@ -16,13 +16,15 @@ public class Player1 extends Rectangle {
 
 	public int yVelocity; // sets velocity in vertical direction
 
-	public final int SPEED = 3; // movement speed of player 1
+	public final int SPEED = 2; // movement speed of player 1
 
 	public int charNum; // stores value for paddle 1 or paddle 2
 
 	public Image sorbet, smokeyb, mint; // create image for player 1
 
 	boolean up, down, left, right;
+	
+	int level = 1;
 
 	// constructor creates player 1 at given location with given dimensions, and the
 	// icon
@@ -43,30 +45,80 @@ public class Player1 extends Rectangle {
 
 	// called from GamePanel when any keyboard input is detected
 	public void keyPressed(KeyEvent e) {
+		if(level == 1) {
+			// controls for player 1
+			if (e.getKeyChar() == 'd') {
+				if (x >= 650) {
+					setXDirection(0);
+				}
+				else if (x == 150 && x <= 250 && (y >= 250 && y <= 450)) {
+					setXDirection(0);
+				}
+				else {
+					setXDirection(SPEED);
+				}
+				move();
+			}
 
-		// controls for player 1
-		if (e.getKeyChar() == 'd') {
-			// move right
-			setXDirection(SPEED);
-			move();
+			if (e.getKeyChar() == 'a') {
+				if (x <= 100) {
+					setXDirection(0);
+				}
+				
+				else if (x >= 150 && x <= 250 && (y >= 250 && y <= 450)) {
+					setXDirection(0);
+				}
+				else {
+					setXDirection(SPEED*-1);
+				}
+				move();
+			}
+
+			if (e.getKeyChar() == 'w') {
+				if (y <=100) {
+					setYDirection(0);
+				}
+				else {
+					setYDirection(SPEED *-1);
+				}
+				move();
+			}
+
+			if (e.getKeyChar() == 's') {
+				// move down
+				if (y >= 550) {
+					setYDirection(0);
+				}
+				else {
+					setYDirection(SPEED);
+				}
+				move();
+			}
 		}
+		else {
+			if (e.getKeyChar() == 'd') {
+				// move right
+				setXDirection(SPEED);
+				move();
+			}
 
-		if (e.getKeyChar() == 'a') {
-			// move left
-			setXDirection(SPEED * -1);
-			move();
-		}
+			if (e.getKeyChar() == 'a') {
+				// move left
+				setXDirection(SPEED * -1);
+				move();
+			}
 
-		if (e.getKeyChar() == 'w') {
-			// move forward
-			setYDirection(SPEED * -1);
-			move();
-		}
+			if (e.getKeyChar() == 'w') {
+				// move up
+				setYDirection(SPEED * -1);
+				move();
+			}
 
-		if (e.getKeyChar() == 's') {
-			// move backwards
-			setYDirection(SPEED);
-			move();
+			if (e.getKeyChar() == 's') {
+				// move down
+				setYDirection(SPEED);
+				move();
+			}
 		}
 
 	}
@@ -108,8 +160,32 @@ public class Player1 extends Rectangle {
 
 	// updates the current location of player 1
 	public void move() {
-		x += xVelocity;
-		y += yVelocity;
+		if (level == 1) {
+			if ((y <= 100 && yVelocity < 0) || (y >= 550 && yVelocity > 0) ) {
+				x += xVelocity;
+				yVelocity = 0;
+			}
+			else if ((x <= 100 && xVelocity < 0) || (x >= 650 && xVelocity > 0) ) {
+				xVelocity = 0;
+				y += yVelocity;
+			}
+			else if (((x >= 150 ) && (x <= 250 )) && (y >= 200 && y <= 450) ) {
+				xVelocity = 0;
+				y += yVelocity;
+			}
+			
+			else {
+				x += xVelocity;
+				y += yVelocity;
+			}
+			
+		}
+		else {
+			x += xVelocity;
+			y += yVelocity;
+		}
+		
+		
 	}
 	
 	// draws the current location of player 1 to the screen
@@ -123,4 +199,5 @@ public class Player1 extends Rectangle {
 			g.drawImage(mint, x, y, 40, 40, null);
 		} 
 	}
+	
 }

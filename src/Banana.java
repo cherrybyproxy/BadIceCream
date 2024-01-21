@@ -19,7 +19,7 @@ public class Banana extends Rectangle {
 
 		super(x, y, 50, 50);
 
-		bananaImg = Toolkit.getDefaultToolkit().getImage("Banana.gif"); //get image for banana graphic
+		bananaImg = Toolkit.getDefaultToolkit().getImage("Banana.png"); //get image for banana graphic
 
 	}
 	

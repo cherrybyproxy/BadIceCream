@@ -392,10 +392,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// display starter screen for user to progress to main menu
 
 				if (!playGame && !selectionMenu && btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
-					mainMenu = true;
+					mainMenu = false; // leah - change to true
 					selectionMenu = false;
-					playGame = false;
-					level1 = false;
+					playGame = true; // leah - change to false
+					level1 = true; // leah - change to false
 					level2 = false;
 					controls = false;
 					scoreBoard = false;
@@ -974,10 +974,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				g.drawString("Press Enter to Play Next Level...", 200, 580); // draw winner result to screen
 
 				nextLevel = true;
+				player1.level++;
 			}
 			// Player Controls Toggle
 			if (playGame && cornerControls) { // display settings to user
-
+				/*
 				movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.gif");
 				g.drawImage(movementPics[0], 150, 150, 500, 400, null); 
 				// Start new thread to implement runnable interface to delay and terminate game
@@ -1013,7 +1014,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				g.drawImage(movementPics[2], 150, 150, 500, 400, null); 
 
 				mouseInput(); // detects mouse input
-				
+				*/
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
@@ -1138,6 +1139,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public void checkCollision() {
 
 		if (level1 == true) {
+			/*
 // detects collision between player 1 and iceblocks
 			for (int i = 0; i < 20; i++) {
 				if (player1.intersects(iceC2.get(i)) && player1.x > iceCX[i] && player1.xVelocity < 0) {
@@ -1168,7 +1170,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					player2.y = iceCY[i] - 50;
 				}
 			}
-
+			*/
 			for (int i = 0; i < 16; i++) {
 // conditions for when player intersects with fruits
 				if (player1.intersects(bananaCoord.get(i)) && drawBanana[i] == true) {
@@ -1248,6 +1250,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		}
 
 		if (level2 == true) { // game conditions for level 2
+			/*
 			for (int i = 0; i < 12; i++) {
 				if (player1.intersects(level2Ice.get(i)) && player1.x > level2IceX[i] && player1.xVelocity < 0) {
 
@@ -1286,6 +1289,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					player2.y = level2IceY[i] - 50;
 				}
 			}
+			*/
 
 			for (int i = 0; i < 20; i++) {
 // conditions for when player intersects with fruits
