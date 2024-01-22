@@ -25,7 +25,7 @@ public class Player1 extends Rectangle {
 	boolean up, down, left, right;
 	boolean canRight = true, canLeft = true, canUp = true, canDown = true;
 	
-	int level = 1;
+	int level = 1; 
 
 	// constructor creates player 1 at given location with given dimensions, and the
 	// icon
@@ -46,64 +46,27 @@ public class Player1 extends Rectangle {
 
 	// called from GamePanel when any keyboard input is detected
 	public void keyPressed(KeyEvent e) {
-		if(level == 1) {
-			// controls for player 1
-			if (e.getKeyChar() == 'd') {
-				if (canRight) {
-					setXDirection(SPEED);
-					move();
-				}
-			}
-
-			if (e.getKeyChar() == 'a') {
-				canRight = true;
-				if (canLeft) {
-					setXDirection(SPEED*-1);
-					move();
-				}
-			}
-
-			if (e.getKeyChar() == 'w') {
-				canDown = true;
-				if (canUp){
-					setYDirection(SPEED *-1);
-					move();
-				}
-			}
-
-			if (e.getKeyChar() == 's') {
-				canUp = true;
-				if (canDown) {
-					setYDirection(SPEED);
-					move();
-				}
-			}
+		// controls for player 1
+		if (e.getKeyChar() == 'd') {
+			setXDirection(SPEED);
+			move();
 		}
-		else {
-			if (e.getKeyChar() == 'd') {
-				// move right
-				setXDirection(SPEED);
-				move();
-			}
 
-			if (e.getKeyChar() == 'a') {
-				// move left
-				setXDirection(SPEED * -1);
-				move();
-			}
-
-			if (e.getKeyChar() == 'w') {
-				// move up
-				setYDirection(SPEED * -1);
-				move();
-			}
-
-			if (e.getKeyChar() == 's') {
-				// move down
-				setYDirection(SPEED);
-				move();
-			}
+		if (e.getKeyChar() == 'a') {
+			setXDirection(SPEED*-1);
+			move();
 		}
+
+		if (e.getKeyChar() == 'w') {
+			setYDirection(SPEED *-1);
+			move();
+		}
+
+		if (e.getKeyChar() == 's') {
+			setYDirection(SPEED);
+			move();
+		}
+		
 
 	}
 
@@ -183,10 +146,59 @@ public class Player1 extends Rectangle {
 			else if (y > 450 && y <= 500 && yVelocity < 0 && (x > 150 && x < 350)) {
 				canUp = false;
 			}
-			else if (x <= 350 && x > 150 && y > 400 && y < 500 && xVelocity <0 ) {
+			else if (x <= 350 && x > 150 && y > 400 && y < 500 && xVelocity < 0 ) {
 				canLeft = false;
 			}
 			
+			// column 2
+			else if (x >= 500 && x < 600 && xVelocity > 0 && (y > 200 && y < 450)) {
+				canRight = false;
+			}
+			else if (x > 500 && x <= 600 && xVelocity < 0 && (y > 150 && y < 500)) {
+				canLeft = false;
+			}
+			
+			// top row 2
+			else if (y >= 150 && y < 250 && yVelocity > 0 && (x > 400 && x < 600)) {
+				canDown = false;
+			}
+			else if (y > 150 && y <= 250 && yVelocity < 0 && (x > 400 && x < 550)) {
+				canUp = false;
+			}
+			else if (x >= 400 && x <= 450 && y > 150 && y < 250 && xVelocity > 0) {
+				canRight = false;
+			}
+			
+			//bottom row 2
+			else if (y >= 400 && y < 500 && yVelocity > 0 && (x > 400 && x < 550)) {
+				canDown = false;
+			}
+			else if (y > 450 && y <= 500 && yVelocity < 0 && (x > 400 && x < 600)) {
+				canUp = false;
+			}
+			else if (x >= 400 && x <= 450 && y > 400 && y < 500 && xVelocity > 0 ) {
+				canRight = false;
+			}
+			
+			// igloo
+			else if (x > 350 && x <= 450 && y > 250 && y < 350 && xVelocity < 0) {
+				canLeft = false;
+			}
+			else if (x >= 300 && x < 450 && y > 250 && y < 350 && xVelocity > 0) {
+				canRight = false;
+			}
+			
+			else if (x > 300 && x < 450 && y > 250 && y <= 350 && yVelocity < 0) {
+				canUp = false;
+			}
+			else if (x > 300 && x < 450 && y >= 250 && y < 350 && yVelocity > 0) {
+				canDown = false;
+			}
+			else {
+				x += xVelocity;
+				y += yVelocity;
+			}
+			/*
 			else {
 				canUp = true;
 				canDown = true;
@@ -199,30 +211,83 @@ public class Player1 extends Rectangle {
 			if (canRight && canLeft) {
 				x += xVelocity;
 			}
-			/*
-			if ((y <= 100 && yVelocity < 0) || (y >= 550 && yVelocity > 0) ) {
-				x += xVelocity;
-				yVelocity = 0;
+			*/
+			
+		}
+		if (level == 2) {
+			if (y <= 100 && yVelocity < 0) {
+				canUp = false;
 			}
-			else if ((x <= 100 && xVelocity < 0) || (x >= 650 && xVelocity > 0) ) {
-				xVelocity = 0;
-				y += yVelocity;
+			else if (y >= 550 && yVelocity > 0) {
+				canDown = false;
 			}
-			else if (((x >= 150 ) && (x <= 250 )) && (y >= 200 && y <= 450) ) {
-				xVelocity = 0;
-				y += yVelocity;
+			else if (x <= 100 && xVelocity < 0) {
+				canLeft = false;
+			}
+			else if (x >= 650 && xVelocity > 0) {
+				canRight = false;
+			}
+			
+			// column 1
+			else if (x >= 100 && x < 200 && y > 150 && y < 500 && xVelocity > 0) {
+				canRight = false;
+			}
+			else if (x > 100 && x <= 200 && y > 150 && y < 500 && xVelocity < 0) {
+				canLeft = false;
+			}
+			else if (x > 100 && x < 200 && y > 150 && y <= 500 && yVelocity < 0) {
+				canUp = false;
+			}
+			else if (x > 100 && x < 200 && y >= 150 && y < 500 && yVelocity > 0) {
+				canDown = false;
+			}
+			
+			// column 2
+			else if (x >= 250 && x < 350 && y > 150 && y < 500 && xVelocity > 0) {
+				canRight = false;
+			}
+			else if (x > 250 && x <= 350 && y > 150 && y < 500 && xVelocity < 0) {
+				canLeft = false;
+			}
+			else if (x > 250 && x < 350 && y > 150 && y <= 500 && yVelocity < 0) {
+				canUp = false;
+			}
+			else if (x > 250 && x < 350 && y >= 150 && y < 500 && yVelocity > 0) {
+				canDown = false;
+			}
+			
+			// column 3
+			else if (x >= 400 && x < 500 && y > 150 && y < 500 && xVelocity > 0) {
+				canRight = false;
+			}
+			else if (x > 400 && x <= 500 && y > 150 && y < 500 && xVelocity < 0) {
+				canLeft = false;
+			}
+			else if (x > 400 && x < 500 && y > 150 && y <= 500 && yVelocity < 0) {
+				canUp = false;
+			}
+			else if (x > 400 && x < 500 && y >= 150 && y < 500 && yVelocity > 0) {
+				canDown = false;
+			}
+			
+			// column 4
+			else if (x >= 550 && x < 650 && y > 150 && y < 500 && xVelocity > 0) {
+				canRight = false;
+			}
+			else if (x > 550 && x <= 650 && y > 150 && y < 500 && xVelocity < 0) {
+				canLeft = false;
+			}
+			else if (x > 550 && x < 650 && y > 150 && y <= 500 && yVelocity < 0) {
+				canUp = false;
+			}
+			else if (x > 550 && x < 650 && y >= 150 && y < 500 && yVelocity > 0) {
+				canDown = false;
 			}
 			
 			else {
 				x += xVelocity;
 				y += yVelocity;
 			}
-			*/
-			
-		}
-		else {
-			x += xVelocity;
-			y += yVelocity;
 			
 		}
 		

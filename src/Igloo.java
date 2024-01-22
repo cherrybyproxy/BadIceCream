@@ -17,7 +17,7 @@ public class Igloo extends Rectangle {
 
 	// constructor creates igloo image at given location with given dimensions 
 	public Igloo(int x, int y) {
-		super(x, y, 50, 50);
+		super(x, y, 100, 100);
 		getIcon();
 
 	}
@@ -34,7 +34,7 @@ public class Igloo extends Rectangle {
 
 	// draws the current location of the igloo to the screen
 	public void draw(Graphics g) {
-		g.drawImage(iglooImg, x, y, 200, 200, null); // for testing
+		g.drawImage(iglooImg, x, y, 100, 100, null); // for testing
 
 	}
 

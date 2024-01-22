@@ -55,6 +55,9 @@ public class Level2Scenery extends Rectangle {
 		g2.drawRect(0, 0, 800, 700);
 
 		// create ice border on the left
+		g.drawImage(iceImg, 50, 50, 50, 50, null);
+		g.drawImage(iceImg, 50, 100, 50, 50, null);
+		g.drawImage(iceImg, 50, 100, 50, 50, null);
 		g.drawImage(iceImg, 50, 150, 50, 50, null);
 		g.drawImage(iceImg, 50, 200, 50, 50, null);
 		g.drawImage(iceImg, 50, 250, 50, 50, null);
@@ -63,6 +66,8 @@ public class Level2Scenery extends Rectangle {
 		g.drawImage(iceImg, 50, 400, 50, 50, null);
 		g.drawImage(iceImg, 50, 450, 50, 50, null);
 		g.drawImage(iceImg, 50, 500, 50, 50, null);
+		g.drawImage(iceImg, 50, 550, 50, 50, null);
+		g.drawImage(iceImg, 50, 600, 50, 50, null);
 
 		// create block border on left
 		g.drawImage(block, 0, 50, 50, 50, null);
@@ -81,6 +86,9 @@ public class Level2Scenery extends Rectangle {
 		g.drawImage(block, 0, 650, 50, 50, null);
 
 		// create ice border on right
+		g.drawImage(iceImg, 700, 50, 50, 50, null);
+		g.drawImage(iceImg, 700, 100, 50, 50, null);
+		g.drawImage(iceImg, 700, 100, 50, 50, null);
 		g.drawImage(iceImg, 700, 150, 50, 50, null);
 		g.drawImage(iceImg, 700, 200, 50, 50, null);
 		g.drawImage(iceImg, 700, 250, 50, 50, null);
@@ -89,6 +97,8 @@ public class Level2Scenery extends Rectangle {
 		g.drawImage(iceImg, 700, 400, 50, 50, null);
 		g.drawImage(iceImg, 700, 450, 50, 50, null);
 		g.drawImage(iceImg, 700, 500, 50, 50, null);
+		g.drawImage(iceImg, 700, 550, 50, 50, null);
+		g.drawImage(iceImg, 700, 600, 50, 50, null);
 
 		// create block border on right
 		g.drawImage(block, 750, 50, 50, 50, null);
@@ -107,6 +117,7 @@ public class Level2Scenery extends Rectangle {
 		g.drawImage(block, 750, 650, 50, 50, null);
 
 		// create ice border on top of screen
+		g.drawImage(iceImg, 100, 50, 50, 50, null);
 		g.drawImage(iceImg, 150, 50, 50, 50, null);
 		g.drawImage(iceImg, 200, 50, 50, 50, null);
 		g.drawImage(iceImg, 250, 50, 50, 50, null);
@@ -117,6 +128,7 @@ public class Level2Scenery extends Rectangle {
 		g.drawImage(iceImg, 500, 50, 50, 50, null);
 		g.drawImage(iceImg, 550, 50, 50, 50, null);
 		g.drawImage(iceImg, 600, 50, 50, 50, null);
+		g.drawImage(iceImg, 650, 50, 50, 50, null);
 
 		// create block border on top of screen
 		g.drawImage(block, 0, 0, 50, 50, null);
@@ -137,6 +149,7 @@ public class Level2Scenery extends Rectangle {
 		g.drawImage(block, 750, 0, 50, 50, null);
 
 		// create ice border on bottom
+		g.drawImage(iceImg, 100, 600, 50, 50, null);
 		g.drawImage(iceImg, 150, 600, 50, 50, null);
 		g.drawImage(iceImg, 200, 600, 50, 50, null);
 		g.drawImage(iceImg, 250, 600, 50, 50, null);
@@ -147,6 +160,7 @@ public class Level2Scenery extends Rectangle {
 		g.drawImage(iceImg, 500, 600, 50, 50, null);
 		g.drawImage(iceImg, 550, 600, 50, 50, null);
 		g.drawImage(iceImg, 600, 600, 50, 50, null);
+		g.drawImage(iceImg, 650, 600, 50, 50, null);
 
 		// create block border on bottom
 		g.drawImage(block, 0, 650, 50, 50, null);

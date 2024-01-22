@@ -1,117 +1,141 @@
 /* Leah Huang and Selvahini Kamalarajan
    January 18, 2024
-   Cow
+   Player1
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 // extends Rectangle because drawing and managing collisions is easy
 public class Cow extends Rectangle {
 
 	private static final long serialVersionUID = 1L; // add default serial id for class
 
-	// variable declarations for velocity and speed of player 1
-	public int xVelocity;
-	public int yVelocity;
+	// Variable declarations
+	public static int xVelocity;
 
-	public final int SPEED = 4; // movement speed
+	public static int yVelocity; // sets velocity in vertical direction
 
-	public BufferedImage up1, up;
+	//public static int SPEED = 2; // movement speed of player 1
+	public Image cow; // create image for player 1
 
-	// constructor creates player 2 at given location with given dimensions, and the icon
+	boolean canRight = true, canLeft = true, canUp = true, canDown = true;
+	// constructor creates player 1 at given location with given dimensions, and the
+	// icon
 	public Cow(int x, int y) {
 		super(x, y, 40, 40);
-		getIcon();
-
+		xVelocity = 0;
+		yVelocity = 2;
+		cow = Toolkit.getDefaultToolkit().getImage("Cow.png"); //get image for broomstick paddle 
 	}
 
-	// updates the direction of player 2 based on user input
-	public void keyPressed(KeyEvent e) {
-		// set movement and speed
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			// move right
-			setXDirection(SPEED);
-			move();
-		}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			// move left
-			setXDirection(SPEED * -1);
-			move();
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			// move up
-			setYDirection(SPEED * -1);
-			move();
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			// move down
-			setYDirection(SPEED);
-			move();
-		}
-
-	}
-
-	// Makes player 2 stop moving in that direction
-	public void keyReleased(KeyEvent e) {
-		// stop all movement and speed
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			setXDirection(0);
-			move();
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			setXDirection(0);
-			move();
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			setYDirection(0);
-			move();
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			setYDirection(0);
-			move();
-		}
-	}
-
-	// called whenever the movement of player 2 changes in the x-direction
-	// (left/right)
-	public void setXDirection(int xDirection) {
-		xVelocity = xDirection;
-	}
-
-	public void setYDirection(int yDirection) {
-		yVelocity = yDirection;
-	}
-
-	// updates the current location of player 2
+	// updates the current location of player 1
 	public void move() {
-		x += xVelocity;
-		y += yVelocity;
-	}
-
-	// this method is used to get the image from source folder
-	public void getIcon() {
-		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/MintChocChip.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (y <= 100 && yVelocity < 0) {
+			canUp = false;
 		}
-	}
+		else if (y >= 550 && yVelocity > 0) {
+			canDown = false;
+		}
+		else if (x <= 100 && xVelocity < 0) {
+			canLeft = false;
+		}
+		else if (x >= 650 && xVelocity > 0) {
+			canRight = false;
+		}
+		
+		// column 1
+		else if (x >= 100 && x < 200 && y > 150 && y < 500 && xVelocity > 0) {
+			canRight = false;
+		}
+		else if (x > 100 && x <= 200 && y > 150 && y < 500 && xVelocity < 0) {
+			canLeft = false;
+		}
+		else if (x > 100 && x < 200 && y > 150 && y <= 500 && yVelocity < 0) {
+			canUp = false;
+		}
+		else if (x > 100 && x < 200 && y >= 150 && y < 500 && yVelocity > 0) {
+			canDown = false;
+		}
+		
+		// column 2
+		else if (x >= 250 && x < 350 && y > 150 && y < 500 && xVelocity > 0) {
+			canRight = false;
+		}
+		else if (x > 250 && x <= 350 && y > 150 && y < 500 && xVelocity < 0) {
+			canLeft = false;
+		}
+		else if (x > 250 && x < 350 && y > 150 && y <= 500 && yVelocity < 0) {
+			canUp = false;
+		}
+		else if (x > 250 && x < 350 && y >= 150 && y < 500 && yVelocity > 0) {
+			canDown = false;
+		}
+		
+		// column 3
+		else if (x >= 400 && x < 500 && y > 150 && y < 500 && xVelocity > 0) {
+			canRight = false;
+		}
+		else if (x > 400 && x <= 500 && y > 150 && y < 500 && xVelocity < 0) {
+			canLeft = false;
+		}
+		else if (x > 400 && x < 500 && y > 150 && y <= 500 && yVelocity < 0) {
+			canUp = false;
+		}
+		else if (x > 400 && x < 500 && y >= 150 && y < 500 && yVelocity > 0) {
+			canDown = false;
+		}
+		
+		// column 4
+		else if (x >= 550 && x < 650 && y > 150 && y < 500 && xVelocity > 0) {
+			canRight = false;
+		}
+		else if (x > 550 && x <= 650 && y > 150 && y < 500 && xVelocity < 0) {
+			canLeft = false;
+		}
+		else if (x > 550 && x < 650 && y > 150 && y <= 500 && yVelocity < 0) {
+			canUp = false;
+		}
+		else if (x > 550 && x < 650 && y >= 150 && y < 500 && yVelocity > 0) {
+			canDown = false;
+		}
+		else {
+			canUp = true;
+			canDown = true;
+			canRight = true;
+			canLeft = true;
+		}
+		if (!canRight) {
+			yVelocity = 2;
+			xVelocity = 0;
+		}
+		if (!canDown) {
+			xVelocity = -2;
+			yVelocity = 0;
+		}
+		if (!canLeft) {
+			yVelocity = -2;
+			xVelocity = 0;
+		}
+		if(!canUp) {
+			xVelocity = 2;
+			yVelocity = 0;
+		}
 
-	// draws the current location of player 2 to the screen
+		if (canUp && canDown) {
+			y += yVelocity;
+		}
+		if (canRight && canLeft) {
+			x += xVelocity;
+		}
+		
+		
+		
+	}
+	
+	// draws the current location of player 1 to the screen
 	public void draw(Graphics g) {
-		g.drawImage(up1, x, y, 40, 40, null);
-
+		g.drawImage(cow, x, y, 40, 40, null);
 	}
-
+	
 }
