@@ -594,7 +594,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					        clip.stop();
 					    	stopMusic();
 					    }
-
 				}
 
 				// Proceed to Character Selection Menu
