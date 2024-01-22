@@ -288,10 +288,7 @@ public class Player1 extends Rectangle {
 				x += xVelocity;
 				y += yVelocity;
 			}
-			
 		}
-		
-		
 	}
 	
 	// draws the current location of player 1 to the screen

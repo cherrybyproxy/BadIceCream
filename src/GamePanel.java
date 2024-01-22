@@ -33,6 +33,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 700;
 
+	public int totalScore1, totalScore2;
+
 // variable declaration and initialization
 	public Thread gameThread;
 	public Image image;
@@ -50,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public BlueCircle blueCircle4;
 	public RoundWinner roundWinner;
 
-	public ArrayList<Integer> recentScores; //array list to store total scores
+	public ArrayList<Integer> recentScores; // array list to store total scores
 
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, leftRed,
 			leftArrow, rightRed, rightArrow, icecream, snow, backbtn, scores, exitgame, char1, char2, smokeyb, title,
@@ -62,7 +64,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	// booleans for certain key input
 	public boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3,
 			icecream4, scoreBoard, continueBtn, level1, level2, nextLevel, nextLevel2, returnMain, selectionMenu,
-			leftHover, rightHover, left2Hover, right2Hover, character1, character2, charError, displayChar, melted1 = false, melted2 = false;
+			leftHover, rightHover, left2Hover, right2Hover, character1, character2, charError, displayChar, melted1,
+			melted2;
 
 	static boolean audio;
 
@@ -108,67 +111,59 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	public GamePanel() { // constructor sets values for booleans and creates game elements
 
+		playMusic("menu music.wav");
 		// set game condition booleans
-				playGame = false;
-				selectionMenu = false;
-				level1 = false;
-				level2 = false;
-				nextLevel = false;
-				exitGame = false;
-				mainMenu = false;
-				controls = false;
-				scoreBoard = false;
-				nextLevel2 = false;
-				returnMain = false;
-				audio = true;
-				continueBtn = false;
+		playGame = false;
+		selectionMenu = false;
+		level1 = false;
+		level2 = false;
+		nextLevel = false;
+		exitGame = false;
+		mainMenu = false;
+		controls = false;
+		scoreBoard = false;
+		nextLevel2 = false;
+		returnMain = false;
+		audio = true;
+		continueBtn = false;
 
-				cornerControls = true;
-				charError = false;
-				displayChar = false;
+		cornerControls = true;
+		charError = false;
+		displayChar = false;
 
-				// set booleans for ice cream graphics
-				icecream1 = false;
-				icecream2 = false;
-				icecream3 = false;
-				icecream4 = false;
+		// set booleans for ice cream graphics
+		icecream1 = false;
+		icecream2 = false;
+		icecream3 = false;
+		icecream4 = false;
+
+		melted1 = false;
+		melted2 = false;
+
+		totalScore1 = 0;
+		totalScore2 = 0;
+
 		for (int i = 0; i < charSelection.length; i++) {
 			charSelection[i] = false;
 		}
 		for (int i = 0; i < charSelection2.length; i++) {
 			charSelection2[i] = false;
 		}
-		//create arrays to store scores
+		// create arrays to store scores
 		recentScores = new ArrayList<Integer>();
-		
-		//fill array list with temporary coordinates
+
+		// fill array list with temporary coordinates
 		recentScores.add(0);
 		recentScores.add(0);
 		recentScores.add(0);
 		recentScores.add(0);
 		recentScores.add(0);
 		recentScores.add(0);
-		
+
 		sorted = false;
 
-		for (int top = recentScores.size() - 1; top > 0 && !sorted; top--) {
-
-			sorted = true; // flags true for boolean value
-
-			for (int i = 0; i < top; i++) {
-				// compares adjacent elements from left to right and switches if out of order
-				if (recentScores.get(i) > recentScores.get(i + 1)) {
-					// switches array values if out of order
-					temp = recentScores.get(i);
-					recentScores.set(i, recentScores.get(i + 1));
-					recentScores.set(i + 1, temp);
-					sorted = false;
-				}
-			}
-		} // end of bubble sort
-
 		createFile();
-		
+
 // creating sprite - experiment
 		mintSprite = new Mint(400, 450);
 
@@ -185,11 +180,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		// create ice cream characters and score
 		player1 = new Player1(350, 400, 1);
 		player2 = new Player2(400, 400, 1);
-		cow = new Cow (650, 100);
-		
+		cow = new Cow(650, 100);
+
 		score = new Score(GAME_WIDTH, GAME_HEIGHT);
 		score2 = new Score(GAME_WIDTH, GAME_HEIGHT);
-		
+
 		roundWinner = new RoundWinner(GAME_WIDTH, GAME_HEIGHT);
 		igloo = new Igloo(350, 300);
 
@@ -306,21 +301,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		level2Ice.add(new Level2Ice(150, 350));
 		level2Ice.add(new Level2Ice(150, 400));
 		level2Ice.add(new Level2Ice(150, 450));
-		
+
 		level2Ice.add(new Level2Ice(300, 200));
 		level2Ice.add(new Level2Ice(300, 250));
 		level2Ice.add(new Level2Ice(300, 300));
 		level2Ice.add(new Level2Ice(300, 350));
 		level2Ice.add(new Level2Ice(300, 400));
 		level2Ice.add(new Level2Ice(300, 450));
-		
+
 		level2Ice.add(new Level2Ice(450, 200));
 		level2Ice.add(new Level2Ice(450, 250));
 		level2Ice.add(new Level2Ice(450, 300));
 		level2Ice.add(new Level2Ice(450, 350));
 		level2Ice.add(new Level2Ice(450, 400));
 		level2Ice.add(new Level2Ice(450, 450));
-		
+
 		level2Ice.add(new Level2Ice(600, 200));
 		level2Ice.add(new Level2Ice(600, 250));
 		level2Ice.add(new Level2Ice(600, 300));
@@ -360,19 +355,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		bananaCoord2.add(new Banana(250, 350));
 		bananaCoord2.add(new Banana(200, 400));
 		bananaCoord2.add(new Banana(250, 450));
-		
+
 		bananaCoord2.add(new Banana(400, 200));
 		bananaCoord2.add(new Banana(350, 200));
 		bananaCoord2.add(new Banana(400, 300));
 		bananaCoord2.add(new Banana(350, 300));
-		
+
 		bananaCoord2.add(new Banana(550, 200));
 		bananaCoord2.add(new Banana(500, 250));
 		bananaCoord2.add(new Banana(550, 300));
 		bananaCoord2.add(new Banana(500, 350));
 		bananaCoord2.add(new Banana(550, 400));
 		bananaCoord2.add(new Banana(500, 450));
-		
+
 		bananaCoord2.add(new Banana(100, 100));
 		bananaCoord2.add(new Banana(100, 550));
 		bananaCoord2.add(new Banana(650, 100));
@@ -427,45 +422,64 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		draw(graphics); // update the positions of everything on the screen
 		g.drawImage(image, 0, 0, this); // redraw everything on the screen
 
-	} public static int[] getHighScore(String filepath) {
-		 FileReader readFile = null;
-	        BufferedReader reader = null;
+	}
 
-	        try {
-	            readFile = new FileReader(filepath);
-	            reader = new BufferedReader(readFile);
+	public static int[] getHighScore(String filepath) {
+		FileReader readFile = null;
+		BufferedReader reader = null;
 
-	            // Read the entire line containing scores
-	            String line = reader.readLine();
+		try {
+			readFile = new FileReader(filepath);
+			reader = new BufferedReader(readFile);
 
-	            // Split the line into individual scores
-	            String[] scoreStrings = line.split(" ");
+			// Read the entire line containing scores
+			String line = reader.readLine();
 
-	            // Create an integer array to store the scores
-	            int[] scores = new int[scoreStrings.length];
+			// Split the line into individual scores
+			String[] scoreStrings = line.split(" ");
 
-	            // Convert and store each score in the array
-	            for (int i = 0; i < scoreStrings.length; i++) {
-	                scores[i] = Integer.parseInt(scoreStrings[i]);
-	            }
+			// Create an integer array to store the scores
+			int[] scores = new int[scoreStrings.length];
 
-	            return scores;
-	        } catch (Exception e) {
-	        	 return new int[0]; // Return an empty array if an error occurs
-	  	       
-	        } finally {
-	            try {
-	                if (reader != null) {
-	                    reader.close();
-	                }
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
+			// Convert and store each score in the array
+			for (int i = 0; i < scoreStrings.length; i++) {
+				scores[i] = Integer.parseInt(scoreStrings[i]);
+			}
+
+			return scores;
+		} catch (Exception e) {
+			return new int[0]; // Return an empty array if an error occurs
+
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void createFile() {
 		File scoreFile = new File("scores.txt");
+
+		// sort the array list from greatest to least using bubble sort
+		for (int top = recentScores.size() - 1; top > 0 && !sorted; top--) {
+
+			sorted = true; // flags true for boolean value
+
+			for (int i = 0; i < top; i++) {
+				// compares adjacent elements from left to right and switches if out of order
+				if (recentScores.get(i) > recentScores.get(i + 1)) {
+					// switches array values if out of order
+					temp = recentScores.get(i);
+					recentScores.set(i, recentScores.get(i + 1));
+					recentScores.set(i + 1, temp);
+					sorted = false;
+				}
+			}
+		} // end of bubble sort
 
 		if (!scoreFile.exists()) {
 			try {
@@ -484,7 +498,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			if (recentScores.size() > 5) {
 
-				//writer.write("Top Five High Scores\n");
+				// writer.write("Top Five High Scores\n");
 				for (int x = 0; x < 5; x++) {
 					writer.write(recentScores.get(x) + " ");
 
@@ -505,7 +519,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		}
 		// }
 	}
-	
+
 	public void mouseInput() { // manually detect mouse input through motion and clicks
 
 		// Instantiate a MouseAdapter and override the mousePressed method
@@ -539,10 +553,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					scoreBoard = false;
 				}
 				// back to main menu button click
-				if (!playGame & !level1 & !level2 & scoreBoard
-						& (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650)
-						|| (!playGame & !level1 & !level2 & controls
-								& (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
+				if ((!playGame && !level1 && !level2 && scoreBoard && (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))
+					      || (!playGame && !level1 && !level2 && controls && (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
 
 					// display main menu
 					exitGame = false;
@@ -559,26 +571,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// Exit Game when Clicked
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 520 && btnY <= 570) {
 
-					exitGame = true;
-
+					if (!scoreBoard && !controls) {
+						exitGame = true;
+					}
 				}
 				// display audio in top right corner
 				if (audio && btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
 
-					audio = false;
+					audio = !audio;
 
 					System.out.println("Audio Toggle On/Off");
 
 				}
 
-				// display audio in top right corner
-				if (!audio && btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
-
-					audio = true;
-
-					System.out.println("Audio Toggle On/Off");
-
-				}
 				// Proceed to Character Selection Menu
 				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 350 && btnY <= 410) {
 					selectionMenu = true;
@@ -590,7 +595,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					repaint();
 				}
 				// Display Score Leader Board
-				if ((mainMenu || returnMain) && btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 410 && btnY <= 470) {
 
 					scoreBoard = true;
 					playGame = false;
@@ -601,7 +606,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					mainMenu = false;
 				}
 				// Display Player Controls
-				if ((mainMenu || returnMain) && btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
+				if (mainMenu && btnX >= 180 && btnX <= 760 && btnY >= 470 && btnY <= 520) {
 					playGame = false;
 					level1 = false;
 					level2 = false;
@@ -765,7 +770,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		repaint(); // reset graphics on screen
 	}
-
 
 // call the draw methods in each class to update positions as things move
 	public void draw(Graphics g) {
@@ -946,24 +950,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					public void run() { // override run method
 						// catch block used if another thread interrupts this thread
 						try {
-							Thread.sleep(4000);
+							Thread.sleep(3000);
 
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 						// Performs code asynchronously in Event dispatcher thread
 						SwingUtilities.invokeLater(() -> {
-							playGame = true; // change to true after done char menu
-							// clip.stop(); // stop music clip
-							// playMusic("main theme.wav"); // plays sound file
-							level1 = true;
-							level2 = false;
-							 cornerControls = true;
-							selectionMenu = false;
-							controls = false;
-							scoreBoard = false;
-							exitGame = false;
-							mainMenu = false;
+							synchronized (GamePanel.this) {
+								playGame = true; // change to true after done char menu
+								// clip.stop(); // stop music clip
+								// playMusic("main theme.wav"); // plays sound file
+								level1 = true;
+								level2 = false;
+								selectionMenu = false;
+								controls = false;
+								scoreBoard = false;
+								exitGame = false;
+								mainMenu = false;
+							}
 						});
 					}
 				}).start(); // begins execution of thread
@@ -987,7 +992,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			mouseInput(); // checks for mouse input
 		}
 
-		if (exitGame) { // terminate program after delay
+		if (!scoreBoard && !controls && exitGame) { // terminate program after delay
 
 			exitgame = Toolkit.getDefaultToolkit().getImage("exit-game.gif"); // create image
 
@@ -1038,19 +1043,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawImage(backbtn, 300, 580, 200, 100, null); // draw image to screen
 
 			Font font = new Font("Arial", Font.BOLD, 20);
-	        g.setFont(font);
-	       
-	         int y=250;
-			
-	         int[] scores = getHighScore("scores.txt");
-	         
-	         for (int i = 0; i < scores.length; i++) {
-	        	    int score = scores[i];
-	        	    System.out.println(score);
-	        	    g.drawString(score + "", 200, y);
-	        	    y+=30;
-	        	}
-			
+			g.setFont(font);
+
+			int y = 250;
+
+			int[] scores = getHighScore("scores.txt");
+
+			for (int i = 0; i < scores.length; i++) {
+				int score = scores[i];
+				System.out.println(score);
+				g.drawString(score + "", 200, y);
+				y += 30;
+			}
+
 			mouseInput(); // checks for mouse input
 		}
 
@@ -1068,12 +1073,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			igloo.draw(g); // draw igloo in center
 
 			// display score and players on screen
-		/*	if (highscore==0) {
-				//initialize high score
-				highscore = Integer.parseInt(getHighScore());
-			}  */
+			/*
+			 * if (highscore==0) { //initialize high score highscore =
+			 * Integer.parseInt(getHighScore()); }
+			 */
 			score.draw(g);
-			
+
 			player1.draw(g);
 			player2.draw(g);
 
@@ -1103,7 +1108,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
 				roundWinner.draw(g);
-				
+
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 
@@ -1126,6 +1131,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Play Next Level...", 200, 580); // draw winner result to screen
 
+				totalScore1 += Score.score;
+				totalScore2 += Score.score2;
 				nextLevel = true;
 
 				player1.level++;
@@ -1207,7 +1214,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
+				totalScore1 += Score.score;
+				totalScore2 += Score.score2;
 
+				if (totalScore1 > totalScore2) { // add up total score
+					recentScores.add(totalScore1);
+
+				} else if (totalScore1 < totalScore2) {
+					recentScores.add(totalScore1);
+				} else {
+					recentScores.add(totalScore1);
+				}
 				nextLevel2 = true;
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
@@ -1224,35 +1241,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
 
-		/*
-		 * if (!audio) { // pause music
-		 *
-		 * cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
-		 *
-		 * g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
-		 *
-		 * clipTimePosition = clip.getMicrosecondLength();
-		 *
-		 * clip.stop(); // stop music clip
-		 *
-		 * } else { // resume music
-		 *
-		 * clip.start(); clip.loop(Clip.LOOP_CONTINUOUSLY); }
-		 */
+		if (!audio) { // pause music
 
-	/*	if (!audio) {
 			cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
+
 			g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
-			clipTimePosition = clip.getMicrosecondLength();
+
+			// clipTimePosition = clip.getMicrosecondLength();
+
 			clip.stop(); // stop music clip
 
-		} */
-	/*	if (audio) {
-			clip.start();
-			clip.loop(Clip.LOOP_CONTINUOUSLY);
-			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
+		}
 
-		} */
+		/*
+		 * if (!audio) { cross = Toolkit.getDefaultToolkit().getImage("cross.png"); //
+		 * create image g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw
+		 * image to screen clipTimePosition = clip.getMicrosecondLength(); clip.stop();
+		 * // stop music clip
+		 * 
+		 * }
+		 */
+		/*
+		 * if (audio) { clip.start(); clip.loop(Clip.LOOP_CONTINUOUSLY); sound =
+		 * Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
+		 * 
+		 * }
+		 */
 	}
 
 // call the move methods in other classes to update positions for fluid
@@ -1268,39 +1282,39 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public void checkCollision() {
 
 		if (level1 == true) {
-			
-			 // detects collision between player 1 and iceblocks 
-			for (int i = 0; i < 20;i++) { 
-				if (player1.intersects(iceC2.get(i)) && player1.x > iceCX[i] && player1.xVelocity < 0) { 
-					player1.x = iceCX[i] + 50; 
-				} 
-				if (player1.intersects(iceC2.get(i)) && player1.x < iceCX[i] && player1.xVelocity > 0) { 
-					player1.x = iceCX[i] - 50; 
-				} 
-				if (player1.intersects(iceC2.get(i)) && player1.y > iceCY[i] && player1.yVelocity < 0) { 
-					player1.y = iceCY[i] + 50; 
-				} 
-				if (player1.intersects(iceC2.get(i)) && player1.y < iceCY[i] && player1.yVelocity > 0) { 
-					player1.y = iceCY[i] - 50; 
-					} 
-				
-			} 
-			// detects collision between player 2 and iceblocks 
-			for (int i = 0; i < 20; i++) { 
-				if (player2.intersects(iceC2.get(i)) && player2.x > iceCX[i] && player2.xVelocity < 0) { 
-					player2.x = iceCX[i] + 50; 
-				} 
-				if (player2.intersects(iceC2.get(i)) && player2.x < iceCX[i] && player2.xVelocity > 0) { 
-					player2.x = iceCX[i] - 50; 
-				} 
-				if (player2.intersects(iceC2.get(i)) && player2.y > iceCY[i] && player2.yVelocity < 0) { 
-					player2.y = iceCY[i] + 50; 
-				} 
-				if (player2.intersects(iceC2.get(i)) && player2.y < iceCY[i] && player2.yVelocity > 0) { 
-					player2.y = iceCY[i] - 50; 
-				} 
+
+			// detects collision between player 1 and iceblocks
+			for (int i = 0; i < 20; i++) {
+				if (player1.intersects(iceC2.get(i)) && player1.x > iceCX[i] && player1.xVelocity < 0) {
+					player1.x = iceCX[i] + 50;
+				}
+				if (player1.intersects(iceC2.get(i)) && player1.x < iceCX[i] && player1.xVelocity > 0) {
+					player1.x = iceCX[i] - 50;
+				}
+				if (player1.intersects(iceC2.get(i)) && player1.y > iceCY[i] && player1.yVelocity < 0) {
+					player1.y = iceCY[i] + 50;
+				}
+				if (player1.intersects(iceC2.get(i)) && player1.y < iceCY[i] && player1.yVelocity > 0) {
+					player1.y = iceCY[i] - 50;
+				}
+
 			}
-			 
+			// detects collision between player 2 and iceblocks
+			for (int i = 0; i < 20; i++) {
+				if (player2.intersects(iceC2.get(i)) && player2.x > iceCX[i] && player2.xVelocity < 0) {
+					player2.x = iceCX[i] + 50;
+				}
+				if (player2.intersects(iceC2.get(i)) && player2.x < iceCX[i] && player2.xVelocity > 0) {
+					player2.x = iceCX[i] - 50;
+				}
+				if (player2.intersects(iceC2.get(i)) && player2.y > iceCY[i] && player2.yVelocity < 0) {
+					player2.y = iceCY[i] + 50;
+				}
+				if (player2.intersects(iceC2.get(i)) && player2.y < iceCY[i] && player2.yVelocity > 0) {
+					player2.y = iceCY[i] - 50;
+				}
+			}
+
 			for (int i = 0; i < 16; i++) {
 // conditions for when player intersects with fruits
 				if (player1.intersects(bananaCoord.get(i)) && drawBanana[i] == true) {
@@ -1345,7 +1359,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 			}
 
-// define game bounds for players
+			// define game bounds for players
 			if (player1.x > 650) {
 				player1.x = 650;
 			}
@@ -1386,60 +1400,54 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					melted1 = true;
 					System.out.println("MELTED");
 				}
-			}
-			else if (cow.x - 600 <= player1.x && cow.y == player1.y && Cow.xVelocity < 0 && !melted1) {
+			} else if (cow.x - 600 <= player1.x && cow.y == player1.y && Cow.xVelocity < 0 && !melted1) {
 				Cow.xVelocity = -5;
 				if (cow.intersects(player1)) {
 					melted1 = true;
 					System.out.println("MELTED");
 				}
-			}
-			else if (cow.y + 500 >= player1.y && cow.x == player1.x && Cow.yVelocity > 0 && !melted1) {
+			} else if (cow.y + 500 >= player1.y && cow.x == player1.x && Cow.yVelocity > 0 && !melted1) {
 				Cow.yVelocity = 5;
 				if (cow.intersects(player1)) {
 					melted1 = true;
 					System.out.println("MELTED");
 				}
-			}
-			else if (cow.y - 500 >= player1.y && cow.x == player1.x && Cow.yVelocity < 0 && !melted1) {
+			} else if (cow.y - 500 >= player1.y && cow.x == player1.x && Cow.yVelocity < 0 && !melted1) {
 				Cow.xVelocity = -5;
 				if (cow.intersects(player1)) {
 					melted1 = true;
 					System.out.println("MELTED");
 				}
 			}
-			
+
 			if (cow.x + 600 >= player2.x && cow.y == player2.y && Cow.xVelocity > 0 && !melted2) {
 				Cow.xVelocity = 5;
 				if (cow.intersects(player2)) {
 					melted2 = true;
 					System.out.println("MELTED");
 				}
-			}
-			else if (cow.x - 600 <= player2.x && cow.y == player2.y && Cow.xVelocity < 0 && !melted2) {
+			} else if (cow.x - 600 <= player2.x && cow.y == player2.y && Cow.xVelocity < 0 && !melted2) {
 				Cow.xVelocity = -5;
 				if (cow.intersects(player2)) {
 					melted2 = true;
 					System.out.println("MELTED");
 				}
-			}
-			else if (cow.y + 500 >= player2.y && cow.x == player2.x && Cow.yVelocity > 0 && !melted2) {
+			} else if (cow.y + 500 >= player2.y && cow.x == player2.x && Cow.yVelocity > 0 && !melted2) {
 				Cow.yVelocity = 5;
 				if (cow.intersects(player2)) {
 					melted2 = true;
 					System.out.println("MELTED");
 				}
-			}
-			else if (cow.y - 500 >= player2.y && cow.x == player2.x && Cow.yVelocity < 0 && !melted2) {
+			} else if (cow.y - 500 >= player2.y && cow.x == player2.x && Cow.yVelocity < 0 && !melted2) {
 				Cow.xVelocity = -5;
 				if (cow.intersects(player2)) {
 					melted2 = true;
 					System.out.println("MELTED");
 				}
 			}
-			
+
 			for (int i = 0; i < 20; i++) {
-// conditions for when player intersects with fruits
+				// conditions for when player intersects with fruits
 				if (player1.intersects(bananaCoord2.get(i)) && drawBanana2[i] == true) {
 					Score.score += 150; // increase score
 					drawBanana2[i] = false;
@@ -1457,7 +1465,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 
 			if (onBanana2 == 20) {
-// display conditions for when player 1 collects grapes
+				// display conditions for when player 1 collects grapes
 				for (int i = 0; i < 8; i++) {
 
 					if (player1.intersects(grapeCoord2.get(i)) && drawGrape2[i] == true) {
@@ -1469,7 +1477,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 
 				for (int i = 0; i < 8; i++) {
-// grapes disappear when player "collects" (touches) them
+					// grapes disappear when player "collects" (touches) them
 					if (player2.intersects(grapeCoord2.get(i)) && drawGrape2[i] == true) {
 						Score.score2 += 150;
 						drawGrape2[i] = false;
@@ -1478,7 +1486,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 			}
 		}
-
 	}
 
 // Calls other methods to move objects, check for collision, and update the
@@ -1537,6 +1544,36 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 //playGame = false; //add to last game level
 			controls = false;
 			scoreBoard = false;
+
+			//set all other game variables to false
+			playGame = false;
+			selectionMenu = false;
+			level1 = false;
+			level2 = false;
+			nextLevel = false;
+			exitGame = false;
+			controls = false;
+			scoreBoard = false;
+			nextLevel2 = false;
+			returnMain = false;
+			audio = true;
+			continueBtn = false;
+
+			cornerControls = true;
+			charError = false;
+			displayChar = false;
+
+			// set booleans for ice cream graphics
+			icecream1 = false;
+			icecream2 = false;
+			icecream3 = false;
+			icecream4 = false;
+
+			melted1 = false;
+			melted2 = false;
+
+			totalScore1 = 0;
+			totalScore2 = 0;
 		}
 
 		player1.keyPressed(e);
