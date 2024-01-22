@@ -50,6 +50,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public BlueCircle blueCircle4;
 	public RoundWinner roundWinner;
 
+	// timer test
+	public boolean gameTransition = false;
+
 	public ArrayList<Integer> recentScores; // array list to store all scores
 
 	// variables to store images
@@ -551,6 +554,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					cornerControls = !cornerControls; // invert boolean value
 
+					System.out.println("click");
 					controls = false;
 					mainMenu = false;
 					exitGame = false;
@@ -955,8 +959,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				loading = Toolkit.getDefaultToolkit().getImage("loading.png"); // create image
 				g.drawImage(loading, 275, 525, 225, 25, null);
 
+				gameTransition = true;
+			}
+			
+			if (gameTransition) {
+			
+				 Timer timer = new Timer(2000, new ActionListener() { // 2000 milliseconds (2 seconds) delay
+		                @Override
+		                public void actionPerformed(ActionEvent e) {
+		                    playGame = true;
+		                    level1 = true;
+		                    selectionMenu = false;
+		                    mainMenu = false;
+		                	gameTransition = false; // Reset the boolean after the delay
+		                    // Other actions or transitions to play game...
+		                }
+		            });
+		            timer.setRepeats(false); // Set to non-repeating
+		            timer.start();
+		            
 				// Start new thread to implement runnable interface to delay and terminate game
-				new Thread(new Runnable() {
+			/*	new Thread(new Runnable() {
 					@Override
 					public void run() { // override run method
 						// catch block used if another thread interrupts this thread
@@ -981,6 +1004,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 						});
 					}
 				}).start(); // begins execution of thread
+*/
 			}
 		}
 
@@ -1003,14 +1027,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		if (!scoreBoard && !controls && exitGame) { // terminate program after delay
 
-			exitgame = Toolkit.getDefaultToolkit().getImage("exit-game.gif"); // create image
+			exitgame = Toolkit.getDefaultToolkit().getImage("exit-game.png"); // create image
 
 			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw background image to screen
 
 			g.drawImage(exitgame, 125, 50, 550, 600, null); // draw image to screen
 
 			// Start new thread to implement runnable interface to delay and terminate game
-			new Thread(new Runnable() {
+		/*	new Thread(new Runnable() {
 
 				@Override
 				public void run() { // override run method
@@ -1033,6 +1057,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					});
 				}
 			}).start(); // begins execution of thread
+			*/
+			Timer timer = new Timer(4000, new ActionListener() { // 2000 milliseconds (2 seconds) delay
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                	mainMenu = false;
+					scoreBoard = false;
+					playGame = false;
+					level1 = false;
+					level2 = false;
+					controls = false;
+					System.exit(0); // Terminate the program
+                }
+            });
+            timer.setRepeats(false); // Set to non-repeating
+            timer.start();
 		}
 
 		if (scoreBoard) { // display score board - will update with saved high scores
@@ -1071,6 +1110,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// clip.stop(); // stop music clip
 			// playMusic("main theme.wav"); // plays sound file
 			mouseInput(); // checks for mouse input
+			
+			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
+			settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
 
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
 
@@ -1150,6 +1192,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 			}
 		}
+		// Player Controls Toggle
+		g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
+		g.drawImage(settings, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
+					if (playGame && cornerControls) { // display settings to user
+						gameControls = Toolkit.getDefaultToolkit().getImage("gameControls.gif"); // create image
+						g.drawImage(gameControls, 150, 150, 500, 400, null);
+					}
 
 		if (playGame && level2) {
 
@@ -1232,14 +1281,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				nextLevel2 = true;
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
-			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
-			settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
-			// Player Controls Toggle
-			if (playGame && cornerControls) { // display settings to user
-				gameControls = Toolkit.getDefaultToolkit().getImage("gameControls.gif"); // create image
-				g.drawImage(gameControls, 150, 150, 500, 400, null);
-			}
-			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 			g.drawImage(settings, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
 
 		}
@@ -1283,6 +1324,28 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		 * 
 		 * }
 		 */
+	}
+
+	// the actionPerformed method in this class
+	// is called each time the Timer "goes off"
+	class TimerListener implements ActionListener {
+		public void actionPerformed(ActionEvent evt) {
+			progressBar.setValue(task.getCurrent());
+			if (task.done()) {
+				Toolkit.getDefaultToolkit().beep();
+				timer.stop();
+				startButton.setEnabled(true);
+			}
+		}
+	}
+
+	class ButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent evt) {
+			startButton.setEnabled(false);
+			progressBar.setValue(progressBar.getMinimum());
+			task.go();
+			timer.start();
+		}
 	}
 
 // call the move methods in other classes to update positions for fluid
@@ -1557,11 +1620,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// set game boolean values only if game has ended
 			level2 = false;
 			level1 = false;
+			nextLevel = false;
 			mainMenu = true;
 			controls = false;
 			scoreBoard = false;
 			playGame = false;
-			nextLevel = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel2) {
