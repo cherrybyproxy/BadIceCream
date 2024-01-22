@@ -15,6 +15,14 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+//import packages for GUI, swing and files
+import java.awt.*;
+import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, ActionListener, MouseMotionListener {
 // Child of JPanel and implements KeyListener and Runnable interface
@@ -42,19 +50,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public BlueCircle blueCircle4;
 	public RoundWinner roundWinner;
 
-	public int highscore = 0;
+	public ArrayList<Integer> recentScores; //array list to store total scores
 
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, leftRed,
 			leftArrow, rightRed, rightArrow, icecream, snow, backbtn, scores, exitgame, char1, char2, smokeyb, title,
-			confirmBtn, sorbet, downArrow, sorbetMenu, mintMenu, smokeyMenu, error, loading;
+			confirmBtn, sorbet, downArrow, sorbetMenu, mintMenu, smokeyMenu, error, loading, gameControls;
 
-	Image[] movementPics = new Image[3];
+	int temp;
+	boolean sorted = false;
 
 	// booleans for certain key input
 	public boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, icecream1, icecream2, icecream3,
 			icecream4, scoreBoard, continueBtn, level1, level2, nextLevel, nextLevel2, returnMain, selectionMenu,
-			leftHover, rightHover, left2Hover, right2Hover, character1, character2, charError, displayChar, help1,
-			help2, help3, melted1 = false, melted2 = false;
+			leftHover, rightHover, left2Hover, right2Hover, character1, character2, charError, displayChar, melted1 = false, melted2 = false;
 
 	static boolean audio;
 
@@ -101,46 +109,66 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public GamePanel() { // constructor sets values for booleans and creates game elements
 
 		// set game condition booleans
-		playGame = false;
-		selectionMenu = false;
-		level1 = false; 
-		level2 = false;
-		nextLevel = false;
-		exitGame = false;
-		mainMenu = false;
-		controls = false;
-		scoreBoard = false;
-		nextLevel2 = false;
-		returnMain = false;
-		audio = true;
-		continueBtn = false;
+				playGame = false;
+				selectionMenu = false;
+				level1 = false;
+				level2 = false;
+				nextLevel = false;
+				exitGame = false;
+				mainMenu = false;
+				controls = false;
+				scoreBoard = false;
+				nextLevel2 = false;
+				returnMain = false;
+				audio = true;
+				continueBtn = false;
 
-		cornerControls = false;  // leah - change to true
-		charError = false;
-		displayChar = false;
+				cornerControls = true;
+				charError = false;
+				displayChar = false;
 
-		help1 = false;
-		help2 = false;
-		help3 = false;
-
-		// set booleans for ice cream graphics
-		icecream1 = false;
-		icecream2 = false;
-		icecream3 = false;
-		icecream4 = false;
-		playMusic("menu music.wav"); // plays sound file
-		
-
-		movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.gif");
-		movementPics[1] = Toolkit.getDefaultToolkit().getImage("help2.gif");
-		movementPics[2] = Toolkit.getDefaultToolkit().getImage("help3.gif");
-
+				// set booleans for ice cream graphics
+				icecream1 = false;
+				icecream2 = false;
+				icecream3 = false;
+				icecream4 = false;
 		for (int i = 0; i < charSelection.length; i++) {
 			charSelection[i] = false;
 		}
 		for (int i = 0; i < charSelection2.length; i++) {
 			charSelection2[i] = false;
 		}
+		//create arrays to store scores
+		recentScores = new ArrayList<Integer>();
+		
+		//fill array list with temporary coordinates
+		recentScores.add(0);
+		recentScores.add(0);
+		recentScores.add(0);
+		recentScores.add(0);
+		recentScores.add(0);
+		recentScores.add(0);
+		
+		sorted = false;
+
+		for (int top = recentScores.size() - 1; top > 0 && !sorted; top--) {
+
+			sorted = true; // flags true for boolean value
+
+			for (int i = 0; i < top; i++) {
+				// compares adjacent elements from left to right and switches if out of order
+				if (recentScores.get(i) > recentScores.get(i + 1)) {
+					// switches array values if out of order
+					temp = recentScores.get(i);
+					recentScores.set(i, recentScores.get(i + 1));
+					recentScores.set(i + 1, temp);
+					sorted = false;
+				}
+			}
+		} // end of bubble sort
+
+		createFile();
+		
 // creating sprite - experiment
 		mintSprite = new Mint(400, 450);
 
@@ -399,90 +427,85 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		draw(graphics); // update the positions of everything on the screen
 		g.drawImage(image, 0, 0, this); // redraw everything on the screen
 
-	} // end of paint method
-	/*public String getHighScore() {
-		//format: name:score
-		FileReader readFile = null;
-		BufferedReader reader = null;
-		try {
-			readFile = new FileReader("scores.txt");
-			reader = new BufferedReader(readFile);
+	} public static int[] getHighScore(String filepath) {
+		 FileReader readFile = null;
+	        BufferedReader reader = null;
 
-			return reader.readLine();
-		} catch (Exception e) {
-			return "0";
-		} finally {
+	        try {
+	            readFile = new FileReader(filepath);
+	            reader = new BufferedReader(readFile);
+
+	            // Read the entire line containing scores
+	            String line = reader.readLine();
+
+	            // Split the line into individual scores
+	            String[] scoreStrings = line.split(" ");
+
+	            // Create an integer array to store the scores
+	            int[] scores = new int[scoreStrings.length];
+
+	            // Convert and store each score in the array
+	            for (int i = 0; i < scoreStrings.length; i++) {
+	                scores[i] = Integer.parseInt(scoreStrings[i]);
+	            }
+
+	            return scores;
+	        } catch (Exception e) {
+	        	 return new int[0]; // Return an empty array if an error occurs
+	  	       
+	        } finally {
+	            try {
+	                if (reader != null) {
+	                    reader.close();
+	                }
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	}
+
+	public void createFile() {
+		File scoreFile = new File("scores.txt");
+
+		if (!scoreFile.exists()) {
 			try {
-				if (reader != null) {
-					reader.close();
-				}
+				scoreFile.createNewFile();
+				System.out.println("file created " + scoreFile.getCanonicalPath()); // returns the path string
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-	}
 
-	public void createFile() {
+		FileWriter writeFile = null;
+		BufferedWriter writer = null;
 		try {
-			FileOutputStream fos = new FileOutputStream("scores.txt");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			// write object to file
-			oos.writeObject(score);
-			oos.writeObject(score2);
-			System.out.println("Done");
-			// closing resources
-			oos.close();
-			fos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+			writeFile = new FileWriter(scoreFile);
+			writer = new BufferedWriter(writeFile);
 
-	public void checkScore() {
+			if (recentScores.size() > 5) {
 
-		System.out.print(highscore);
-		if (Score.score > highscore) {
-			//String name = JOptionPane.showInputDialog("You set a new highscore. What is your name?");
-			//highscore = name + ":" + Score.score;
-			highscore = Score.score;
-		}
-			File scoreFile = new File("scores.txt");
-			if (!scoreFile.exists()) {
-				try {
-					scoreFile.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
+				//writer.write("Top Five High Scores\n");
+				for (int x = 0; x < 5; x++) {
+					writer.write(recentScores.get(x) + " ");
+
 				}
 			}
-			FileWriter writeFile = null;
-			BufferedWriter writer = null;
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error while saving highscore",
+					JOptionPane.ERROR_MESSAGE);
+		} finally {
 			try {
-				writeFile = new FileWriter(scoreFile);
-				writer = new BufferedWriter(writeFile);
-				writer.write(highscore);
+				if (writer != null) {
+					writer.close();
+				}
 			} catch (Exception e) {
 				System.out.println("An error occured");
-			} finally {
-				try {
-					if (writer != null) {
-						writer.close();
-					}
-				} catch (Exception e) {
-					System.out.println("An error occured");
-				}
 			}
-	} 
-	public void readFile() {
-		/*
-		 * try { FileInputStream fis = new FileInputStream("scores.txt");
-		 * ObjectInputStream ois = new ObjectInputStream(fis); // write object to file
-		 * 
-		 * System.out.println("Done"); // closing resources oos.close(); fos.close(); }
-		 * catch (IOException e) { e.printStackTrace(); }
-		 */
+		}
+		// }
+	}
 	
-
-
 	public void mouseInput() { // manually detect mouse input through motion and clicks
 
 		// Instantiate a MouseAdapter and override the mousePressed method
@@ -509,10 +532,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 					cornerControls = !cornerControls; // invert boolean value
 
-					System.out.println("player controls");
 					controls = false;
 					mainMenu = false;
-					selectionMenu = false;
 					exitGame = false;
 					returnMain = false;
 					scoreBoard = false;
@@ -544,7 +565,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// display audio in top right corner
 				if (audio && btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
 
-					audio = !audio;
+					audio = false;
+
+					System.out.println("Audio Toggle On/Off");
+
+				}
+
+				// display audio in top right corner
+				if (!audio && btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
+
+					audio = true;
 
 					System.out.println("Audio Toggle On/Off");
 
@@ -735,6 +765,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		repaint(); // reset graphics on screen
 	}
+
 
 // call the draw methods in each class to update positions as things move
 	public void draw(Graphics g) {
@@ -927,7 +958,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 							// playMusic("main theme.wav"); // plays sound file
 							level1 = true;
 							level2 = false;
-							// cornerControls = true;
+							 cornerControls = true;
 							selectionMenu = false;
 							controls = false;
 							scoreBoard = false;
@@ -1006,7 +1037,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			g.drawImage(backbtn, 300, 580, 200, 100, null); // draw image to screen
 
-			g.drawString("Highscore: " + highscore, 150, 100);
+			Font font = new Font("Arial", Font.BOLD, 20);
+	        g.setFont(font);
+	       
+	         int y=250;
+			
+	         int[] scores = getHighScore("scores.txt");
+	         
+	         for (int i = 0; i < scores.length; i++) {
+	        	    int score = scores[i];
+	        	    System.out.println(score);
+	        	    g.drawString(score + "", 200, y);
+	        	    y+=30;
+	        	}
+			
 			mouseInput(); // checks for mouse input
 		}
 
@@ -1090,74 +1134,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// Player Controls Toggle
 			if (playGame && cornerControls) { // display settings to user
 
-				g.drawImage(movementPics[0], 150, 150, 500, 400, null);
-
-				// Start new thread to implement runnable interface to delay and terminate game
-				new Thread(new Runnable() {
-					@Override
-					public void run() { // override run method
-						// catch block used if another thread interrupts this thread
-						try {
-							Thread.sleep(5000);
-
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						// Performs code asynchronously in Event dispatcher thread
-						SwingUtilities.invokeLater(() -> {
-							help1 = true;
-						});
-					}
-				}).start(); // begins execution of thread
-				if (help1) {
-					g.drawImage(movementPics[1], 150, 150, 500, 400, null);
-
-					// Start new thread to implement runnable interface to delay and terminate game
-					new Thread(new Runnable() {
-						@Override
-						public void run() { // override run method
-							// catch block used if another thread interrupts this thread
-							try {
-								Thread.sleep(3000);
-
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							// Performs code asynchronously in Event dispatcher thread
-							SwingUtilities.invokeLater(() -> {
-								help2 = true;
-							});
-						}
-					}).start(); // begins execution of thread
-				}
-				if (help2) {
-					g.drawImage(movementPics[2], 150, 150, 500, 400, null);
-
-					// Start new thread to implement runnable interface to delay and terminate game
-					new Thread(new Runnable() {
-						@Override
-						public void run() { // override run method
-							// catch block used if another thread interrupts this thread
-							try {
-								Thread.sleep(3000);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-					}).start(); // begins execution of thread
-				}
-				/*
-				 * if (help3) { g.drawImage(movementPics[0], 150, 150, 500, 400, null);
-				 * 
-				 * // Start new thread to implement runnable interface to delay and terminate
-				 * game new Thread(new Runnable() {
-				 * 
-				 * @Override public void run() { // override run method // catch block used if
-				 * another thread interrupts this thread try { Thread.sleep(5000);
-				 * 
-				 * } catch (InterruptedException e) { e.printStackTrace(); } } }).start(); //
-				 * begins execution of thread }
-				 */
+				gameControls = Toolkit.getDefaultToolkit().getImage("gameControls.gif"); // create image
+				g.drawImage(gameControls, 150, 150, 500, 400, null);
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
