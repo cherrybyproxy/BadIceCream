@@ -67,7 +67,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	// booleans for game conditions
 	public boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, scoreBoard, continueBtn, level1,
 			level2, nextLevel, nextLevel2, returnMain, selectionMenu, leftHover, rightHover, left2Hover, right2Hover,
-			character1, character2, charError, displayChar, melted1, melted2;
+			character1, character2, charError, displayChar;
+	public static boolean melted1, melted2;
 
 	static boolean audio;
 
@@ -1181,15 +1182,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				g.drawString("Press Escape to Return to Main Menu...", 200, 580); // draw winner result to screen
 
 				nextLevel = true;
-
-				if (player1.level == 1 && player2.level == 1) {
-					player1.level++;
-					player2.level++;
-					player1.x = 200;
-					player1.y = 100;
-					player2.x = 550;
-					player2.y = 100;
-				}
 			}
 		}
 		// Player Controls Toggle
@@ -1238,7 +1230,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 			cow.draw(g);
 			// end condition for winner / loser
-			if (onBanana2 == 20 && onGrape2 == 8) {
+			if ((onBanana2 == 20 && onGrape2 == 8) || (melted1 && melted2)) {
 				roundWinner.draw(g);
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
@@ -1264,7 +1256,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				totalScore1 += Score.score;
 				totalScore2 += Score.score2;
 				System.out.println(totalScore1 + " " + totalScore2);
-
+				/*
 				if (totalScore1 > totalScore2) { // add up total score
 					recentScores.add(totalScore1);
 					String m = JOptionPane.showInputDialog("Congrats Player 1! Write Your Name: ");
@@ -1276,7 +1268,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					String m = JOptionPane.showInputDialog("Congrats Player 2! Write Your Name: ");
 					System.out.println(m);
 					createFile();
-				}
+				}*/
 
 				nextLevel2 = true;
 			}
@@ -1325,6 +1317,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		 * }
 		 */
 	}
+	/*
 
 	// the actionPerformed method in this class
 	// is called each time the Timer "goes off"
@@ -1347,13 +1340,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			timer.start();
 		}
 	}
+	*/
 
 // call the move methods in other classes to update positions for fluid
 // movements
 	public void move() {
 		player1.move();
 		player2.move();
-		cow.move();
+		if (level2) {
+			cow.move();
+		}
 		checkCollision();
 	}
 
@@ -1527,7 +1523,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			for (int i = 0; i < 20; i++) {
 				// conditions for when player intersects with fruits
-				if (player1.intersects(bananaCoord2.get(i)) && drawBanana2[i] == true) {
+				if (player1.intersects(bananaCoord2.get(i)) && drawBanana2[i] == true && !melted1) {
 					Score.score += 150; // increase score
 					drawBanana2[i] = false;
 					onBanana2++;
@@ -1536,7 +1532,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			for (int i = 0; i < 20; i++) {
 // conditions for when player 2 collects fruits
-				if (player2.intersects(bananaCoord2.get(i)) && drawBanana2[i] == true) {
+				if (player2.intersects(bananaCoord2.get(i)) && drawBanana2[i] == true && !melted2) {
 					Score.score2 += 150; // increase score
 					drawBanana2[i] = false;
 					onBanana2++;
@@ -1547,7 +1543,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// display conditions for when player 1 collects grapes
 				for (int i = 0; i < 8; i++) {
 
-					if (player1.intersects(grapeCoord2.get(i)) && drawGrape2[i] == true) {
+					if (player1.intersects(grapeCoord2.get(i)) && drawGrape2[i] == true && !melted1) {
 
 						Score.score += 150; // increase score
 						drawGrape2[i] = false;
@@ -1557,7 +1553,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				for (int i = 0; i < 8; i++) {
 					// grapes disappear when player "collects" (touches) them
-					if (player2.intersects(grapeCoord2.get(i)) && drawGrape2[i] == true) {
+					if (player2.intersects(grapeCoord2.get(i)) && drawGrape2[i] == true && !melted2) {
 						Score.score2 += 150;
 						drawGrape2[i] = false;
 						onGrape2++;
@@ -1612,6 +1608,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			controls = false;
 			scoreBoard = false;
 			nextLevel = false;
+			
+			if (player1.level == 1 && player2.level == 1) {
+				player1.level++;
+				player2.level++;
+				player1.x = 200;
+				player1.y = 100;
+				player2.x = 550;
+				player2.y = 100;
+			}
+			
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && (nextLevel || nextLevel2)) {

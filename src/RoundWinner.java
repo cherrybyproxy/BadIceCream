@@ -3,16 +3,12 @@
    RoundWinner
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.awt.Toolkit;
 
 public class RoundWinner extends Rectangle {
 
@@ -22,9 +18,12 @@ public class RoundWinner extends Rectangle {
 	public static int GAME_HEIGHT;// height of the window
 
 	//Declare variables for images
-	public BufferedImage crown;
+	public Image crown;
+	public Image cross;
 
 	public RoundWinner(int w, int h) {
+		crown = Toolkit.getDefaultToolkit().getImage("Crown.png"); 
+		cross = Toolkit.getDefaultToolkit().getImage("cross.png"); 
 
 		RoundWinner.GAME_WIDTH = w;
 		RoundWinner.GAME_HEIGHT = h;
@@ -43,7 +42,11 @@ public class RoundWinner extends Rectangle {
 		g.setFont(new Font("Consolas", Font.PLAIN, 35)); // set font
 
 		// determine winner based on score
-		if (Score.score > Score.score2) {
+		if (GamePanel.melted1 && GamePanel.melted2) {
+			g.drawString("TOTAL MELTDOWN", (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.37));
+			g.drawImage(cross, (int) (GAME_WIDTH * 0.365), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
+		}
+		else if (Score.score > Score.score2) {
 			g.drawString("Player 1 WIN!", (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.37));
 			g.drawImage(crown, (int) (GAME_WIDTH * 0.365), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
 		} else if (Score.score < Score.score2) {
