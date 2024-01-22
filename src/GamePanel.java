@@ -39,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public BlueCircle blueCircle2;
 	public RoundWinner roundWinner;
 
+	public int highscore = 0;
+
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, ming, leftRed,
 			leftArrow, rightRed, rightArrow, icecream, snow, backbtn, scores, exitgame, char1, char2, smokeyb, title,
 			confirmBtn, sorbet, downArrow, sorbetMenu, mintMenu, smokeyMenu, error, loading;
@@ -95,7 +97,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	public GamePanel() { // constructor sets values for booleans and creates game elements
 
-		playMusic("menu music.wav"); // plays sound file
 		// set game condition booleans
 		playGame = false;
 		selectionMenu = false;
@@ -111,7 +112,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		audio = true;
 		continueBtn = false;
 
-		cornerControls = false;
+		cornerControls = true;
 		charError = false;
 		displayChar = false;
 
@@ -124,6 +125,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		icecream2 = false;
 		icecream3 = false;
 		icecream4 = false;
+		playMusic("menu music.wav"); // plays sound file
+		
 
 		movementPics[0] = Toolkit.getDefaultToolkit().getImage("help1.gif");
 		movementPics[1] = Toolkit.getDefaultToolkit().getImage("help2.gif");
@@ -152,7 +155,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		score = new Score(GAME_WIDTH, GAME_HEIGHT);
 		score2 = new Score(GAME_WIDTH, GAME_HEIGHT);
-
+		
 		roundWinner = new RoundWinner(GAME_WIDTH, GAME_HEIGHT);
 		igloo = new Igloo(300, 275);
 
@@ -367,14 +370,93 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 // use "double buffering" to draw images off the screen and move the image on
 // screen as needed
 		image = createImage(GAME_WIDTH, GAME_HEIGHT); // draw off screen
-
 		graphics = image.getGraphics();
-
 		draw(graphics); // update the positions of everything on the screen
-
 		g.drawImage(image, 0, 0, this); // redraw everything on the screen
 
 	} // end of paint method
+	/*public String getHighScore() {
+		//format: name:score
+		FileReader readFile = null;
+		BufferedReader reader = null;
+		try {
+			readFile = new FileReader("scores.txt");
+			reader = new BufferedReader(readFile);
+
+			return reader.readLine();
+		} catch (Exception e) {
+			return "0";
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void createFile() {
+		try {
+			FileOutputStream fos = new FileOutputStream("scores.txt");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			// write object to file
+			oos.writeObject(score);
+			oos.writeObject(score2);
+			System.out.println("Done");
+			// closing resources
+			oos.close();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void checkScore() {
+
+		System.out.print(highscore);
+		if (Score.score > highscore) {
+			//String name = JOptionPane.showInputDialog("You set a new highscore. What is your name?");
+			//highscore = name + ":" + Score.score;
+			highscore = Score.score;
+		}
+			File scoreFile = new File("scores.txt");
+			if (!scoreFile.exists()) {
+				try {
+					scoreFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			FileWriter writeFile = null;
+			BufferedWriter writer = null;
+			try {
+				writeFile = new FileWriter(scoreFile);
+				writer = new BufferedWriter(writeFile);
+				writer.write(highscore);
+			} catch (Exception e) {
+				System.out.println("An error occured");
+			} finally {
+				try {
+					if (writer != null) {
+						writer.close();
+					}
+				} catch (Exception e) {
+					System.out.println("An error occured");
+				}
+			}
+	} 
+	public void readFile() {
+		/*
+		 * try { FileInputStream fis = new FileInputStream("scores.txt");
+		 * ObjectInputStream ois = new ObjectInputStream(fis); // write object to file
+		 * 
+		 * System.out.println("Done"); // closing resources oos.close(); fos.close(); }
+		 * catch (IOException e) { e.printStackTrace(); }
+		 */
+	
+
 
 	public void mouseInput() { // manually detect mouse input through motion and clicks
 
@@ -405,6 +487,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					System.out.println("player controls");
 					controls = false;
 					mainMenu = false;
+					selectionMenu = false;
 					exitGame = false;
 					returnMain = false;
 					scoreBoard = false;
@@ -436,16 +519,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// display audio in top right corner
 				if (audio && btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
 
-					audio = false;
-
-					System.out.println("Audio Toggle On/Off");
-
-				}
-
-				// display audio in top right corner
-				if (!audio && btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
-
-					audio = true;
+					audio = !audio;
 
 					System.out.println("Audio Toggle On/Off");
 
@@ -824,11 +898,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 						// Performs code asynchronously in Event dispatcher thread
 						SwingUtilities.invokeLater(() -> {
 							playGame = true; // change to true after done char menu
-							clip.stop(); // stop music clip
+							// clip.stop(); // stop music clip
 							// playMusic("main theme.wav"); // plays sound file
 							level1 = true;
 							level2 = false;
-							cornerControls = true;
+							// cornerControls = true;
 							selectionMenu = false;
 							controls = false;
 							scoreBoard = false;
@@ -907,6 +981,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			g.drawImage(backbtn, 300, 580, 200, 100, null); // draw image to screen
 
+			g.drawString("Highscore: " + highscore, 150, 100);
 			mouseInput(); // checks for mouse input
 		}
 
@@ -923,8 +998,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			ice.draw(g);
 			igloo.draw(g); // draw igloo in center
 
-// display score and players on screen
+			// display score and players on screen
+		/*	if (highscore==0) {
+				//initialize high score
+				highscore = Integer.parseInt(getHighScore());
+			}  */
 			score.draw(g);
+			
 			player1.draw(g);
 			player2.draw(g);
 
@@ -954,6 +1034,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
 				roundWinner.draw(g);
+				
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 
@@ -977,12 +1058,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				g.drawString("Press Enter to Play Next Level...", 200, 580); // draw winner result to screen
 
 				nextLevel = true;
-				score = new Score(GAME_WIDTH, GAME_HEIGHT);
-				score2 = new Score(GAME_WIDTH, GAME_HEIGHT);
+
 				player1.level++;
 			}
 			// Player Controls Toggle
-			if (cornerControls) { // display settings to user
+			if (playGame && cornerControls) { // display settings to user
 
 				g.drawImage(movementPics[0], 150, 150, 500, 400, null);
 
@@ -1034,30 +1114,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 							// catch block used if another thread interrupts this thread
 							try {
 								Thread.sleep(3000);
-
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
 						}
 					}).start(); // begins execution of thread
 				}
-			/*	if (help3) {
-					g.drawImage(movementPics[0], 150, 150, 500, 400, null);
-
-					// Start new thread to implement runnable interface to delay and terminate game
-					new Thread(new Runnable() {
-						@Override
-						public void run() { // override run method
-							// catch block used if another thread interrupts this thread
-							try {
-								Thread.sleep(5000);
-
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-					}).start(); // begins execution of thread
-				} */
+				/*
+				 * if (help3) { g.drawImage(movementPics[0], 150, 150, 500, 400, null);
+				 * 
+				 * // Start new thread to implement runnable interface to delay and terminate
+				 * game new Thread(new Runnable() {
+				 * 
+				 * @Override public void run() { // override run method // catch block used if
+				 * another thread interrupts this thread try { Thread.sleep(5000);
+				 * 
+				 * } catch (InterruptedException e) { e.printStackTrace(); } } }).start(); //
+				 * begins execution of thread }
+				 */
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
@@ -1074,7 +1148,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
 			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
 			level2Scenery.draw(g);
-// display score and players on screen
+			// display score and players on screen
 			score.draw(g);
 			player1.draw(g);
 			player2.draw(g);
@@ -1152,22 +1226,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		 * clip.start(); clip.loop(Clip.LOOP_CONTINUOUSLY); }
 		 */
 
-		if (!audio) {
+	/*	if (!audio) {
 			cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
-
 			g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
-
 			clipTimePosition = clip.getMicrosecondLength();
-
 			clip.stop(); // stop music clip
 
-		}
-		if (audio) {
+		} */
+	/*	if (audio) {
 			clip.start();
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
 
-		}
+		} */
 	}
 
 // call the move methods in other classes to update positions for fluid

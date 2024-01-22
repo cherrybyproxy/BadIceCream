@@ -4,9 +4,10 @@
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
 
 import java.awt.*;
+import java.io.Serializable;
 
 // extends Rectangle because its easy to draw
-public class Score extends Rectangle {
+public class Score extends Rectangle implements Serializable {
 
 	private static final long serialVersionUID = 1L; // add default serial id for class
 
