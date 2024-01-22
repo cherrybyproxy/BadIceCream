@@ -52,33 +52,35 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 	public ArrayList<Integer> recentScores; // array list to store all scores
 
-	//variables to store images 
-	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, icecream, snow, backbtn, scores, exitgame, 
-	char1, char2, smokeyb, title,confirmBtn, sorbet, downArrow, sorbetMenu, mintMenu, smokeyMenu, error, loading, gameControls;
+	// variables to store images
+	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, icecream, snow,
+			backbtn, scores, exitgame, char1, char2, smokeyb, title, confirmBtn, sorbet, downArrow, sorbetMenu,
+			mintMenu, smokeyMenu, error, loading, gameControls;
 
-	//variables for sorting array list
+	// variables for sorting array list
 	int temp;
 	boolean sorted = false;
 
 	// booleans for game conditions
-	public boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, scoreBoard, continueBtn, level1, level2, nextLevel, nextLevel2, returnMain, selectionMenu,
-			leftHover, rightHover, left2Hover, right2Hover, character1, character2, charError, displayChar, melted1,
-			melted2;
+	public boolean playGame, exitGame, cornerControls, mainMenu, controls, drawBtn, scoreBoard, continueBtn, level1,
+			level2, nextLevel, nextLevel2, returnMain, selectionMenu, leftHover, rightHover, left2Hover, right2Hover,
+			character1, character2, charError, displayChar, melted1, melted2;
 
-	static boolean audio; 
+	static boolean audio;
 
 	// coordinates for play button on main menu
 	int btnX;
 	int btnY;
-	
-	public boolean [] icecreamPics = new boolean[4];
+
+	public boolean[] icecreamPics = new boolean[4];
 	public boolean[] charSelection = new boolean[6];
 	public boolean[] charSelection2 = new boolean[6];
 	public String[] charSelect = new String[3];
 
-	// Declare the Clip at the class level
-	private static Clip clip;
-	
+	// Declare the Clip for audio effects
+	static Clip clip;
+	static long clipTimePosition;
+
 	int totalScore1, totalScore2;;
 
 	public Igloo igloo;
@@ -136,13 +138,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		totalScore1 = 0;
 		totalScore2 = 0;
 
-		//set boolean arrays to false
+		// set boolean arrays to false
 		for (int i = 0; i < charSelection.length; i++) {
-			//conditions for character selection menu 
+			// conditions for character selection menu
 			charSelection[i] = false;
 		}
 		for (int i = 0; i < charSelection2.length; i++) {
-			//conditions for character selection menu 
+			// conditions for character selection menu
 			charSelection2[i] = false;
 		}
 		for (int i = 0; i < icecreamPics.length; i++) {
@@ -160,9 +162,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		recentScores.add(0);
 		recentScores.add(0);
 
-		sorted = false;
-
 		createFile();
+		sorted = false;
 
 // create graphics and set start location on game screen
 		ice = new Ice(0, 0);
@@ -191,16 +192,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		Arrays.fill(drawBanana2, true);
 		Arrays.fill(drawGrape2, true);
-		
-		//handle audio input
-	/*	try {
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("menu music.wav"));
-	        clip = AudioSystem.getClip();
-	        clip.open(audioInputStream);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } */
 
+		// handle audio input
+		/*
+		 * try { AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new
+		 * File("menu music.wav")); clip = AudioSystem.getClip();
+		 * clip.open(audioInputStream); } catch (Exception e) { e.printStackTrace(); }
+		 */
 
 // coordinates of ice Cs
 		iceC2.add(new IceC(200, 200));
@@ -560,8 +558,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					scoreBoard = false;
 				}
 				// back to main menu button click
-				if ((!playGame && !level1 && !level2 && scoreBoard && (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))
-					      || (!playGame && !level1 && !level2 && controls && (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
+				if ((!playGame && !level1 && !level2 && scoreBoard
+						&& (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))
+						|| (!playGame && !level1 && !level2 && controls
+								&& (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
 
 					// display main menu
 					exitGame = false;
@@ -585,15 +585,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				// display audio in top right corner
 				if (btnX >= GAME_WIDTH - 50 && btnX <= GAME_WIDTH - 10 && btnY >= 0 && btnY <= 40) {
 
-					 audio = !audio;
-					    System.out.println("Audio Toggle On/Off");
+					audio = !audio;
+					System.out.println("Audio Toggle On/Off");
 
-					    if (audio) {
-					       clip.start();
-					    } else if (!audio) {
-					        clip.stop();
-					    	stopMusic();
-					    }
+					if (audio) {
+						clip.start();
+					} else if (!audio) {
+						clip.stop();
+						stopMusic();
+					}
 				}
 
 				// Proceed to Character Selection Menu
@@ -952,7 +952,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				} else if (charSelection2[5]) {
 					g.drawImage(mintMenu, 430, 240, 330, 200, null);
 				}
-
 				loading = Toolkit.getDefaultToolkit().getImage("loading.png"); // create image
 				g.drawImage(loading, 275, 525, 225, 25, null);
 
@@ -1069,24 +1068,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		if (playGame && level1) { // display game screen
 
-			clip.stop(); // stop music clip
-			//playMusic("main theme.wav"); // plays sound file
+			// clip.stop(); // stop music clip
+			// playMusic("main theme.wav"); // plays sound file
 			mouseInput(); // checks for mouse input
 
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
 
 			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
 
-// draw game graphics and objects
+			// draw game graphics and objects
 
 			ice.draw(g);
 			igloo.draw(g); // draw igloo in center
 
-			// display score and players on screen
-			/*
-			 * if (highscore==0) { //initialize high score highscore =
-			 * Integer.parseInt(getHighScore()); }
-			 */
 			score.draw(g);
 
 			player1.draw(g);
@@ -1118,6 +1112,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
 				roundWinner.draw(g);
+				totalScore1 += Score.score;
+				totalScore2 += Score.score2;
 
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
@@ -1139,30 +1135,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
-				g.drawString("Press Enter to Play Next Level...", 200, 580); // draw winner result to screen
+				g.drawString("Press Enter to Play Next Level...", 200, 550); // draw winner result to screen
+				g.drawString("Press Escape to Return to Main Menu...", 200, 580); // draw winner result to screen
 
-				totalScore1 += Score.score;
-				totalScore2 += Score.score2;
-				
 				nextLevel = true;
 
-				player1.level++;
-				player2.level++;
+				if (player1.level == 1 && player2.level == 1) {
+					player1.level++;
+					player2.level++;
+					player1.x = 200;
+					player1.y = 100;
+					player2.x = 550;
+					player2.y = 100;
+				}
 			}
-			// Player Controls Toggle
-			if (playGame && cornerControls) { // display settings to user
-
-				gameControls = Toolkit.getDefaultToolkit().getImage("gameControls.gif"); // create image
-				g.drawImage(gameControls, 150, 150, 500, 400, null);
-			}
-			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
-
-			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
-
-			settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
-
-			g.drawImage(settings, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
-
 		}
 
 		if (playGame && level2) {
@@ -1225,60 +1211,60 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
+
 				totalScore1 += Score.score;
 				totalScore2 += Score.score2;
+				System.out.println(totalScore1 + " " + totalScore2);
 
 				if (totalScore1 > totalScore2) { // add up total score
 					recentScores.add(totalScore1);
+					String m = JOptionPane.showInputDialog("Congrats Player 1! Write Your Name: ");
+					System.out.println(m);
+					createFile();
 
 				} else if (totalScore1 < totalScore2) {
-					recentScores.add(totalScore1);
-				} else {
-					recentScores.add(totalScore1);
+					recentScores.add(totalScore2);
+					String m = JOptionPane.showInputDialog("Congrats Player 2! Write Your Name: ");
+					System.out.println(m);
+					createFile();
 				}
+
 				nextLevel2 = true;
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
-
 			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
-
 			settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
-
+			// Player Controls Toggle
+			if (playGame && cornerControls) { // display settings to user
+				gameControls = Toolkit.getDefaultToolkit().getImage("gameControls.gif"); // create image
+				g.drawImage(gameControls, 150, 150, 500, 400, null);
+			}
+			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 			g.drawImage(settings, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
 
 		}
 
-		g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
+		/*
+		 * if (!audio) { // pause music
+		 * 
+		 * cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
+		 * 
+		 * g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
+		 * 
+		 * // clipTimePosition = clip.getMicrosecondLength();
+		 * 
+		 * clip.stop(); // stop music clip
+		 * 
+		 * } else if (audio) { // //playMusic("menu music.wav"); try { clip.open(); }
+		 * catch (LineUnavailableException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } clip.start(); clip.loop(Clip.LOOP_CONTINUOUSLY); }
+		 */
 
-		sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
-
-	/*	if (!audio) { // pause music
-
-			cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
-
-			g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
-
-			// clipTimePosition = clip.getMicrosecondLength();
-
-			clip.stop(); // stop music clip
-
-		} else if (audio) { // 
-			//playMusic("menu music.wav");
-			try {
-				clip.open();
-			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			clip.start();
-			clip.loop(Clip.LOOP_CONTINUOUSLY); 
-		} */
-		
 		if (!audio) {
-		    cross = Toolkit.getDefaultToolkit().getImage("cross.png");
-		    g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null);
+			cross = Toolkit.getDefaultToolkit().getImage("cross.png");
+			g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null);
 		} else {
-		    // Render audio icon for the ON state if needed
+			// Render audio icon for the ON state if needed
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 
 		}
@@ -1551,17 +1537,31 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 // send key input to classes for processing
 	public void keyPressed(KeyEvent e) {
 
-// return to main menu option on controls and game page - cannot be acccessed
+		// return to main menu option on controls and game page - cannot be acccessed
 // from other pages
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel) {
 			Score.score = 0;
 			Score.score2 = 0;
-// set game boolean values only if game has ended
+			// set game boolean values only if game has ended
 			level2 = true;
 			level1 = false;
 			mainMenu = false;
 			controls = false;
 			scoreBoard = false;
+			nextLevel = false;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && (nextLevel || nextLevel2)) {
+			Score.score = 0;
+			Score.score2 = 0;
+			// set game boolean values only if game has ended
+			level2 = false;
+			level1 = false;
+			mainMenu = true;
+			controls = false;
+			scoreBoard = false;
+			playGame = false;
+			nextLevel = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel2) {
@@ -1575,7 +1575,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			controls = false;
 			scoreBoard = false;
 
-			//set all other game variables to false
+			// set all other game variables to false
 			playGame = false;
 			selectionMenu = false;
 			level1 = false;
@@ -1586,7 +1586,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			scoreBoard = false;
 			nextLevel2 = false;
 			returnMain = false;
-			//audio = true;
+			// audio = true;
 			continueBtn = false;
 
 			cornerControls = true;
@@ -1595,9 +1595,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			melted1 = false;
 			melted2 = false;
-
-			totalScore1 = 0;
-			totalScore2 = 0;
 		}
 
 		player1.keyPressed(e);
@@ -1620,28 +1617,29 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public static void playMusic(String filepath) {
 		// Variable declarations
 
-		 try {
-		        File music = new File(filepath);
+		try {
+			File music = new File(filepath);
 
-		        if (music.exists()) {
-		            AudioInputStream audioInput = AudioSystem.getAudioInputStream(music);
-		            clip = AudioSystem.getClip();
-		            clip.open(audioInput);
-		           // clip.start();
-		            //clip.loop(Clip.LOOP_CONTINUOUSLY);
-		        } else {
-		            System.out.println("File cannot be found.");
-		        }
-		    } catch (Exception e) {
-		        System.out.println(e);
-		    }
+			if (music.exists()) {
+				AudioInputStream audioInput = AudioSystem.getAudioInputStream(music);
+				clip = AudioSystem.getClip();
+				clip.open(audioInput);
+				// clip.start();
+				// clip.loop(Clip.LOOP_CONTINUOUSLY);
+			} else {
+				System.out.println("File cannot be found.");
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
-	
+
 	public static void stopMusic() {
-	    if (clip != null && clip.isRunning()) {
-	        clip.stop();
-	    }
+		if (clip != null && clip.isRunning()) {
+			clip.stop();
+		}
 	}
+
 // classes are required to be overriden for mouse adapter
 	@Override
 	public void mouseMoved(MouseEvent e) {
