@@ -192,20 +192,7 @@ public class Player2 extends Rectangle {
 				x += xVelocity;
 				y += yVelocity;
 			}
-			/*
-			else {
-				canUp = true;
-				canDown = true;
-				canRight = true;
-				canLeft = true;
-			}
-			if (canUp && canDown) {
-				y += yVelocity;
-			}
-			if (canRight && canLeft) {
-				x += xVelocity;
-			}
-			*/
+
 		}
 
 		if (level == 2) {
