@@ -1070,7 +1070,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			ice.draw(g);
 			igloo.draw(g); // draw igloo in center
 
-			score.draw(g);
 
 			player1.draw(g);
 			player2.draw(g);
@@ -1098,7 +1097,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					}
 				}
 			}
-
+			score.draw(g);
 			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
 
@@ -1139,6 +1138,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				g.drawString("Press Escape to Return to Main Menu...", 200, 580); // draw winner result to screen
 
 				nextLevel = true;
+				
+				if (nextLevel) {
+					player1.level = 2;
+					player2.level = 2;
+					player1.x = 200;
+					player1.y = 100;
+					player2.x = 550;
+					player2.y = 100;
+				}
 			}
 		}
 	
@@ -1497,16 +1505,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			scoreBoard = false;
 			nextLevel = false;
 			
-			if (player1.level == 1 && player2.level == 1) {
-				player1.level++;
-				player2.level++;
-				player1.x = 200;
-				player1.y = 100;
-				player2.x = 550;
-				player2.y = 100;
-			}
-
-
+			/*
+			player1.level = 2;
+			player2.level = 2;
+			player1.x = 200;
+			player1.y = 100;
+			player2.x = 550;
+			player2.y = 100;
+			*/
+			
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && (nextLevel || nextLevel2)) {
@@ -1524,15 +1531,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			selectionMenu = false;
 			character1 = false;
 			character2 = false;
-			
-			if (player1.level == 1 && player2.level == 1) {
-				player1.level++;
-				player2.level++;
-				player1.x = 200;
-				player1.y = 100;
-				player2.x = 550;
-				player2.y = 100;
-			}
+
 			// set boolean arrays to false
 			for (int i = 0; i < charSelection.length; i++) {
 				// conditions for character selection menu
@@ -1546,53 +1545,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel2) {
-			Score.score = 0;
-			Score.score2 = 0;
-// set game boolean values only if game has ended
-			mainMenu = true;
-			level1 = false;
-			level2 = false;
-//playGame = false; //add to last game level
-			controls = false;
-			scoreBoard = false;
-			playGame = false;
-			selectionMenu = false;
-			level1 = false;
-			level2 = false;
-			nextLevel = false;
-			exitGame = false;
-			controls = false;
-			scoreBoard = false;
-			nextLevel2 = false;
-			continueBtn = false;
-
-			charError = false;
-			displayChar = false;
-
-			melted1 = false;
-			melted2 = false;
-
-			// set all other game variables to false
-			playGame = false;
-			selectionMenu = false;
-			level1 = false;
-			level2 = false;
-			nextLevel = false;
-			exitGame = false;
-			controls = false;
-			scoreBoard = false;
-			nextLevel2 = false;
-			returnMain = false;
-			continueBtn = false;
-
-			charError = false;
-			displayChar = false;
-
-			melted1 = false;
-			melted2 = false;
-
-			player1.level = 1;
-			player2.level = 1;
+		
+			Timer timer = new Timer(500, new ActionListener() { // 2000 milliseconds (2 seconds) delay
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					mainMenu = false;
+					scoreBoard = false;
+					playGame = false;
+					level1 = false;
+					level2 = false;
+					controls = false;
+					System.exit(0); // Terminate the program
+				}
+			});
+			timer.setRepeats(false); // Set to non-repeating
+			timer.start();
 		}
 
 		/*
