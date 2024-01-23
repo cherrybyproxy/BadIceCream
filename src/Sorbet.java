@@ -6,6 +6,8 @@
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.swing.plaf.basic.BasicComboBoxUI.KeyHandler;
+
 // extends Rectangle because drawing and managing collisions is easy
 public class Sorbet extends Rectangle {
 
@@ -14,6 +16,8 @@ public class Sorbet extends Rectangle {
 	// variable declarations for velocity and speed of player 1
 	public int xVelocity;
 	public int yVelocity;
+	
+	KeyHandler keyH;
 
 	public final int SPEED = 4; // movement speed
 	public int spriteCounter = 0;
@@ -45,6 +49,8 @@ public class Sorbet extends Rectangle {
 		right2 = Toolkit.getDefaultToolkit().getImage("sright2.png");
 
 		direction = "down";
+		
+		this.keyH = keyH;
 	}
 
 	// updates the direction of player 2 based on user input
@@ -89,29 +95,29 @@ public class Sorbet extends Rectangle {
 				spriteCounter = 0;
 			}
 		}
-		if (charNum == 1) {
-			if (e.getKeyCode() == 'd') {
+		if (charNum == 1) { //player 1
+			if (e.getKeyCode() == KeyEvent.VK_D) {
 				// move right
 				direction = "right";
 				setXDirection(SPEED);
 				move();
 			}
 
-			if (e.getKeyCode() == 'a') {
+			if (e.getKeyCode() == KeyEvent.VK_A) {
 				// move left
 				direction = "left";
 				setXDirection(SPEED * -1);
 				move();
 			}
 
-			if (e.getKeyCode() == 'w') {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
 				// move up
 				direction = "up";
 				setYDirection(SPEED * -1);
 				move();
 			}
 
-			if (e.getKeyCode() == 's') {
+			if (e.getKeyCode() == KeyEvent.VK_S) {
 				// move down
 				direction = "down";
 				setYDirection(SPEED);
@@ -155,22 +161,22 @@ public class Sorbet extends Rectangle {
 			}
 		}
 		if (charNum == 1) {
-			if (e.getKeyCode() == 'd') {
+			if (e.getKeyCode() == KeyEvent.VK_D) {
 				setXDirection(0);
 				move();
 			}
 
-			if (e.getKeyCode() == 'a') {
+			if (e.getKeyCode() == KeyEvent.VK_A) {
 				setXDirection(0);
 				move();
 			}
 
-			if (e.getKeyCode() == 'w') {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
 				setYDirection(0);
 				move();
 			}
 
-			if (e.getKeyCode() == 's') {
+			if (e.getKeyCode() == KeyEvent.VK_S) {
 				setYDirection(0);
 				move();
 			}

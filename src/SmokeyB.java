@@ -85,28 +85,28 @@ public class SmokeyB extends Rectangle {
 			}
 		}
 		if (charNum == 1) {
-			if (e.getKeyCode() == 'd') {
+			if (e.getKeyCode() == KeyEvent.VK_D) {
 				// move right
 				direction = "right";
 				setXDirection(SPEED);
 				move();
 			}
 
-			if (e.getKeyCode() == 'a') {
+			if (e.getKeyCode() == KeyEvent.VK_A) {
 				// move left
 				direction = "left";
 				setXDirection(SPEED * -1);
 				move();
 			}
 
-			if (e.getKeyCode() == 'w') {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
 				// move up
 				direction = "up";
 				setYDirection(SPEED * -1);
 				move();
 			}
 
-			if (e.getKeyCode() == 's') {
+			if (e.getKeyCode() == KeyEvent.VK_S) {
 				// move down
 				direction = "down";
 				setYDirection(SPEED);
@@ -149,22 +149,22 @@ public class SmokeyB extends Rectangle {
 			}
 		}
 		if (charNum == 1) {
-			if (e.getKeyCode() == 'd') {
+			if (e.getKeyCode() == KeyEvent.VK_D) {
 				setXDirection(0);
 				move();
 			}
 
-			if (e.getKeyCode() == 'a') {
+			if (e.getKeyCode() == KeyEvent.VK_A) {
 				setXDirection(0);
 				move();
 			}
 
-			if (e.getKeyCode() == 'w') {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
 				setYDirection(0);
 				move();
 			}
 
-			if (e.getKeyCode() == 's') {
+			if (e.getKeyCode() == KeyEvent.VK_S) {
 				setYDirection(0);
 				move();
 			}

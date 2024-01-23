@@ -665,7 +665,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[0] = false;
 					charSelection2[1] = true;
 					charSelection2[2] = false;
-					player1 = new Player1(350, 400, 2);
+					//player1 = new Player1(350, 400, 2);
+					smokeyBacon = new SmokeyB(350, 400, 1);
 					character1 = true;
 				}
 				if (selectionMenu && btnX >= 270 && btnX <= 380 && btnY >= 310 && btnY <= 410) {
@@ -673,7 +674,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[0] = false;
 					charSelection2[1] = false;
 					charSelection2[2] = true;
-					player1 = new Player1(350, 400, 3);
+					//player1 = new Player1(350, 400, 3);
+					mintChoc = new Mint(350, 400, 1);
 					character1 = true;
 				}
 				// Player 2 Selection
@@ -691,7 +693,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[3] = false;
 					charSelection2[4] = true;
 					charSelection2[5] = false;
-					player2 = new Player2(400, 400, 2);
+					//player2 = new Player2(400, 400, 2);
+					smokeyBacon2 = new SmokeyB(350, 400, 2);
 					character2 = true;
 				}
 				if (selectionMenu && btnX >= 660 && btnX <= 760 && btnY >= 310 && btnY <= 410) {
@@ -699,7 +702,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[3] = false;
 					charSelection2[4] = false;
 					charSelection2[5] = true;
-					player2 = new Player2(400, 400, 3);
+				//	player2 = new Player2(400, 400, 3);
+					mintChoc2 = new Mint(350, 400, 2);
 					character2 = true;
 				}
 				// Confirm Button to Play Game
@@ -1592,10 +1596,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 // Calls other methods to move objects, check for collision, and update the
 // screen
+	
 	public void run() {
 		KeyEvent e = null;
 // prevent CPU from running game code too quickly
 
+		 // Set up a KeyListener for your game window (assuming your class implements KeyListener)
+	/*    addKeyListener(new KeyAdapter() {
+	    	
+	        @Override
+	        public void keyPressed(KeyEvent event) {
+	            e = event;  // Update the KeyEvent variable when a key is pressed
+	        }
+
+	        @Override
+	        public void keyReleased(KeyEvent event) {
+	            e = null;  // Reset the KeyEvent variable when a key is released
+	        }
+	    });
+
+	    setFocusable(true);  // Ensure your game window has focus to receive key events
+ */
 // Variable and object declarations
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60;
