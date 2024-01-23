@@ -16,7 +16,7 @@ public class Player1 extends Rectangle {
 
 	public int yVelocity; // sets velocity in vertical direction
 
-	public final int SPEED = 3; // movement speed of player 1
+	public final int SPEED = 2; // movement speed of player 1
 
 	public int charNum; // stores value for paddle 1 or paddle 2
 
@@ -192,20 +192,7 @@ public class Player1 extends Rectangle {
 				x += xVelocity;
 				y += yVelocity;
 			}
-			/*
-			else {
-				canUp = true;
-				canDown = true;
-				canRight = true;
-				canLeft = true;
-			}
-			if (canUp && canDown) {
-				y += yVelocity;
-			}
-			if (canRight && canLeft) {
-				x += xVelocity;
-			}
-			*/
+
 			
 		}
 		if (level == 2) {

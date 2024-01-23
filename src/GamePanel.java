@@ -123,7 +123,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		// set game condition booleans
 		playGame = false;
 		selectionMenu = false;
-		level1 = false;
+		level1 = false; 
 		level2 = false;
 		nextLevel = false;
 		exitGame = false;
@@ -1141,11 +1141,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				} else if (charSelection2[5]) {
 					g.drawImage(mint, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 				}
-
+				/* leah
 				// System.out.println(totalScore1 + " " + totalScore2);
 				recentScores.add(totalScore1);
 				recentScores.add(totalScore2);
 				createFile();
+				*/
 
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Play Next Level...", 200, 550); // draw winner result to screen
@@ -1194,12 +1195,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 			cow.draw(g);
 			// end condition for winner / loser
-			roundWinner.draw(g);
-			totalScore1 += Score.score;
-			totalScore2 += Score.score2;
 
 			if ((onBanana2 == 20 && onGrape2 == 8) || (melted1 && melted2)) {
 				roundWinner.draw(g);
+				totalScore1 += Score.score;
+				totalScore2 += Score.score2;
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 
@@ -1220,11 +1220,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
-
+				/* leah
 				recentScores.add(totalScore1);
 				recentScores.add(totalScore2);
 				createFile();
-
+				*/
 				/*
 				 * if (totalScore1 > totalScore2) { // add up total score
 				 * recentScores.add(totalScore1); String m =
@@ -1423,54 +1423,36 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		if (level2 == true) { // game conditions for level 2
 			if (cow.x + 600 >= player1.x && cow.y == player1.y && Cow.xVelocity > 0 && !melted1) {
 				Cow.xVelocity = 5;
-				if (cow.intersects(player1)) {
-					melted1 = true;
-					System.out.println("MELTED");
-				}
-			} else if (cow.x - 600 <= player1.x && cow.y == player1.y && Cow.xVelocity < 0 && !melted1) {
+			} 
+			else if (cow.x - 600 <= player1.x && cow.y == player1.y && Cow.xVelocity < 0 && !melted1) {
 				Cow.xVelocity = -5;
-				if (cow.intersects(player1)) {
-					melted1 = true;
-					System.out.println("MELTED");
-				}
-			} else if (cow.y + 500 >= player1.y && cow.x == player1.x && Cow.yVelocity > 0 && !melted1) {
+			} 
+			else if (cow.y + 500 >= player1.y && cow.x == player1.x && Cow.yVelocity < 0 && !melted1) {
+				Cow.yVelocity = -5;
+			} 
+			else if (cow.y - 500 <= player1.y && cow.x == player1.x && Cow.yVelocity > 0 && !melted1) {
 				Cow.yVelocity = 5;
-				if (cow.intersects(player1)) {
-					melted1 = true;
-					System.out.println("MELTED");
-				}
-			} else if (cow.y - 500 >= player1.y && cow.x == player1.x && Cow.yVelocity < 0 && !melted1) {
-				Cow.xVelocity = -5;
-				if (cow.intersects(player1)) {
-					melted1 = true;
-					System.out.println("MELTED");
-				}
+			}
+			if (cow.intersects(player1)) {
+				melted1 = true;
+				System.out.println("MELTED");
 			}
 
 			if (cow.x + 600 >= player2.x && cow.y == player2.y && Cow.xVelocity > 0 && !melted2) {
 				Cow.xVelocity = 5;
-				if (cow.intersects(player2)) {
-					melted2 = true;
-					System.out.println("MELTED");
-				}
-			} else if (cow.x - 600 <= player2.x && cow.y == player2.y && Cow.xVelocity < 0 && !melted2) {
+			} 
+			else if (cow.x - 600 <= player2.x && cow.y == player2.y && Cow.xVelocity < 0 && !melted2) {
 				Cow.xVelocity = -5;
-				if (cow.intersects(player2)) {
-					melted2 = true;
-					System.out.println("MELTED");
-				}
-			} else if (cow.y + 500 >= player2.y && cow.x == player2.x && Cow.yVelocity > 0 && !melted2) {
+			} 
+			else if (cow.y + 500 >= player2.y && cow.x == player2.x && Cow.yVelocity < 0 && !melted2) {
+				Cow.yVelocity = -5;
+			} 
+			else if (cow.y - 500 <= player2.y && cow.x == player2.x && Cow.yVelocity > 0 && !melted2) {
 				Cow.yVelocity = 5;
-				if (cow.intersects(player2)) {
-					melted2 = true;
-					System.out.println("MELTED");
-				}
-			} else if (cow.y - 500 >= player2.y && cow.x == player2.x && Cow.yVelocity < 0 && !melted2) {
-				Cow.xVelocity = -5;
-				if (cow.intersects(player2)) {
-					melted2 = true;
-					System.out.println("MELTED");
-				}
+			}
+			if (cow.intersects(player2)) {
+				melted2 = true;
+				System.out.println("MELTED");
 			}
 
 			for (int i = 0; i < 20; i++) {
@@ -1616,6 +1598,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			melted1 = false;
 			melted2 = false;
+			
+			player1.level = 1;
+			player2.level = 1;
 		}
 
 		player1.keyPressed(e);
