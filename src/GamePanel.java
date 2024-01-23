@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	// variables to store images
 	public Image logo, menubg, playbtn, authors, settings, menu, mint, sound, cross, playerControls, icecream, snow,
 			backbtn, scores, exitgame, char1, char2, smokeyb, title, confirmBtn, sorbet, downArrow, sorbetMenu,
-			mintMenu, smokeyMenu, error, loading, gameControls;
+			mintMenu, smokeyMenu, error, loading, gameControls, icon, title2;
 
 	// variables for sorting array list
 	int temp;
@@ -70,6 +70,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			character1, character2, charError, displayChar;
 	public static boolean melted1, melted2;
 
+	public static final String FILE_PATH = "scores.txt";
+	public static final String TEMP_FILE_PATH = "temp_scores.txt";
 	static boolean audio;
 
 	// coordinates for play button on main menu
@@ -159,9 +161,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		recentScores = new ArrayList<Integer>();
 
 		// fill array list with temporary coordinates
-		recentScores.add(0);
-		recentScores.add(0);
-		recentScores.add(0);
+		recentScores.add(500);
+		recentScores.add(1500);
+		recentScores.add(2000);
 		recentScores.add(0);
 		recentScores.add(0);
 		recentScores.add(0);
@@ -430,20 +432,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		graphics = image.getGraphics();
 		draw(graphics); // update the positions of everything on the screen
 		g.drawImage(image, 0, 0, this); // redraw everything on the screen
-
 	}
 
-	public static int[] getHighScore(String filepath) {
-		FileReader readFile = null;
-		BufferedReader reader = null;
+	public static int[] getHighScore() {
 
-		try {
-			readFile = new FileReader(filepath);
-			reader = new BufferedReader(readFile);
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
 
 			// Read the entire line containing scores
-			String line = reader.readLine();
+			String line = "";
 
+			reader.readLine(); // skip first line
+
+			reader.readLine(); // skip first line
+			line = reader.readLine().trim();
 			// Split the line into individual scores
 			String[] scoreStrings = line.split(" ");
 
@@ -453,25 +454,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// Convert and store each score in the array
 			for (int i = 0; i < scoreStrings.length; i++) {
 				scores[i] = Integer.parseInt(scoreStrings[i]);
+				System.out.println(scores[i]);
 			}
-
 			return scores;
 		} catch (Exception e) {
 			return new int[0]; // Return an empty array if an error occurs
 
-		} finally {
-			try {
-				if (reader != null) {
-					reader.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
 	public void createFile() {
-		File scoreFile = new File("scores.txt");
+		File scoreFile = new File(TEMP_FILE_PATH);
 
 		// sort the array list from greatest to least using bubble sort
 		for (int top = recentScores.size() - 1; top > 0 && !sorted; top--) {
@@ -480,7 +473,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			for (int i = 0; i < top; i++) {
 				// compares adjacent elements from left to right and switches if out of order
-				if (recentScores.get(i) > recentScores.get(i + 1)) {
+				if (recentScores.get(i) < recentScores.get(i + 1)) {
 					// switches array values if out of order
 					temp = recentScores.get(i);
 					recentScores.set(i, recentScores.get(i + 1));
@@ -493,40 +486,40 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		if (!scoreFile.exists()) {
 			try {
 				scoreFile.createNewFile();
-				System.out.println("file created " + scoreFile.getCanonicalPath()); // returns the path string
+				System.out.println("File Created At" + scoreFile.getCanonicalPath()); // returns the path string
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
-		FileWriter writeFile = null;
-		BufferedWriter writer = null;
-		try {
-			writeFile = new FileWriter(scoreFile);
-			writer = new BufferedWriter(writeFile);
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH))) {
 
 			if (recentScores.size() > 5) {
 
-				// writer.write("Top Five High Scores\n");
+				writer.write("\nTop Five High Scores\n");
 				for (int x = 0; x < 5; x++) {
 					writer.write(recentScores.get(x) + " ");
-
 				}
 			}
 
+			// Append the existing scores after the updated information
+			try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+				if (recentScores.size() > 5) {
+
+					writer.write("\nTop Five High Scores\n");
+					for (int x = 0; x < 5; x++) {
+						writer.write(recentScores.get(x) + " ");
+					}
+				}
+			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error while saving highscore",
 					JOptionPane.ERROR_MESSAGE);
-		} finally {
-			try {
-				if (writer != null) {
-					writer.close();
-				}
-			} catch (Exception e) {
-				System.out.println("An error occured");
-			}
 		}
-		// }
+		// Replace the original file with the temporary file
+		File originalFile = new File(FILE_PATH);
+		File tempFile = new File(TEMP_FILE_PATH);
+		tempFile.renameTo(originalFile);
 	}
 
 	public void mouseInput() { // manually detect mouse input through motion and clicks
@@ -962,50 +955,37 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				gameTransition = true;
 			}
-			
-			if (gameTransition) {
-			
-				 Timer timer = new Timer(2000, new ActionListener() { // 2000 milliseconds (2 seconds) delay
-		                @Override
-		                public void actionPerformed(ActionEvent e) {
-		                    playGame = true;
-		                    level1 = true;
-		                    selectionMenu = false;
-		                    mainMenu = false;
-		                	gameTransition = false; // Reset the boolean after the delay
-		                    // Other actions or transitions to play game...
-		                }
-		            });
-		            timer.setRepeats(false); // Set to non-repeating
-		            timer.start();
-		            
-				// Start new thread to implement runnable interface to delay and terminate game
-			/*	new Thread(new Runnable() {
-					@Override
-					public void run() { // override run method
-						// catch block used if another thread interrupts this thread
-						try {
-							Thread.sleep(3000);
 
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						// Performs code asynchronously in Event dispatcher thread
-						SwingUtilities.invokeLater(() -> {
-							synchronized (GamePanel.this) {
-								playGame = true; // change to true after done char menu
-								level1 = true;
-								level2 = false;
-								selectionMenu = false;
-								controls = false;
-								scoreBoard = false;
-								exitGame = false;
-								mainMenu = false;
-							}
-						});
+			if (gameTransition) {
+
+				Timer timer = new Timer(2000, new ActionListener() { // 2000 milliseconds (2 seconds) delay
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						playGame = true;
+						level1 = true;
+						selectionMenu = false;
+						mainMenu = false;
+						gameTransition = false; // Reset the boolean after the delay
+						// Other actions or transitions to play game...
 					}
-				}).start(); // begins execution of thread
-*/
+				});
+				timer.setRepeats(false); // Set to non-repeating
+				timer.start();
+
+				// Start new thread to implement runnable interface to delay and terminate game
+				/*
+				 * new Thread(new Runnable() {
+				 * 
+				 * @Override public void run() { // override run method // catch block used if
+				 * another thread interrupts this thread try { Thread.sleep(3000);
+				 * 
+				 * } catch (InterruptedException e) { e.printStackTrace(); } // Performs code
+				 * asynchronously in Event dispatcher thread SwingUtilities.invokeLater(() -> {
+				 * synchronized (GamePanel.this) { playGame = true; // change to true after done
+				 * char menu level1 = true; level2 = false; selectionMenu = false; controls =
+				 * false; scoreBoard = false; exitGame = false; mainMenu = false; } }); }
+				 * }).start(); // begins execution of thread
+				 */
 			}
 		}
 
@@ -1035,44 +1015,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawImage(exitgame, 125, 50, 550, 600, null); // draw image to screen
 
 			// Start new thread to implement runnable interface to delay and terminate game
-		/*	new Thread(new Runnable() {
-
-				@Override
-				public void run() { // override run method
-					// catch block used if another thread interrupts this thread
-					try {
-						Thread.sleep(5000);
-
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					// Performs code asynchronously in Event dispatcher thread
-					SwingUtilities.invokeLater(() -> {
-						mainMenu = false;
-						scoreBoard = false;
-						playGame = false;
-						level1 = false;
-						level2 = false;
-						controls = false;
-						System.exit(0); // Terminate the program
-					});
-				}
-			}).start(); // begins execution of thread
-			*/
+			/*
+			 * new Thread(new Runnable() {
+			 * 
+			 * @Override public void run() { // override run method // catch block used if
+			 * another thread interrupts this thread try { Thread.sleep(5000);
+			 * 
+			 * } catch (InterruptedException e) { e.printStackTrace(); } // Performs code
+			 * asynchronously in Event dispatcher thread SwingUtilities.invokeLater(() -> {
+			 * mainMenu = false; scoreBoard = false; playGame = false; level1 = false;
+			 * level2 = false; controls = false; System.exit(0); // Terminate the program
+			 * }); } }).start(); // begins execution of thread
+			 */
 			Timer timer = new Timer(4000, new ActionListener() { // 2000 milliseconds (2 seconds) delay
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                	mainMenu = false;
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					mainMenu = false;
 					scoreBoard = false;
 					playGame = false;
 					level1 = false;
 					level2 = false;
 					controls = false;
 					System.exit(0); // Terminate the program
-                }
-            });
-            timer.setRepeats(false); // Set to non-repeating
-            timer.start();
+				}
+			});
+			timer.setRepeats(false); // Set to non-repeating
+			timer.start();
 		}
 
 		if (scoreBoard) { // display score board - will update with saved high scores
@@ -1094,7 +1062,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			int y = 250;
 
-			int[] scores = getHighScore("scores.txt");
+			int[] scores = getHighScore();
 
 			for (int i = 0; i < scores.length; i++) {
 				int score = scores[i];
@@ -1111,7 +1079,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			// clip.stop(); // stop music clip
 			// playMusic("main theme.wav"); // plays sound file
 			mouseInput(); // checks for mouse input
-			
+
 			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
 			settings = Toolkit.getDefaultToolkit().getImage("settings.png"); // create image
 
@@ -1152,11 +1120,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					}
 				}
 			}
+
+			// Score.score = 5000;
+			// Score.score2 = 2000;
 			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
+
 				roundWinner.draw(g);
 				totalScore1 += Score.score;
 				totalScore2 += Score.score2;
+
+				System.out.println(totalScore1);
 
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
@@ -1177,6 +1151,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					g.drawImage(mint, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 				}
 
+				// System.out.println(totalScore1 + " " + totalScore2);
+				recentScores.add(totalScore1);
+				recentScores.add(totalScore2);
+				createFile();
+
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Play Next Level...", 200, 550); // draw winner result to screen
 				g.drawString("Press Escape to Return to Main Menu...", 200, 580); // draw winner result to screen
@@ -1187,10 +1166,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		// Player Controls Toggle
 		g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 		g.drawImage(settings, GAME_WIDTH - 100, 0, 40, 40, null); // draw image to screen
-					if (playGame && cornerControls) { // display settings to user
-						gameControls = Toolkit.getDefaultToolkit().getImage("gameControls.gif"); // create image
-						g.drawImage(gameControls, 150, 150, 500, 400, null);
-					}
+
+		if (playGame && cornerControls) { // display settings to user
+			gameControls = Toolkit.getDefaultToolkit().getImage("gameControls.gif"); // create image
+			g.drawImage(gameControls, 150, 150, 500, 400, null);
+		}
 
 		if (playGame && level2) {
 
@@ -1230,6 +1210,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 			cow.draw(g);
 			// end condition for winner / loser
+			roundWinner.draw(g);
+			totalScore1 += Score.score;
+			totalScore2 += Score.score2;
+
 			if ((onBanana2 == 20 && onGrape2 == 8) || (melted1 && melted2)) {
 				roundWinner.draw(g);
 				if (charSelection2[0]) {
@@ -1253,22 +1237,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
 
-				totalScore1 += Score.score;
-				totalScore2 += Score.score2;
-				System.out.println(totalScore1 + " " + totalScore2);
-				/*
-				if (totalScore1 > totalScore2) { // add up total score
-					recentScores.add(totalScore1);
-					String m = JOptionPane.showInputDialog("Congrats Player 1! Write Your Name: ");
-					System.out.println(m);
-					createFile();
+				recentScores.add(totalScore1);
+				recentScores.add(totalScore2);
+				createFile();
 
-				} else if (totalScore1 < totalScore2) {
-					recentScores.add(totalScore2);
-					String m = JOptionPane.showInputDialog("Congrats Player 2! Write Your Name: ");
-					System.out.println(m);
-					createFile();
-				}*/
+				/*
+				 * if (totalScore1 > totalScore2) { // add up total score
+				 * recentScores.add(totalScore1); String m =
+				 * JOptionPane.showInputDialog("Congrats Player 1! Write Your Name: ");
+				 * System.out.println(m); createFile();
+				 * 
+				 * } else if (totalScore1 < totalScore2) { recentScores.add(totalScore2); String
+				 * m = JOptionPane.showInputDialog("Congrats Player 2! Write Your Name: ");
+				 * System.out.println(m); createFile(); }
+				 */
 
 				nextLevel2 = true;
 			}
@@ -1318,29 +1300,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		 */
 	}
 	/*
-
-	// the actionPerformed method in this class
-	// is called each time the Timer "goes off"
-	class TimerListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-			progressBar.setValue(task.getCurrent());
-			if (task.done()) {
-				Toolkit.getDefaultToolkit().beep();
-				timer.stop();
-				startButton.setEnabled(true);
-			}
-		}
-	}
-
-	class ButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent evt) {
-			startButton.setEnabled(false);
-			progressBar.setValue(progressBar.getMinimum());
-			task.go();
-			timer.start();
-		}
-	}
-	*/
+	 * 
+	 * // the actionPerformed method in this class // is called each time the Timer
+	 * "goes off" class TimerListener implements ActionListener { public void
+	 * actionPerformed(ActionEvent evt) { progressBar.setValue(task.getCurrent());
+	 * if (task.done()) { Toolkit.getDefaultToolkit().beep(); timer.stop();
+	 * startButton.setEnabled(true); } } }
+	 * 
+	 * class ButtonListener implements ActionListener { public void
+	 * actionPerformed(ActionEvent evt) { startButton.setEnabled(false);
+	 * progressBar.setValue(progressBar.getMinimum()); task.go(); timer.start(); } }
+	 */
 
 // call the move methods in other classes to update positions for fluid
 // movements
@@ -1608,7 +1578,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			controls = false;
 			scoreBoard = false;
 			nextLevel = false;
-			
+
 			if (player1.level == 1 && player2.level == 1) {
 				player1.level++;
 				player2.level++;
@@ -1617,7 +1587,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				player2.x = 550;
 				player2.y = 100;
 			}
-			
+
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && (nextLevel || nextLevel2)) {
@@ -1631,6 +1601,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			controls = false;
 			scoreBoard = false;
 			playGame = false;
+			selectionMenu = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel2) {

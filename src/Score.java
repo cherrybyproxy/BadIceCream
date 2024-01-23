@@ -21,6 +21,7 @@ public class Score extends Rectangle implements Serializable {
 	// constructor sets score to 0 and establishes dimensions of game window
 	public Score(int w, int h) {
 		score = 0;
+		score2 = 0;
 		Score.GAME_WIDTH = w;
 		Score.GAME_HEIGHT = h;
 	}
@@ -32,5 +33,5 @@ public class Score extends Rectangle implements Serializable {
 		g.setFont(new Font("Consolas", Font.PLAIN, 50)); // set font
 		g.drawString(String.valueOf(score), (int) (GAME_WIDTH * 0.2), (int) (GAME_HEIGHT * 0.2));
 		g.drawString(String.valueOf(score2), (int) (GAME_WIDTH * 0.5), (int) (GAME_HEIGHT * 0.2));
-	}
+	} 
 }

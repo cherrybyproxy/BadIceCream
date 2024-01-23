@@ -49,9 +49,11 @@ public class RoundWinner extends Rectangle {
 		else if (Score.score > Score.score2) {
 			g.drawString("Player 1 WIN!", (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.37));
 			g.drawImage(crown, (int) (GAME_WIDTH * 0.365), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
+			
 		} else if (Score.score < Score.score2) {
 			g.drawString("Player 2 WIN!", (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.37));
 			g.drawImage(crown, (int) (GAME_WIDTH * 0.615), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
+			
 		} else {
 			g.drawString("DRAW", (int) (GAME_WIDTH * 0.5), (int) (GAME_HEIGHT * 0.35));
 		}
