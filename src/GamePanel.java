@@ -161,9 +161,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		recentScores = new ArrayList<Integer>();
 
 		// fill array list with temporary coordinates
-		recentScores.add(500);
-		recentScores.add(1500);
-		recentScores.add(2000);
+		recentScores.add(5050);
+		recentScores.add(154);
+		recentScores.add(950);
 		recentScores.add(0);
 		recentScores.add(0);
 		recentScores.add(0);
@@ -440,13 +440,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			// Read the entire line containing scores
 			String line = "";
-
-			reader.readLine(); // skip first line
-
-			reader.readLine(); // skip first line
+			reader.readLine();
 			line = reader.readLine().trim();
 			// Split the line into individual scores
-			String[] scoreStrings = line.split(" ");
+			
+			int index = line.indexOf(":");
+			String sub = line.substring(index+1).trim(); // isolates the first initial  
+		  
+			String[] scoreStrings = sub.split(" ");
+			System.out.println(line.substring(0, index));
 
 			// Create an integer array to store the scores
 			int[] scores = new int[scoreStrings.length];
@@ -492,11 +494,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 		}
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(TEMP_FILE_PATH, true))) {
 
 			if (recentScores.size() > 5) {
 
-				writer.write("\nTop Five High Scores\n");
+				writer.write("\nTop Five High Scores: ");
 				for (int x = 0; x < 5; x++) {
 					writer.write(recentScores.get(x) + " ");
 				}
@@ -504,12 +506,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			// Append the existing scores after the updated information
 			try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+				String line = "";
+				reader.readLine();
+				line = reader.readLine().trim();
+				
 				if (recentScores.size() > 5) {
-
-					writer.write("\nTop Five High Scores\n");
-					for (int x = 0; x < 5; x++) {
-						writer.write(recentScores.get(x) + " ");
-					}
+			        writer.write("\nTop Five High Scores: ");
+			        for (int x = 0; x < 5; x++) {
+			            writer.write(recentScores.get(x) + " ");
+			        }
 				}
 			}
 		} catch (Exception e) {
@@ -521,6 +526,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		File tempFile = new File(TEMP_FILE_PATH);
 		tempFile.renameTo(originalFile);
 	}
+
 
 	public void mouseInput() { // manually detect mouse input through motion and clicks
 
@@ -1063,11 +1069,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			int y = 250;
 
 			int[] scores = getHighScore();
-
+			title2 = Toolkit.getDefaultToolkit().getImage("scoreTitle.png"); // create image
+			g.drawImage(title2, 150, 100, 200, 100, null); // draw image to screen
+			
 			for (int i = 0; i < scores.length; i++) {
 				int score = scores[i];
 				System.out.println(score);
 				g.drawString(score + "", 200, y);
+				icon = Toolkit.getDefaultToolkit().getImage("icon.png"); // create image
+				g.drawImage(icon, 150, 100, 100, 100, null); // draw image to screen
 				y += 30;
 			}
 
