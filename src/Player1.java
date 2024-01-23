@@ -22,7 +22,6 @@ public class Player1 extends Rectangle {
 
 	public Image sorbet, smokeyb, mint; // create image for player 1
 
-	boolean up, down, left, right;
 	boolean canRight = true, canLeft = true, canUp = true, canDown = true;
 	
 	int level = 1; 
@@ -35,11 +34,6 @@ public class Player1 extends Rectangle {
 		sorbet = Toolkit.getDefaultToolkit().getImage("sorbet.png"); //get image for broomstick paddle 
 		mint = Toolkit.getDefaultToolkit().getImage("MintChocChip.png"); //get image for broomstick paddle 
 		smokeyb = Toolkit.getDefaultToolkit().getImage("smokeyb.png"); //get image for broomstick paddle 
-		
-		up = false;
-		down = false;
-		left = false;
-		right = false;
 
 		charNum = num;
 	}
