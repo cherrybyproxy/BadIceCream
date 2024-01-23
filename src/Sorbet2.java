@@ -2,6 +2,7 @@
    January 18, 2024
    Mint
    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+//TEST CLASS
 
 import java.awt.*;
 import java.awt.event.*;
@@ -9,7 +10,7 @@ import java.awt.event.*;
 import javax.swing.plaf.basic.BasicComboBoxUI.KeyHandler;
 
 // extends Rectangle because drawing and managing collisions is easy
-public class Sorbet extends Rectangle {
+public class Sorbet2 extends Rectangle {
 
 	private static final long serialVersionUID = 1L; // add default serial id for class
 
@@ -34,10 +35,10 @@ public class Sorbet extends Rectangle {
 
 	// constructor creates player 2 at given location with given dimensions, and the
 	// icon
-	public Sorbet(int x, int y, int num) {
+	public Sorbet2(int x, int y) {
 		super(x, y, 40, 40);
 
-		charNum = num;
+		//charNum = num;
 
 		down1 = Toolkit.getDefaultToolkit().getImage("sdown1.png");
 		down2 = Toolkit.getDefaultToolkit().getImage("sdown2.png");
@@ -49,103 +50,68 @@ public class Sorbet extends Rectangle {
 		right2 = Toolkit.getDefaultToolkit().getImage("sright2.png");
 
 		direction = "down";
-		
 	}
 
 	// updates the direction of player 2 based on user input
 	public void update(KeyEvent e) {
 		// set movement and speed
-
-		if (charNum == 2) { // player 2
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				// move right
-				direction = "right";
-				setXDirection(SPEED);
-				move();
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				// move left
-				direction = "left";
-				setXDirection(SPEED * -1);
-				move();
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				// move up
-				direction = "up";
-				setYDirection(SPEED * -1);
-				move();
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				// move down
-				direction = "down";
-				setYDirection(SPEED);
-				move();
-			}
-			spriteCounter++;
-			if (spriteCounter > 5) {
-				if (spriteNum == 1) {
-					spriteNum = 2;
-				} else if (spriteNum == 2) {
-					spriteNum = 1;
-				}
-				spriteCounter = 0;
-			}
+		//if (charNum == 2) { // player 2
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			// move right
+			direction = "right";
+			setXDirection(SPEED);
+			move();
 		}
-		if (charNum == 1) { //player 1
-			if (e.getKeyCode() == KeyEvent.VK_D) {
-				// move right
-				direction = "right";
-				setXDirection(SPEED);
-				move();
-			}
 
-			if (e.getKeyCode() == KeyEvent.VK_A) {
-				// move left
-				direction = "left";
-				setXDirection(SPEED * -1);
-				move();
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_W) {
-				// move up
-				direction = "up";
-				setYDirection(SPEED * -1);
-				move();
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_S) {
-				// move down
-				direction = "down";
-				setYDirection(SPEED);
-				move();
-			}
-			spriteCounter++;
-			if (spriteCounter > 5) {
-				if (spriteNum == 1) {
-					spriteNum = 2;
-				} else if (spriteNum == 2) {
-					spriteNum = 1;
-				}
-				spriteCounter = 0;
-			}
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			// move left
+			direction = "left";
+			setXDirection(SPEED * -1);
+			move();
 		}
+
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			// move up
+			direction = "up";
+			setYDirection(SPEED * -1);
+			move();
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			// move down
+			direction = "down";
+			setYDirection(SPEED);
+			move();
+		}
+		spriteCounter++;
+		if (spriteCounter > 5) {
+			if (spriteNum == 1) {
+				spriteNum = 2;
+			} else if (spriteNum == 2) {
+				spriteNum = 1;
+			}
+			spriteCounter = 0;
+		}
+	//}
 	}
 
 	// Makes player 2 stop moving in that direction
 	public void keyReleased(KeyEvent e) {
 		// stop all movement and speed
 
-		if (charNum == 2) {
+		//if (charNum == 1) {
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				setXDirection(0);
+				move();
+			}
+
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				setXDirection(0);
 				move();
 			}
 
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				setXDirection(0);
+				setYDirection(0);
 				move();
 			}
 
@@ -153,33 +119,7 @@ public class Sorbet extends Rectangle {
 				setYDirection(0);
 				move();
 			}
-
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				setYDirection(0);
-				move();
-			}
-		}
-		if (charNum == 1) {
-			if (e.getKeyCode() == KeyEvent.VK_D) {
-				setXDirection(0);
-				move();
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_A) {
-				setXDirection(0);
-				move();
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_W) {
-				setYDirection(0);
-				move();
-			}
-
-			if (e.getKeyCode() == KeyEvent.VK_S) {
-				setYDirection(0);
-				move();
-			}
-		}
+		//}
 	}
 
 	// called whenever the movement of player 2 changes in the x-direction
@@ -284,7 +224,7 @@ public class Sorbet extends Rectangle {
 			} else if (x <= 100 && xVelocity < 0) {
 				canLeft = false;
 			} else if (x >= 650 && xVelocity > 0) {
-				canRight = false;
+				canRight = false; 
 			}
 
 			// column 1

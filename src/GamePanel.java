@@ -1636,7 +1636,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				checkCollision();
 				move();
 				repaint();
-				if (charSelection2[0]) {
+			/*	if (charSelection2[0]) {
 					sorbetSprite.update(e);
 
 				} else if (charSelection2[1]) {
@@ -1653,7 +1653,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				} else if (charSelection2[5]) {
 					mintChoc2.update(e);
-				}
+				} */
 				delta--;
 			}
 		}
