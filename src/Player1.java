@@ -18,9 +18,14 @@ public class Player1 extends Rectangle {
 
 	public final int SPEED = 2; // movement speed of player 1
 
+	public int spriteCounter = 0;
+	public int spriteNum = 1;
+	
+	public String direction; // direction of sprite
 	public int charNum; // stores value for paddle 1 or paddle 2
 
-	public Image sorbet, smokeyb, mint; // create image for player 1
+	public Image sdown1, sdown2, sup1, sup2, sleft1, sleft2, sright1, sright2, bdown1, bdown2,
+	bup, bdown, bleft, bright,mup1, mup2, mdown1, mdown2, mleft1, mleft2, mright1, mright2; // create image for player 1
 
 	boolean canRight = true, canLeft = true, canUp = true, canDown = true;
 	
@@ -31,37 +36,74 @@ public class Player1 extends Rectangle {
 	public Player1(int x, int y, int num) {
 		super(x, y, 40, 40);
 
-		sorbet = Toolkit.getDefaultToolkit().getImage("sorbet.png"); //get image for broomstick paddle 
-		mint = Toolkit.getDefaultToolkit().getImage("MintChocChip.png"); //get image for broomstick paddle 
-		smokeyb = Toolkit.getDefaultToolkit().getImage("smokeyb.png"); //get image for broomstick paddle 
+		sdown1 = Toolkit.getDefaultToolkit().getImage("sdown1.png");
+		sdown2 = Toolkit.getDefaultToolkit().getImage("sdown2.png");
+		sup1 = Toolkit.getDefaultToolkit().getImage("sback1.png");
+		sup2 = Toolkit.getDefaultToolkit().getImage("sback2.png");
+		sleft1 = Toolkit.getDefaultToolkit().getImage("sleft1.png");
+		sleft2 = Toolkit.getDefaultToolkit().getImage("sleft2.png");
+		sright1 = Toolkit.getDefaultToolkit().getImage("sright1.png");
+		sright2 = Toolkit.getDefaultToolkit().getImage("sright2.png");
 
+		bdown1 = Toolkit.getDefaultToolkit().getImage("bdown1.png");
+		bdown2 = Toolkit.getDefaultToolkit().getImage("bdown2.png");
+		bup = Toolkit.getDefaultToolkit().getImage("bback.png");
+		bleft = Toolkit.getDefaultToolkit().getImage("bleft.png");
+		bright = Toolkit.getDefaultToolkit().getImage("b-right.png");
+		
+		mdown1 = Toolkit.getDefaultToolkit().getImage("down1.png"); 
+		mdown2 = Toolkit.getDefaultToolkit().getImage("down2.png"); 
+		mup1 = Toolkit.getDefaultToolkit().getImage("up1.png"); 
+		mup2 = Toolkit.getDefaultToolkit().getImage("up2.png"); 
+		mleft1 = Toolkit.getDefaultToolkit().getImage("left1.png");
+		mleft2 = Toolkit.getDefaultToolkit().getImage("left2.png"); 
+		mright1 = Toolkit.getDefaultToolkit().getImage("right1.png"); 
+		mright2 = Toolkit.getDefaultToolkit().getImage("right2.png"); 
+		
 		charNum = num;
+		direction = "down";
 	}
 
 	// called from GamePanel when any keyboard input is detected
 	public void keyPressed(KeyEvent e) {
 		// controls for player 1
-		if (e.getKeyChar() == 'd') {
+		if (e.getKeyCode() == KeyEvent.VK_D) {
+			// move right
+			direction = "right";
 			setXDirection(SPEED);
 			move();
 		}
 
-		if (e.getKeyChar() == 'a') {
-			setXDirection(SPEED*-1);
+		if (e.getKeyCode() == KeyEvent.VK_A) {
+			// move left
+			direction = "left";
+			setXDirection(SPEED * -1);
 			move();
 		}
 
-		if (e.getKeyChar() == 'w') {
-			setYDirection(SPEED *-1);
+		if (e.getKeyCode() == KeyEvent.VK_W) {
+			// move up
+			direction = "up";
+			setYDirection(SPEED * -1);
 			move();
 		}
 
-		if (e.getKeyChar() == 's') {
+		if (e.getKeyCode() == KeyEvent.VK_S) {
+			// move down
+			direction = "down";
 			setYDirection(SPEED);
 			move();
 		}
 		
-
+		spriteCounter++;
+		if (spriteCounter > 5) {
+			if (spriteNum == 1) {
+				spriteNum = 2;
+			} else if (spriteNum == 2) {
+				spriteNum = 1;
+			}
+			spriteCounter = 0;
+		}
 	}
 
 	// Makes player 1 stop moving when keys are released
@@ -275,12 +317,125 @@ public class Player1 extends Rectangle {
 	// draws the current location of player 1 to the screen
 	public void draw(Graphics g) {
 		// draw image to screen
-		if (charNum == 1) {
-			g.drawImage(sorbet, x, y, 40, 40, null);
-		} else if (charNum == 2) {
-			g.drawImage(smokeyb, x, y, 40, 40, null);
-		} else if (charNum == 3) {
-			g.drawImage(mint, x, y, 40, 40, null);
+		Image image = null;
+		if (charNum == 1) { //sorbet character movement
+			switch (direction) {
+			case "down":
+				if (spriteNum ==1) {
+				image = sdown1;
+				g.drawImage(image, x, y, 50, 50, null);
+				} if (spriteNum ==2) {
+					image = sdown2;	
+					g.drawImage(image, x, y, 50, 50, null);
+				}
+				break;
+
+			case "up":
+				if (spriteNum ==1) {
+				image = sup1;
+				g.drawImage(image, x, y, 50, 50, null);
+				}if (spriteNum ==2) {
+					image = sup2;
+					g.drawImage(image, x, y, 50, 50, null);
+				}
+				
+				break;
+
+			case "left":
+				if (spriteNum ==1) {
+				image = sleft1;
+				g.drawImage(image, x, y, 50, 50, null);
+				}if (spriteNum ==2) {
+					image = sleft2;
+					g.drawImage(image, x, y, 50, 50, null);
+				}
+				break;
+
+			case "right":
+				if (spriteNum ==1) {
+				image = sright1;
+				g.drawImage(image, x, y, 50, 50, null);
+				}if (spriteNum ==2) {
+					image = sright2;
+					g.drawImage(image, x, y, 50, 50, null);
+				}
+				break;
+			}
+			
+		} else if (charNum == 2) { //smokey bacon character movement
+			switch (direction) {
+			case "down":
+				if (spriteNum == 1) {
+					image = bdown1;
+					g.drawImage(image, x, y, 55, 55, null);
+				}
+				if (spriteNum == 2) {
+					image = bdown2;
+					g.drawImage(image, x, y, 55, 55, null);
+				}
+				break;
+
+			case "up":
+
+				image = bup;
+				g.drawImage(image, x, y, 50, 50, null);
+				break;
+
+			case "left":
+				image = bleft;
+				g.drawImage(image, x, y, 50, 50, null);
+				break;
+
+			case "right":
+				image = bright;
+				g.drawImage(image, x, y, 50, 50, null);
+				break;
+
+			}
+		} else if (charNum == 3) { //mint choc chip character movement
+			switch (direction) {
+			case "down":
+				if (spriteNum ==1) {
+				image = mdown1;
+				g.drawImage(image, x, y, 50, 50, null);
+				} if (spriteNum ==2) {
+					image =mdown2;	
+					g.drawImage(image, x, y, 50, 50, null);
+				}
+				break;
+
+			case "up":
+				if (spriteNum ==1) {
+				image =mup1;
+				g.drawImage(image, x, y, 50, 50, null);
+				}if (spriteNum ==2) {
+					image = mup2;
+					g.drawImage(image, x, y, 50, 50, null);
+				}
+				
+				break;
+
+			case "left":
+				if (spriteNum ==1) {
+				image = mleft1;
+				g.drawImage(image, x, y, 50, 50, null);
+				}if (spriteNum ==2) {
+					image = mleft2;
+					g.drawImage(image, x, y, 50, 50, null);
+				}
+				break;
+
+			case "right":
+				if (spriteNum ==1) {
+				image = mright1;
+				g.drawImage(image, x, y, 50, 50, null);
+				}if (spriteNum ==2) {
+					image = mright2;
+					g.drawImage(image, x, y, 50, 50, null);
+				}
+				break;
+
+			}
 		} 
 	}
 	

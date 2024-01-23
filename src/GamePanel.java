@@ -49,29 +49,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	public BlueCircle blueCircle4;
 	public RoundWinner roundWinner;
 
-	//variables for ice cream characters
-	Mint mintChoc, mintChoc2;
-	Sorbet sorbetSprite, sorbetSprite2;
-	SmokeyB smokeyBacon, smokeyBacon2;
-	
 	public boolean gameTransition = false;
 
 	public ArrayList<Integer> recentScores; // array list to store all scores
 
 	// variables to store images
-		public Image logo, menubg, playbtn, authors, menu, mint, sound, cross, playerControls, icecream, snow,
-				backbtn, scores, exitgame, char1, char2, smokeyb, title, confirmBtn, sorbet, downArrow, sorbetMenu,
-				mintMenu, smokeyMenu, error, loading, gameControls, icon, title2;
+	public Image logo, menubg, playbtn, authors, menu, mint, sound, cross, playerControls, icecream, snow, backbtn,
+			scores, exitgame, char1, char2, smokeyb, title, confirmBtn, sorbet, downArrow, sorbetMenu, mintMenu,
+			smokeyMenu, error, loading, gameControls, icon, title2;
 
-		// variables for sorting array list
-		int temp;
-		boolean sorted = false;
-		int y;
+	// variables for sorting array list
+	int temp;
+	boolean sorted = false;
+	int y;
 
-		// booleans for game conditions
-		public boolean playGame, exitGame, mainMenu, controls, drawBtn, scoreBoard, continueBtn, level1,
-				level2, nextLevel, nextLevel2, returnMain, selectionMenu, leftHover, rightHover, left2Hover, right2Hover,
-				character1, character2, charError, displayChar, sorbet1, sorbet2, mint1, mint2, smokey1, smokey2;
+	// booleans for game conditions
+	public boolean playGame, exitGame, mainMenu, controls, drawBtn, scoreBoard, continueBtn, level1, level2, nextLevel,
+			nextLevel2, returnMain, selectionMenu, leftHover, rightHover, left2Hover, right2Hover, character1,
+			character2, charError, displayChar, sorbet1, sorbet2, mint1, mint2, smokey1, smokey2;
 	public static boolean melted1, melted2;
 
 	public static final String FILE_PATH = "scores.txt";
@@ -126,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		// set game condition booleans
 		playGame = false;
 		selectionMenu = false;
-		level1 = false; 
+		level1 = false;
 		level2 = false;
 		nextLevel = false;
 		exitGame = false;
@@ -146,22 +141,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		totalScore1 = 0;
 		totalScore2 = 0;
-		
-		//create all ice cream characters in constructor and booleans
-		mintChoc = new Mint(350, 400, 1);
-		sorbetSprite = new Sorbet(350, 400, 1);
-		smokeyBacon = new SmokeyB(350, 400, 1);
-		
-		mintChoc2 = new Mint(400, 400, 2);
-		sorbetSprite2 = new Sorbet(400, 400, 2);
-		smokeyBacon2 = new SmokeyB(400, 400, 2);
-		
-		sorbet1=false;
-		sorbet2=false;
-		mint1=false;
-		mint2=false;
-		smokey1=false;
-		smokey2=false;
+
+		sorbet1 = false;
+		sorbet2 = false;
+		mint1 = false;
+		mint2 = false;
+		smokey1 = false;
+		smokey2 = false;
 
 		// set boolean arrays to false
 		for (int i = 0; i < charSelection.length; i++) {
@@ -201,9 +187,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		blueCircle4 = new BlueCircle(395, 635);
 
 		// create ice cream characters and score
-	//	player1 = new Player1(350, 400, 1);
-	//	player2 = new Player2(400, 400, 1);
-		
+		player1 = new Player1(350, 400, 1);
+		player2 = new Player2(400, 400, 1);
+
 		cow = new Cow(650, 100);
 
 		score = new Score(GAME_WIDTH, GAME_HEIGHT);
@@ -455,47 +441,47 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 	}
 
 	public static int[] getHighScore(String filepath) {
-		 FileReader readFile = null;
-	       BufferedReader reader = null;
+		FileReader readFile = null;
+		BufferedReader reader = null;
 
-	        try {
-	            readFile = new FileReader(filepath);
-	            reader = new BufferedReader(readFile);
-	            
-	        	String line = "";
-	        	reader.readLine();
-	        	
-				line = reader.readLine().trim();
-				System.out.print(line);
-				// Split the line into individual scores
-				
-				//int index = line.indexOf(":");
-				//String sub = line.substring(index+1); // isolates the first initial  
-			  
-				String[] scoreStrings = line.split(" ");
-				//System.out.println(line.substring(0, index));
+		try {
+			readFile = new FileReader(filepath);
+			reader = new BufferedReader(readFile);
 
-				// Create an integer array to store the scores
-				int[] scores = new int[scoreStrings.length];
+			String line = "";
+			reader.readLine();
 
-	            // Convert and store each score in the array
-	            for (int i = 0; i < scoreStrings.length; i++) {
-	                scores[i] = Integer.parseInt(scoreStrings[i]);
-	            }
+			line = reader.readLine().trim();
+			System.out.print(line);
+			// Split the line into individual scores
 
-	            return scores;
-	        } catch (Exception e) {
-	        	 return new int[0]; // Return an empty array if an error occurs
-	  	       
-	        } finally {
-	            try {
-	                if (reader != null) {
-	                    reader.close();
-	                }
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
+			// int index = line.indexOf(":");
+			// String sub = line.substring(index+1); // isolates the first initial
+
+			String[] scoreStrings = line.split(" ");
+			// System.out.println(line.substring(0, index));
+
+			// Create an integer array to store the scores
+			int[] scores = new int[scoreStrings.length];
+
+			// Convert and store each score in the array
+			for (int i = 0; i < scoreStrings.length; i++) {
+				scores[i] = Integer.parseInt(scoreStrings[i]);
+			}
+
+			return scores;
+		} catch (Exception e) {
+			return new int[0]; // Return an empty array if an error occurs
+
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void createFile() {
@@ -569,6 +555,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 				if (!playGame && !selectionMenu && btnX >= 250 && btnX <= 550 && btnY >= 565 && btnY <= 640) {
 					mainMenu = true;
+					playMusic("click-beep.wav");
 					selectionMenu = false;
 					playGame = false;
 					level1 = false;
@@ -576,7 +563,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					controls = false;
 					scoreBoard = false;
 				}
-				
+
 				// back to main menu button click
 				if ((!playGame && !level1 && !level2 && scoreBoard
 						&& (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))
@@ -584,6 +571,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 								&& (btnX >= 300 && btnX <= 500 && btnY >= 550 && btnY <= 650))) {
 
 					// display main menu
+					playMusic("click-beep.wav");
 					exitGame = false;
 					mainMenu = true; // redirect to main menu so game does not exit
 					controls = false;
@@ -656,8 +644,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[0] = true;
 					charSelection2[1] = false;
 					charSelection2[2] = false;
-					//player1 = new Player1(350, 400, 1);
-					sorbetSprite = new Sorbet(350, 400, 1);
+					player1 = new Player1(350, 400, 1);
+					// sorbetSprite = new Sorbet(350, 400, 1);
 					character1 = true;
 				}
 				if (selectionMenu && btnX >= 170 && btnX <= 260 && btnY >= 310 && btnY <= 410) {
@@ -665,8 +653,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[0] = false;
 					charSelection2[1] = true;
 					charSelection2[2] = false;
-					//player1 = new Player1(350, 400, 2);
-					smokeyBacon = new SmokeyB(350, 400, 1);
+					player1 = new Player1(350, 400, 2);
+					// smokeyBacon = new SmokeyB(350, 400, 1);
 					character1 = true;
 				}
 				if (selectionMenu && btnX >= 270 && btnX <= 380 && btnY >= 310 && btnY <= 410) {
@@ -674,8 +662,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[0] = false;
 					charSelection2[1] = false;
 					charSelection2[2] = true;
-					//player1 = new Player1(350, 400, 3);
-					mintChoc = new Mint(350, 400, 1);
+					player1 = new Player1(350, 400, 3);
+					// mintChoc = new Mint(350, 400, 1);
 					character1 = true;
 				}
 				// Player 2 Selection
@@ -684,8 +672,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[3] = true;
 					charSelection2[4] = false;
 					charSelection2[5] = false;
-					//player2 = new Player2(400, 400, 1);
-					sorbetSprite2 = new Sorbet(350, 400, 2);
+					player2 = new Player2(400, 400, 1);
+					// sorbetSprite2 = new Sorbet(350, 400, 2);
 					character2 = true;
 				}
 				if (selectionMenu && btnX >= 545 && btnX <= 640 && btnY >= 310 && btnY <= 410) {
@@ -693,8 +681,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[3] = false;
 					charSelection2[4] = true;
 					charSelection2[5] = false;
-					//player2 = new Player2(400, 400, 2);
-					smokeyBacon2 = new SmokeyB(350, 400, 2);
+					player2 = new Player2(400, 400, 2);
+					// smokeyBacon2 = new SmokeyB(350, 400, 2);
 					character2 = true;
 				}
 				if (selectionMenu && btnX >= 660 && btnX <= 760 && btnY >= 310 && btnY <= 410) {
@@ -702,8 +690,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 					charSelection2[3] = false;
 					charSelection2[4] = false;
 					charSelection2[5] = true;
-				//	player2 = new Player2(400, 400, 3);
-					mintChoc2 = new Mint(350, 400, 2);
+					player2 = new Player2(400, 400, 3);
+					// mintChoc2 = new Mint(350, 400, 2);
 					character2 = true;
 				}
 				// Confirm Button to Play Game
@@ -1041,7 +1029,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			g.drawImage(menubg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw background image to screen
 
 			g.drawImage(exitgame, 125, 50, 550, 600, null); // draw image to screen
-			
+
 			Timer timer = new Timer(4000, new ActionListener() { // 2000 milliseconds (2 seconds) delay
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -1078,7 +1066,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			icon = Toolkit.getDefaultToolkit().getImage("icon.png"); // create image
 			title2 = Toolkit.getDefaultToolkit().getImage("scoreTitle.png"); // create image
 			g.drawImage(title2, 150, 100, 500, 80, null);
-			
+
 			y = 225;
 
 			int[] scores = getHighScore("scores.txt");
@@ -1100,12 +1088,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 		if (playGame && level1) { // display game screen
 
-			// clip.stop(); // stop music clip
-			// playMusic("main theme.wav"); // plays sound file
+			clip.stop(); // stop music clip
+			playMusic("main theme.wav"); // plays sound file
 			mouseInput(); // checks for mouse input
 
 			sound = Toolkit.getDefaultToolkit().getImage("sound.png"); // create image
-	
+
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
 
 			g.drawImage(snow, 0, 0, GAME_WIDTH, GAME_HEIGHT, null); // draw image to screen
@@ -1117,33 +1105,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			score.draw(g);
 
-			//player1.draw(g);
-			//player2.draw(g);
-			
-			//player2.draw(g);
-			//mintChoc.draw(g);
-					//sorbetSprite.draw(g);
-			//smokeyBacon.draw(g);
-			
-			if (charSelection2[0]) {
-				sorbetSprite.draw(g);
-
-			} else if (charSelection2[1]) {
-				smokeyBacon.draw(g);
-
-			} else if (charSelection2[2]) {
-				mintChoc.draw(g);
-			}
-			if (charSelection2[3]) {
-				sorbetSprite2.draw(g);
-
-			} else if (charSelection2[4]) {
-				smokeyBacon2.draw(g);
-
-			} else if (charSelection2[5]) {
-				mintChoc2.draw(g);
-			}
-
+			player1.draw(g);
+			player2.draw(g);
 
 			if (onBanana == 16) {
 				blueCircle2.draw(g);
@@ -1169,8 +1132,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 			}
 
-			// Score.score = 5000;
-			// Score.score2 = 2000;
+			onBanana = 16;
+			onGrape = 12;
 			// end condition for winner / loser
 			if (onBanana == 16 && onGrape == 12) {
 
@@ -1178,7 +1141,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				totalScore1 += Score.score;
 				totalScore2 += Score.score2;
 
-				System.out.println(totalScore1);
+				// add to array list and sort highest scores later
+				recentScores.add(totalScore1);
+				recentScores.add(totalScore2);
+
+				createFile();
 
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
@@ -1198,12 +1165,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				} else if (charSelection2[5]) {
 					g.drawImage(mint, (int) (GAME_WIDTH * 0.6), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 				}
-				/* leah
-				// System.out.println(totalScore1 + " " + totalScore2);
-				recentScores.add(totalScore1);
-				recentScores.add(totalScore2);
-				createFile();
-				*/
 
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Play Next Level...", 200, 550); // draw winner result to screen
@@ -1213,7 +1174,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 		}
 		g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
-		
+
 		if (playGame && level2) {
 
 			snow = Toolkit.getDefaultToolkit().getImage("snow.png"); // create background image
@@ -1245,37 +1206,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			}
 			score.draw(g);
 			if (!melted1) {
-				//player1.draw(g);
-				if (charSelection2[0]) {
-					sorbetSprite.draw(g);
-
-				} else if (charSelection2[1]) {
-					smokeyBacon.draw(g);
-
-				} else if (charSelection2[2]) {
-					mintChoc.draw(g);
-				}
+				player1.draw(g);
 			}
 			if (!melted2) {
-				//player2.draw(g);
-			
-				if (charSelection2[3]) {
-					sorbetSprite2.draw(g);
+				player2.draw(g);
 
-				} else if (charSelection2[4]) {
-					smokeyBacon2.draw(g);
-
-				} else if (charSelection2[5]) {
-					mintChoc2.draw(g);
-				}
 			}
 			cow.draw(g);
 			// end condition for winner / loser
 
+			
 			if ((onBanana2 == 20 && onGrape2 == 8) || (melted1 && melted2)) {
 				roundWinner.draw(g);
 				totalScore1 += Score.score;
 				totalScore2 += Score.score2;
+				// add to array list and sort highest scores later
+				recentScores.add(totalScore1);
+				recentScores.add(totalScore2);
+
+				createFile();
+				
 				if (charSelection2[0]) {
 					g.drawImage(sorbet, (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.51), 50, 50, null);
 
@@ -1296,42 +1246,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				}
 				g.setFont(new Font("Consolas", Font.PLAIN, 20)); // set font type and size
 				g.drawString("Press Enter to Return to Main Menu...", 200, 580); // draw winner result to screen
-				/* leah
-				recentScores.add(totalScore1);
-				recentScores.add(totalScore2);
-				createFile();
-				*/
-				/*
-				 * if (totalScore1 > totalScore2) { // add up total score
-				 * recentScores.add(totalScore1); String m =
-				 * JOptionPane.showInputDialog("Congrats Player 1! Write Your Name: ");
-				 * System.out.println(m); createFile();
-				 * 
-				 * } else if (totalScore1 < totalScore2) { recentScores.add(totalScore2); String
-				 * m = JOptionPane.showInputDialog("Congrats Player 2! Write Your Name: ");
-				 * System.out.println(m); createFile(); }
-				 */
 
 				nextLevel2 = true;
 			}
 			g.drawImage(sound, GAME_WIDTH - 50, 0, 40, 40, null); // draw image to screen
 		}
-
-		/*
-		 * if (!audio) { // pause music
-		 * 
-		 * cross = Toolkit.getDefaultToolkit().getImage("cross.png"); // create image
-		 * 
-		 * g.drawImage(cross, GAME_WIDTH - 45, 0, 40, 40, null); // draw image to screen
-		 * 
-		 * // clipTimePosition = clip.getMicrosecondLength();
-		 * 
-		 * clip.stop(); // stop music clip
-		 * 
-		 * } else if (audio) { // //playMusic("menu music.wav"); try { clip.open(); }
-		 * catch (LineUnavailableException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } clip.start(); clip.loop(Clip.LOOP_CONTINUOUSLY); }
-		 */
 
 		if (!audio) {
 			cross = Toolkit.getDefaultToolkit().getImage("cross.png");
@@ -1373,29 +1292,22 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 // call the move methods in other classes to update positions for fluid
 // movements
 	public void move() {
-		//player1.move();
-		//mintChoc.move();
-				//player2.move();
-		if (charSelection2[0]) {
-			sorbetSprite.move();
-
-		} else if (charSelection2[1]) {
-			smokeyBacon.move();
-
-		} else if (charSelection2[2]) {
-			mintChoc.move();
-		}
-		if (charSelection2[3]) {
-			sorbetSprite2.move();
-
-		} else if (charSelection2[4]) {
-			smokeyBacon2.move();
-
-		} else if (charSelection2[5]) {
-			mintChoc2.move();
-		}
-				//smokeyBacon.move();
-		//player2.move();
+		player1.move();
+		// mintChoc.move();
+		player2.move();
+		/*
+		 * if (charSelection2[0]) { sorbetSprite.move();
+		 * 
+		 * } else if (charSelection2[1]) { smokeyBacon.move();
+		 * 
+		 * } else if (charSelection2[2]) { mintChoc.move(); } if (charSelection2[3]) {
+		 * sorbetSprite2.move();
+		 * 
+		 * } else if (charSelection2[4]) { smokeyBacon2.move();
+		 * 
+		 * } else if (charSelection2[5]) { mintChoc2.move(); } //smokeyBacon.move();
+		 * //player2.move();
+		 */
 		if (level2) {
 			cow.move();
 		}
@@ -1520,14 +1432,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 		if (level2 == true) { // game conditions for level 2
 			if (cow.x + 600 >= player1.x && cow.y == player1.y && Cow.xVelocity > 0 && !melted1) {
 				Cow.xVelocity = 5;
-			} 
-			else if (cow.x - 600 <= player1.x && cow.y == player1.y && Cow.xVelocity < 0 && !melted1) {
+			} else if (cow.x - 600 <= player1.x && cow.y == player1.y && Cow.xVelocity < 0 && !melted1) {
 				Cow.xVelocity = -5;
-			} 
-			else if (cow.y + 500 >= player1.y && cow.x == player1.x && Cow.yVelocity < 0 && !melted1) {
+			} else if (cow.y + 500 >= player1.y && cow.x == player1.x && Cow.yVelocity < 0 && !melted1) {
 				Cow.yVelocity = -5;
-			} 
-			else if (cow.y - 500 <= player1.y && cow.x == player1.x && Cow.yVelocity > 0 && !melted1) {
+			} else if (cow.y - 500 <= player1.y && cow.x == player1.x && Cow.yVelocity > 0 && !melted1) {
 				Cow.yVelocity = 5;
 			}
 			if (cow.intersects(player1)) {
@@ -1537,14 +1446,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			if (cow.x + 600 >= player2.x && cow.y == player2.y && Cow.xVelocity > 0 && !melted2) {
 				Cow.xVelocity = 5;
-			} 
-			else if (cow.x - 600 <= player2.x && cow.y == player2.y && Cow.xVelocity < 0 && !melted2) {
+			} else if (cow.x - 600 <= player2.x && cow.y == player2.y && Cow.xVelocity < 0 && !melted2) {
 				Cow.xVelocity = -5;
-			} 
-			else if (cow.y + 500 >= player2.y && cow.x == player2.x && Cow.yVelocity < 0 && !melted2) {
+			} else if (cow.y + 500 >= player2.y && cow.x == player2.x && Cow.yVelocity < 0 && !melted2) {
 				Cow.yVelocity = -5;
-			} 
-			else if (cow.y - 500 <= player2.y && cow.x == player2.x && Cow.yVelocity > 0 && !melted2) {
+			} else if (cow.y - 500 <= player2.y && cow.x == player2.x && Cow.yVelocity > 0 && !melted2) {
 				Cow.yVelocity = 5;
 			}
 			if (cow.intersects(player2)) {
@@ -1596,27 +1502,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 // Calls other methods to move objects, check for collision, and update the
 // screen
-	
+
 	public void run() {
-		KeyEvent e = null;
+		// KeyEvent e = null;
 // prevent CPU from running game code too quickly
 
-		 // Set up a KeyListener for your game window (assuming your class implements KeyListener)
-	/*    addKeyListener(new KeyAdapter() {
-	    	
-	        @Override
-	        public void keyPressed(KeyEvent event) {
-	            e = event;  // Update the KeyEvent variable when a key is pressed
-	        }
-
-	        @Override
-	        public void keyReleased(KeyEvent event) {
-	            e = null;  // Reset the KeyEvent variable when a key is released
-	        }
-	    });
-
-	    setFocusable(true);  // Ensure your game window has focus to receive key events
- */
+		// Set up a KeyListener for your game window (assuming your class implements
+		// KeyListener)
+		/*
+		 * addKeyListener(new KeyAdapter() {
+		 * 
+		 * @Override public void keyPressed(KeyEvent event) { e = event; // Update the
+		 * KeyEvent variable when a key is pressed }
+		 * 
+		 * @Override public void keyReleased(KeyEvent event) { e = null; // Reset the
+		 * KeyEvent variable when a key is released } });
+		 * 
+		 * setFocusable(true); // Ensure your game window has focus to receive key
+		 * events
+		 */
 // Variable and object declarations
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60;
@@ -1636,24 +1540,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 				checkCollision();
 				move();
 				repaint();
-			/*	if (charSelection2[0]) {
-					sorbetSprite.update(e);
-
-				} else if (charSelection2[1]) {
-					smokeyBacon.update(e);
-
-				} else if (charSelection2[2]) {
-					mintChoc.update(e);
-				}
-				if (charSelection2[3]) {
-					sorbetSprite2.update(e);
-
-				} else if (charSelection2[4]) {
-					smokeyBacon2.update(e);
-
-				} else if (charSelection2[5]) {
-					mintChoc2.update(e);
-				} */
+				/*
+				 * if (charSelection2[0]) { sorbetSprite.update(e);
+				 * 
+				 * } else if (charSelection2[1]) { smokeyBacon.update(e);
+				 * 
+				 * } else if (charSelection2[2]) { mintChoc.update(e); } if (charSelection2[3])
+				 * { sorbetSprite2.update(e);
+				 * 
+				 * } else if (charSelection2[4]) { smokeyBacon2.update(e);
+				 * 
+				 * } else if (charSelection2[5]) { mintChoc2.update(e); }
+				 */
 				delta--;
 			}
 		}
@@ -1693,11 +1591,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 			level2 = false;
 			level1 = false;
 			nextLevel = false;
+			nextLevel2 = false;
 			mainMenu = true;
 			controls = false;
 			scoreBoard = false;
 			playGame = false;
 			selectionMenu = false;
+			character1 = false;
+			character2 = false;
+			// set boolean arrays to false
+			for (int i = 0; i < charSelection.length; i++) {
+				// conditions for character selection menu
+				charSelection[i] = false;
+			}
+			for (int i = 0; i < charSelection2.length; i++) {
+				// conditions for character selection menu
+				charSelection2[i] = false;
+			}
+			gameTransition = false;
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_ENTER && nextLevel2) {
@@ -1710,6 +1621,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 //playGame = false; //add to last game level
 			controls = false;
 			scoreBoard = false;
+			playGame = false;
+			selectionMenu = false;
+			level1 = false;
+			level2 = false;
+			nextLevel = false;
+			exitGame = false;
+			controls = false;
+			scoreBoard = false;
+			nextLevel2 = false;
+			// returnMain = false;
+			// audio = true;
+			continueBtn = false;
+
+			charError = false;
+			displayChar = false;
+
+			melted1 = false;
+			melted2 = false;
 
 			// set all other game variables to false
 			playGame = false;
@@ -1730,52 +1659,44 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
 			melted1 = false;
 			melted2 = false;
-			
+
 			player1.level = 1;
 			player2.level = 1;
 		}
 
-		if (charSelection2[0]) {
-			sorbetSprite.update(e);
-
-		} else if (charSelection2[1]) {
-			smokeyBacon.update(e);
-
-		} else if (charSelection2[2]) {
-			mintChoc.update(e);
-		}
-		if (charSelection2[3]) {
-			sorbetSprite2.update(e);
-
-		} else if (charSelection2[4]) {
-			smokeyBacon2.update(e);
-
-		} else if (charSelection2[5]) {
-			mintChoc2.update(e);
-		}
+		/*
+		 * if (charSelection2[0]) { sorbetSprite.update(e);
+		 * 
+		 * } else if (charSelection2[1]) { smokeyBacon.update(e);
+		 * 
+		 * } else if (charSelection2[2]) { mintChoc.update(e); } if (charSelection2[3])
+		 * { sorbetSprite2.update(e);
+		 * 
+		 * } else if (charSelection2[4]) { smokeyBacon2.update(e);
+		 * 
+		 * } else if (charSelection2[5]) { mintChoc2.update(e); }
+		 */
+		player1.keyPressed(e);
+		player2.keyPressed(e);
 
 	}
 
 // send key input to classes for processing
 	public void keyReleased(KeyEvent e) {
-		if (charSelection2[0]) {
-			sorbetSprite.keyReleased(e);
-
-		} else if (charSelection2[1]) {
-			smokeyBacon.keyReleased(e);
-
-		} else if (charSelection2[2]) {
-			mintChoc.keyReleased(e);
-		}
-		if (charSelection2[3]) {
-			sorbetSprite2.keyReleased(e);
-
-		} else if (charSelection2[4]) {
-			smokeyBacon2.keyReleased(e);
-
-		} else if (charSelection2[5]) {
-			mintChoc2.keyReleased(e);
-		}
+		/*
+		 * if (charSelection2[0]) { sorbetSprite.keyReleased(e);
+		 * 
+		 * } else if (charSelection2[1]) { smokeyBacon.keyReleased(e);
+		 * 
+		 * } else if (charSelection2[2]) { mintChoc.keyReleased(e); } if
+		 * (charSelection2[3]) { sorbetSprite2.keyReleased(e);
+		 * 
+		 * } else if (charSelection2[4]) { smokeyBacon2.keyReleased(e);
+		 * 
+		 * } else if (charSelection2[5]) { mintChoc2.keyReleased(e); }
+		 */
+		player1.keyReleased(e);
+		player2.keyReleased(e);
 	}
 
 // overridden by the KeyListener interface
