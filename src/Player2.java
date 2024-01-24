@@ -424,7 +424,7 @@ public class Player2 extends Rectangle {
 				g.drawImage(image, x, y, 50, 50, null);
 				}if (spriteNum ==2) {
 					image = mright2;
-					
+					g.drawImage(image, x, y, 50, 50, null);
 				}
 				break; 
 			case "melted":
