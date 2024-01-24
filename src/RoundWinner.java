@@ -1,7 +1,8 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 18, 2024
+   January 23, 2024
    RoundWinner
-   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+    Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game,
+   saving top five high scores to text file, display score leaderboard and animated sprites.  */
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,7 +31,7 @@ public class RoundWinner extends Rectangle {
 	}
 
 	public void draw(Graphics g) {
-		// draw graphics to screen
+		// draw end card or end condition for player 
 		Color c = new Color(248, 242, 226);
 		g.setColor(c);
 		g.fillRect(200, 200, 400, 300);
@@ -47,15 +48,18 @@ public class RoundWinner extends Rectangle {
 			g.drawImage(cross, (int) (GAME_WIDTH * 0.365), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
 			g.drawImage(cross, (int) (GAME_WIDTH * 0.615), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
 		}
+		//determine winenr based on scores
 		else if (Score.score > Score.score2) {
+			//displayer player 1 wins
 			g.drawString("Player 1 WIN!", (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.37));
 			g.drawImage(crown, (int) (GAME_WIDTH * 0.365), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
 			
 		} else if (Score.score < Score.score2) {
+			//display player 2 wins
 			g.drawString("Player 2 WIN!", (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.37));
 			g.drawImage(crown, (int) (GAME_WIDTH * 0.615), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
 			
-		} else {
+		} else { //display a draw
 			g.drawString("DRAW", (int) (GAME_WIDTH * 0.5), (int) (GAME_HEIGHT * 0.35));
 		}
 

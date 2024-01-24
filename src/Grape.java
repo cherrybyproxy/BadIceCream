@@ -1,10 +1,11 @@
 /* Leah Huang and Selvahini Kamalarajan
-January 18, 2024
+January 23, 2024
 Grape
 Grape draws the images for grapes in GamePanel. 
-Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game and score. */
+Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game,
+   saving top five high scores to text file, display score leaderboard and animated sprites.  */
 
-import java.awt.*;
+import java.awt.*; //import packages
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -27,7 +28,6 @@ public class Grape extends Rectangle {
 	// this method is used to get the image from source folder
 	public void getIcon() {
 		try {
-
 			grapeImg = ImageIO.read(getClass().getResourceAsStream("/Grape.png"));
 		} catch (IOException e) {
 			e.printStackTrace();

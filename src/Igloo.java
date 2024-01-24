@@ -1,7 +1,8 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 18, 2024
+   January 23, 2024
    Igloo
-   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game,
+   saving top five high scores to text file, display score leaderboard and animated sprites.  */
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,7 +19,7 @@ public class Igloo extends Rectangle {
 	// constructor creates igloo image at given location with given dimensions 
 	public Igloo(int x, int y) {
 		super(x, y, 100, 100);
-		getIcon();
+		getIcon(); //create image
 
 	}
 

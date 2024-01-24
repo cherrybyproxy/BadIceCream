@@ -1,7 +1,8 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 18, 2024
+   January 23, 2024
    Score
-   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game,
+   saving top five high scores to text file, display score leaderboard and animated sprites.  */
 
 import java.awt.*;
 import java.io.Serializable;

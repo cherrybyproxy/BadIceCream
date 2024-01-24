@@ -1,7 +1,8 @@
 /* Leah Huang and Selvahini Kamalarajan
-   January 18, 2024
+   January 23, 2024
    Level2Scenery
-   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 of game and score. */
+   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game,
+   saving top five high scores to text file, display score leaderboard and animated sprites.  */
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,8 +22,7 @@ public class Level2Scenery extends Rectangle {
 	public BufferedImage bananaImg;
 	public BufferedImage grapeImg;
 
-	// constructor creates ball at given location with given dimensions, and the
-	// iceImg
+	// constructor creates ball at given location with given dimensions, and the iceImg
 	public Level2Scenery(int x, int y) {
 		super(x, y, 50, 50);
 		getIcon();
@@ -34,7 +34,6 @@ public class Level2Scenery extends Rectangle {
 
 		try {
 			iceImg = ImageIO.read(getClass().getResourceAsStream("/Ice.png"));
-			// block = ImageIO.read(getClass().getResourceAsStream("block.png"));
 			block = Toolkit.getDefaultToolkit().getImage("Tile.png"); // create image
 
 			iglooImg = ImageIO.read(getClass().getResourceAsStream("/Igloo.png"));
