@@ -79,30 +79,30 @@ public class Player2 extends Rectangle {
 
 	// updates the direction of player 2 based on user input
 	public void keyPressed(KeyEvent e) {
-		if (!GamePanel.melted2) {
+		if (!GamePanel.melted2 && GamePanel.playGame) {
 			// set movement and speed
-			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if (e.getKeyCode() == KeyEvent.VK_D) {
 				// move right
 				setXDirection(SPEED);
 				direction = "right";
 				move();
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			if (e.getKeyCode() == KeyEvent.VK_A) {
 				// move left
 				setXDirection(SPEED * -1);
 				direction = "left";
 				move();
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (e.getKeyCode() == KeyEvent.VK_W) {
 				// move up
 				setYDirection(SPEED * -1);
 				direction = "up";
 				move();
 			}
 
-			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (e.getKeyCode() == KeyEvent.VK_S) {
 				// move down
 				setYDirection(SPEED);
 				direction = "down";
@@ -125,22 +125,22 @@ public class Player2 extends Rectangle {
 	// Makes player 2 stop moving in that direction
 	public void keyReleased(KeyEvent e) {
 		// stop all movement and speed
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_D) {
 			setXDirection(0);
 			move();
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_A) {
 			setXDirection(0);
 			move();
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
+		if (e.getKeyCode() == KeyEvent.VK_W) {
 			setYDirection(0);
 			move();
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+		if (e.getKeyCode() == KeyEvent.VK_S) {
 			setYDirection(0);
 			move();
 		}
