@@ -1,7 +1,7 @@
 /* Leah Huang and Selvahini Kamalarajan
    January 23, 2024
    Player1
-  Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game,
+   Completed Features include music/sound effects, main menu, 2 player functionality, level 1 and 2 of game,
    saving top five high scores to text file, display score leaderboard and animated sprites.  */
 
 import java.awt.*;
@@ -19,27 +19,29 @@ public class Player1 extends Rectangle {
 
 	public final int SPEED = 2; // movement speed of player 1
 
-	//set sprite counter
+	//variables for sprite counters
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
 	
-	public static boolean isMelted = false;
+	public static boolean isMelted = false; //set to false
 	
 	public String direction; // direction of sprite
-	public int charNum; // stores value for paddle 1 or paddle 2
+	
+	public int charNum; // stores value for each character
 
+	//stores sprite images for player 1
 	public Image sdown1, sdown2, sup1, sup2, sleft1, sleft2, sright1, sright2, smelted, bdown1, bdown2,
-	bup, bdown, bleft, bright, bmelted, mup1, mup2, mdown1, mdown2, mleft1, mleft2, mright1, mright2, mmelted; // create image 
+	bup, bdown, bleft, bright, bmelted, mup1, mup2, mdown1, mdown2, mleft1, mleft2, mright1, mright2, mmelted; // create image for player 1
 
 	boolean canRight = true, canLeft = true, canUp = true, canDown = true;
 	
-	int level = 1; //level for player 1
+	int level = 1; //player 1 level
 
-	// constructor creates player 1 at given location with given dimensions, and the icon
+	// constructor creates player 1 at given location with given dimensions, and the  icon
 	public Player1(int x, int y, int num) {
 		super(x, y, 40, 40);
 
-		//obtain all images for sprite movements
+		//store sprite images for sorbet
 		sdown1 = Toolkit.getDefaultToolkit().getImage("sdown1.png");
 		sdown2 = Toolkit.getDefaultToolkit().getImage("sdown2.png");
 		sup1 = Toolkit.getDefaultToolkit().getImage("sback1.png");
@@ -50,6 +52,7 @@ public class Player1 extends Rectangle {
 		sright2 = Toolkit.getDefaultToolkit().getImage("sright2.png");
 		smelted = Toolkit.getDefaultToolkit().getImage("SorbetMelted.png");
 
+		//store sprite images for smokey bacon
 		bdown1 = Toolkit.getDefaultToolkit().getImage("bdown1.png");
 		bdown2 = Toolkit.getDefaultToolkit().getImage("bdown2.png");
 		bup = Toolkit.getDefaultToolkit().getImage("bback.png");
@@ -57,6 +60,7 @@ public class Player1 extends Rectangle {
 		bright = Toolkit.getDefaultToolkit().getImage("b-right.png");
 		bmelted = Toolkit.getDefaultToolkit().getImage("SmokeyBMelted.png");
 		
+		//store sprite images for mint choc chip
 		mdown1 = Toolkit.getDefaultToolkit().getImage("down1.png"); 
 		mdown2 = Toolkit.getDefaultToolkit().getImage("down2.png"); 
 		mup1 = Toolkit.getDefaultToolkit().getImage("up1.png");
@@ -67,8 +71,9 @@ public class Player1 extends Rectangle {
 		mright2 = Toolkit.getDefaultToolkit().getImage("right2.png"); 
 		mmelted = Toolkit.getDefaultToolkit().getImage("MintMelted.png");
 		
-		charNum = num;
-		direction = "down";
+		charNum = num; //store character number
+		
+		direction = "down"; //store movement direction
 	}
 
 	// called from GamePanel when any keyboard input is detected
@@ -106,7 +111,6 @@ public class Player1 extends Rectangle {
 			
 		
 		}
-		//increase sprite counter and create animations based on delta system
 		spriteCounter++;
 		if (spriteCounter > 5) {
 			if (spriteNum == 1) {
@@ -116,6 +120,8 @@ public class Player1 extends Rectangle {
 			}
 			spriteCounter = 0;
 		}
+	
+		
 	}
 
 	// Makes player 1 stop moving when keys are released
@@ -143,20 +149,19 @@ public class Player1 extends Rectangle {
 
 	}
 
-	// called whenever the movement of player 1 changes in the x-direction (left/right)
+	// called whenever the movement of player 1 changes in the x-direction
+	// (left/right)
 	public void setXDirection(int xDirection) {
 		xVelocity = xDirection;
 	}
 
 	public void setYDirection(int yDirection) {
-		//called whenever movement of player 1 changes in y direction
 		yVelocity = yDirection;
 	}
 
 	// updates the current location of player 1
 	public void move() {
 		if (level == 1) {
-			//update game boundaries for player 1 movement
 			if (y <= 100 && yVelocity < 0) {
 				canUp = false;
 			}
@@ -169,7 +174,7 @@ public class Player1 extends Rectangle {
 			else if (x >= 650 && xVelocity > 0) {
 				canRight = false;
 			}
-			// restrict player 1 movement left or right
+			// restrict player 1 movement for column
 			else if (x >= 150 && x < 250 && xVelocity > 0 && (y > 150 && y < 500)) {
 				canRight = false;
 			}
@@ -177,7 +182,7 @@ public class Player1 extends Rectangle {
 				canLeft = false;
 			}
 			
-			// restrict player 1 movement in y direction
+			//restrict player 1 movement in top row
 			else if (y >= 150 && y < 250 && yVelocity > 0 && (x > 150 && x < 350)) {
 				canDown = false;
 			}
@@ -188,7 +193,7 @@ public class Player1 extends Rectangle {
 				canLeft = false;
 			}
 			
-			//restrict player 1 movement on bottom row
+			//restrict player 1 movement in bottom row
 			else if (y >= 400 && y < 500 && yVelocity > 0 && (x > 150 && x < 350)) {
 				canDown = false;
 			}
@@ -199,7 +204,7 @@ public class Player1 extends Rectangle {
 				canLeft = false;
 			}
 			
-			//restrict player 1 movement in column 2
+			// restrict player 1 movement in column 2
 			else if (x >= 500 && x < 600 && xVelocity > 0 && (y > 200 && y < 450)) {
 				canRight = false;
 			}
@@ -207,7 +212,7 @@ public class Player1 extends Rectangle {
 				canLeft = false;
 			}
 			
-			// //restrict player 1 movement on top row 2
+			//restrict player 1 movement in top row 2
 			else if (y >= 150 && y < 250 && yVelocity > 0 && (x > 400 && x < 600)) {
 				canDown = false;
 			}
@@ -218,7 +223,7 @@ public class Player1 extends Rectangle {
 				canRight = false;
 			}
 			
-			////restrict player 1 movement on bottom row 2
+			//restrict player 1 movement  in bottom row 2
 			else if (y >= 400 && y < 500 && yVelocity > 0 && (x > 400 && x < 550)) {
 				canDown = false;
 			}
@@ -229,7 +234,7 @@ public class Player1 extends Rectangle {
 				canRight = false;
 			}
 			
-			// collision checker for player 1 and igloo in level 1
+			// collision checker between player 1 and igloo
 			else if (x > 350 && x <= 450 && y > 250 && y < 350 && xVelocity < 0) {
 				canLeft = false;
 			}
@@ -244,12 +249,15 @@ public class Player1 extends Rectangle {
 				canDown = false;
 			}
 			else {
+				//player 1 moves as normal
 				x += xVelocity;
 				y += yVelocity;
 			}
+
+			
 		}
 		if (level == 2) {
-			//game boundaries for level 2 of game
+			//collision checker for level 2 objects and player 1
 			if (y <= 100 && yVelocity < 0) {
 				canUp = false;
 			}
@@ -263,7 +271,7 @@ public class Player1 extends Rectangle {
 				canRight = false;
 			}
 			
-			//restrict player 1 movement on column 1
+			// restrict player 1 movement for column 1
 			else if (x >= 100 && x < 200 && y > 150 && y < 500 && xVelocity > 0) {
 				canRight = false;
 			}
@@ -277,7 +285,7 @@ public class Player1 extends Rectangle {
 				canDown = false;
 			}
 			
-			// //restrict player 1 movement on column 2
+			// restrict player 1 movement in column 2
 			else if (x >= 250 && x < 350 && y > 150 && y < 500 && xVelocity > 0) {
 				canRight = false;
 			}
@@ -291,7 +299,7 @@ public class Player1 extends Rectangle {
 				canDown = false;
 			}
 			
-			// //restrict player 1 movement on column 3
+			// restrict player 1 movement in column 3
 			else if (x >= 400 && x < 500 && y > 150 && y < 500 && xVelocity > 0) {
 				canRight = false;
 			}
@@ -305,7 +313,7 @@ public class Player1 extends Rectangle {
 				canDown = false;
 			}
 			
-			//restrict player 1 movement on column 4
+			// restrict player 1 movement in column 4
 			else if (x >= 550 && x < 650 && y > 150 && y < 500 && xVelocity > 0) {
 				canRight = false;
 			}
@@ -318,8 +326,9 @@ public class Player1 extends Rectangle {
 			else if (x > 550 && x < 650 && y >= 150 && y < 500 && yVelocity > 0) {
 				canDown = false;
 			}
+			
 			else {
-				//player moves as normal
+				//player 1 moves as normal
 				x += xVelocity;
 				y += yVelocity;
 			}
@@ -328,15 +337,17 @@ public class Player1 extends Rectangle {
 	
 	// draws the current location of player 1 to the screen
 	public void draw(Graphics g) {
-		// draw image to screen based on direction of player 
+		// draw image to screen based on direction
 		Image image = null;
+		
 		if (GamePanel.melted1 == true) {
 			direction = "melted";
 		}
+		
 		if (charNum == 1) { //sorbet character movement
 			switch (direction) {
 			case "down":
-				if (spriteNum ==1) { 
+				if (spriteNum ==1) {
 				image = sdown1;
 				g.drawImage(image, x, y, 50, 50, null);
 				} if (spriteNum ==2) {
@@ -431,7 +442,7 @@ public class Player1 extends Rectangle {
 				}
 				break;
 
-			case "up": 
+			case "up":
 				if (spriteNum ==1) {
 				image =mup1;
 				g.drawImage(image, x, y, 50, 50, null);
