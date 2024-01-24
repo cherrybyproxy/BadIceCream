@@ -42,7 +42,7 @@ public class RoundWinner extends Rectangle {
 		g.setFont(new Font("Consolas", Font.PLAIN, 35)); // set font
 
 		// determine winner based on score
-		if (GamePanel.melted1 && GamePanel.melted2) {
+		if (Player1.isMelted && Player2.isMelted) {
 			g.drawString("TOTAL MELTDOWN", (int) (GAME_WIDTH * 0.35), (int) (GAME_HEIGHT * 0.37));
 			g.drawImage(cross, (int) (GAME_WIDTH * 0.365), (int) (GAME_HEIGHT * 0.43), 30, 30, null);
 			g.drawImage(cross, (int) (GAME_WIDTH * 0.615), (int) (GAME_HEIGHT * 0.43), 30, 30, null);

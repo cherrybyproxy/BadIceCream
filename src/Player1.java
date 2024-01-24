@@ -21,11 +21,13 @@ public class Player1 extends Rectangle {
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
 	
+	public static boolean isMelted = false;
+	
 	public String direction; // direction of sprite
 	public int charNum; // stores value for paddle 1 or paddle 2
 
-	public Image sdown1, sdown2, sup1, sup2, sleft1, sleft2, sright1, sright2, bdown1, bdown2,
-	bup, bdown, bleft, bright,mup1, mup2, mdown1, mdown2, mleft1, mleft2, mright1, mright2; // create image for player 1
+	public Image sdown1, sdown2, sup1, sup2, sleft1, sleft2, sright1, sright2, smelted, bdown1, bdown2,
+	bup, bdown, bleft, bright, bmelted, mup1, mup2, mdown1, mdown2, mleft1, mleft2, mright1, mright2, mmelted; // create image for player 1
 
 	boolean canRight = true, canLeft = true, canUp = true, canDown = true;
 	
@@ -44,21 +46,24 @@ public class Player1 extends Rectangle {
 		sleft2 = Toolkit.getDefaultToolkit().getImage("sleft2.png");
 		sright1 = Toolkit.getDefaultToolkit().getImage("sright1.png");
 		sright2 = Toolkit.getDefaultToolkit().getImage("sright2.png");
+		smelted = Toolkit.getDefaultToolkit().getImage("SorbetMelted.png");
 
 		bdown1 = Toolkit.getDefaultToolkit().getImage("bdown1.png");
 		bdown2 = Toolkit.getDefaultToolkit().getImage("bdown2.png");
 		bup = Toolkit.getDefaultToolkit().getImage("bback.png");
 		bleft = Toolkit.getDefaultToolkit().getImage("bleft.png");
 		bright = Toolkit.getDefaultToolkit().getImage("b-right.png");
+		bmelted = Toolkit.getDefaultToolkit().getImage("SmokeyBMelted.png");
 		
 		mdown1 = Toolkit.getDefaultToolkit().getImage("down1.png"); 
 		mdown2 = Toolkit.getDefaultToolkit().getImage("down2.png"); 
-		mup1 = Toolkit.getDefaultToolkit().getImage("up1.png"); 
+		mup1 = Toolkit.getDefaultToolkit().getImage("up1.png");
 		mup2 = Toolkit.getDefaultToolkit().getImage("up2.png"); 
 		mleft1 = Toolkit.getDefaultToolkit().getImage("left1.png");
 		mleft2 = Toolkit.getDefaultToolkit().getImage("left2.png"); 
 		mright1 = Toolkit.getDefaultToolkit().getImage("right1.png"); 
 		mright2 = Toolkit.getDefaultToolkit().getImage("right2.png"); 
+		mmelted = Toolkit.getDefaultToolkit().getImage("MintMelted.png");
 		
 		charNum = num;
 		direction = "down";
@@ -66,35 +71,39 @@ public class Player1 extends Rectangle {
 
 	// called from GamePanel when any keyboard input is detected
 	public void keyPressed(KeyEvent e) {
-		// controls for player 1
-		if (e.getKeyCode() == KeyEvent.VK_D) {
-			// move right
-			direction = "right";
-			setXDirection(SPEED);
-			move();
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_A) {
-			// move left
-			direction = "left";
-			setXDirection(SPEED * -1);
-			move();
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_W) {
-			// move up
-			direction = "up";
-			setYDirection(SPEED * -1);
-			move();
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_S) {
-			// move down
-			direction = "down";
-			setYDirection(SPEED);
-			move();
-		}
 		
+		if (!GamePanel.melted1) {
+			// controls for player 1
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				// move right
+				direction = "right";
+				setXDirection(SPEED);
+				move();
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				// move left
+				direction = "left";
+				setXDirection(SPEED * -1);
+				move();
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				// move up
+				direction = "up";
+				setYDirection(SPEED * -1);
+				move();
+			}
+
+			if (e.getKeyCode() == KeyEvent.VK_S) {
+				// move down
+				direction = "down";
+				setYDirection(SPEED);
+				move();
+			}
+			
+		
+		}
 		spriteCounter++;
 		if (spriteCounter > 5) {
 			if (spriteNum == 1) {
@@ -104,6 +113,8 @@ public class Player1 extends Rectangle {
 			}
 			spriteCounter = 0;
 		}
+	
+		
 	}
 
 	// Makes player 1 stop moving when keys are released
@@ -318,6 +329,9 @@ public class Player1 extends Rectangle {
 	public void draw(Graphics g) {
 		// draw image to screen
 		Image image = null;
+		if (GamePanel.melted1 == true) {
+			direction = "melted";
+		}
 		if (charNum == 1) { //sorbet character movement
 			switch (direction) {
 			case "down":
@@ -360,6 +374,12 @@ public class Player1 extends Rectangle {
 					g.drawImage(image, x, y, 50, 50, null);
 				}
 				break;
+				
+			case "melted":
+				image = smelted;
+				g.drawImage(image, x, y, 50, 50, null);
+				isMelted = true;
+				break;
 			}
 			
 		} else if (charNum == 2) { //smokey bacon character movement
@@ -389,6 +409,12 @@ public class Player1 extends Rectangle {
 			case "right":
 				image = bright;
 				g.drawImage(image, x, y, 50, 50, null);
+				break;
+				
+			case "melted":
+				image = bmelted;
+				g.drawImage(image, x, y, 50, 50, null);
+				isMelted = true;
 				break;
 
 			}
@@ -433,6 +459,12 @@ public class Player1 extends Rectangle {
 					image = mright2;
 					g.drawImage(image, x, y, 50, 50, null);
 				}
+				break;
+				
+			case "melted":
+				image = mmelted;
+				g.drawImage(image, x, y, 50, 50, null);
+				isMelted = true;
 				break;
 
 			}

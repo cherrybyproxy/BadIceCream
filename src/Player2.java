@@ -20,12 +20,14 @@ public class Player2 extends Rectangle {
 
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
+	
+	public static boolean isMelted = false;
 
 	public String direction; // direction of sprite
 	public int char2Num; // stores value for paddle 1 or paddle 2
 
-	public Image sdown1, sdown2, sup1, sup2, sleft1, sleft2, sright1, sright2, bdown1, bdown2,
-			bup, bdown, bleft, bright,mup1, mup2, mdown1, mdown2, mleft1, mleft2, mright1, mright2; // create image for player 1
+	public Image sdown1, sdown2, sup1, sup2, sleft1, sleft2, sright1, sright2, smelted, bdown1, bdown2,
+			bup, bdown, bleft, bright, bmelted, mup1, mup2, mdown1, mdown2, mleft1, mleft2, mright1, mright2, mmelted; // create image for player 1
 
 	boolean canRight = true, canLeft = true, canUp = true, canDown = true;
 
@@ -44,12 +46,14 @@ public class Player2 extends Rectangle {
 		sleft2 = Toolkit.getDefaultToolkit().getImage("sleft2.png");
 		sright1 = Toolkit.getDefaultToolkit().getImage("sright1.png");
 		sright2 = Toolkit.getDefaultToolkit().getImage("sright2.png");
+		smelted = Toolkit.getDefaultToolkit().getImage("SorbetMelted.png");
 
 		bdown1 = Toolkit.getDefaultToolkit().getImage("bdown1.png");
 		bdown2 = Toolkit.getDefaultToolkit().getImage("bdown2.png");
 		bup = Toolkit.getDefaultToolkit().getImage("bback.png");
 		bleft = Toolkit.getDefaultToolkit().getImage("bleft.png");
 		bright = Toolkit.getDefaultToolkit().getImage("b-right.png");
+		bmelted = Toolkit.getDefaultToolkit().getImage("SmokeyBMelted.png");
 
 		mdown1 = Toolkit.getDefaultToolkit().getImage("down1.png"); 
 		mdown2 = Toolkit.getDefaultToolkit().getImage("down2.png"); 
@@ -59,6 +63,7 @@ public class Player2 extends Rectangle {
 		mleft2 = Toolkit.getDefaultToolkit().getImage("left2.png"); 
 		mright1 = Toolkit.getDefaultToolkit().getImage("right1.png"); 
 		mright2 = Toolkit.getDefaultToolkit().getImage("right2.png"); 
+		mmelted = Toolkit.getDefaultToolkit().getImage("MintMelted.png");
 		
 		char2Num = num;
 		direction = "down";
@@ -66,34 +71,37 @@ public class Player2 extends Rectangle {
 
 	// updates the direction of player 2 based on user input
 	public void keyPressed(KeyEvent e) {
-		// set movement and speed
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			// move right
-			setXDirection(SPEED);
-			direction = "right";
-			move();
-		}
+		if (!GamePanel.melted2) {
+			// set movement and speed
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				// move right
+				setXDirection(SPEED);
+				direction = "right";
+				move();
+			}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			// move left
-			setXDirection(SPEED * -1);
-			direction = "left";
-			move();
-		}
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				// move left
+				setXDirection(SPEED * -1);
+				direction = "left";
+				move();
+			}
 
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			// move up
-			setYDirection(SPEED * -1);
-			direction = "up";
-			move();
-		}
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				// move up
+				setYDirection(SPEED * -1);
+				direction = "up";
+				move();
+			}
 
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			// move down
-			setYDirection(SPEED);
-			direction = "down";
-			move();
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				// move down
+				setYDirection(SPEED);
+				direction = "down";
+				move();
+			}
 		}
+		
 		spriteCounter++;
 		if (spriteCounter > 5) {
 			if (spriteNum == 1) {
@@ -286,6 +294,9 @@ public class Player2 extends Rectangle {
 	// draws the current location of player 2 to the screen
 	public void draw(Graphics g) {
 		Image image = null;
+		if (GamePanel.melted2 == true) {
+			direction = "melted";
+		}
 		if (char2Num == 1) {
 
 			switch (direction) {
@@ -333,6 +344,11 @@ public class Player2 extends Rectangle {
 					g.drawImage(image, x, y, 50, 50, null);
 				}
 				break;
+			case "melted":
+				image = smelted;
+				g.drawImage(image, x, y, 50, 50, null);
+				isMelted = true;
+				break;
 			}
 		} else if (char2Num == 2) {
 			switch (direction) {
@@ -361,6 +377,11 @@ public class Player2 extends Rectangle {
 			case "right":
 				image = bright;
 				g.drawImage(image, x, y, 50, 50, null);
+				break;
+			case "melted":
+				image = bmelted;
+				g.drawImage(image, x, y, 50, 50, null);
+				isMelted = true;
 				break;
 
 			}
@@ -406,6 +427,11 @@ public class Player2 extends Rectangle {
 					
 				}
 				break; 
+			case "melted":
+				image = mmelted;
+				g.drawImage(image, x, y, 50, 50, null);
+				isMelted = true;
+				break;
 			}
 		}
 	}
